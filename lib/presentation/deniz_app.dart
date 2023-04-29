@@ -16,7 +16,7 @@ class DenizApp extends StatelessWidget {
           ChangeNotifierProvider<GoRouter>(create: buildRouter),
         ],
         child: Builder(
-          builder:(context) =>  MaterialApp.router(
+          builder: (context) => MaterialApp.router(
             key: appKey,
             routerConfig: context.read<GoRouter>(),
             theme: appTheme,

@@ -80,8 +80,8 @@ abstract class AppDataSource {
 
   Future<String> sendOTPCode({required String mobile});
 
-  Future<CheckActiveTradeDTO> checkHasActiveTrade({required TradeType tradeType});
-
+  Future<CheckActiveTradeDTO> checkHasActiveTrade(
+      {required TradeType tradeType});
 }
 
 @LazySingleton(as: AppDataSource)
@@ -91,9 +91,10 @@ class AppDataSourceImpl extends AppDataSource {
   AppDataSourceImpl(this._apiHelper);
 
   @override
-  Future<CheckMobileExistsResponseDTO> checkMobileExists({required String mobile}) async {
-    final response =
-    await _apiHelper.request('$apiPath/check-mobile-exists', method: Method.post, data: {'mobile': mobile});
+  Future<CheckMobileExistsResponseDTO> checkMobileExists(
+      {required String mobile}) async {
+    final response = await _apiHelper.request('$apiPath/check-mobile-exists',
+        method: Method.post, data: {'mobile': mobile});
     return CheckMobileExistsResponseDTO.fromJson(response.dataAsMap());
   }
 
@@ -210,7 +211,9 @@ class AppDataSourceImpl extends AppDataSource {
         'fcm_token': fcmToken,
       },
     );
-    return TradeSubmitResponseDTO(message : response.data['message'], requestId: response.dataAsMap()['request_id']);
+    return TradeSubmitResponseDTO(
+        message: response.data['message'],
+        requestId: response.dataAsMap()['request_id']);
   }
 
   @override
@@ -222,8 +225,8 @@ class AppDataSourceImpl extends AppDataSource {
       '$apiPath/panel/profile/edit-profile',
       method: Method.post,
       data: {
-        if(name != null)'name': name,
-        if(nationalCode != null)'national_code': nationalCode,
+        if (name != null) 'name': name,
+        if (nationalCode != null) 'national_code': nationalCode,
       },
     );
     return response.data['message'];
@@ -260,8 +263,12 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<List<TransactionDTO>> getTransactions({String count = "10"}) async {
-    final response = await _apiHelper.request('$apiPath/panel/transactions?count=$count');
-    return List<TransactionDTO>.from(response.dataAsMap()['list'].map((e) => TransactionDTO.fromJson(e)).toList());
+    final response =
+        await _apiHelper.request('$apiPath/panel/transactions?count=$count');
+    return List<TransactionDTO>.from(response
+        .dataAsMap()['list']
+        .map((e) => TransactionDTO.fromJson(e))
+        .toList());
   }
 
   @override
@@ -269,17 +276,18 @@ class AppDataSourceImpl extends AppDataSource {
     final response = await _apiHelper.request(
         method: Method.post,
         '$apiPath/forget-password/send-otp-code',
-        data: {
-          'mobile' : mobile
-        }
-    );
+        data: {'mobile': mobile});
     return response.data['message'];
   }
 
   @override
   Future<PaginatedResultDTO<TradeDTO>> getTrades({required int page}) async {
-    final response = await _apiHelper.request('$apiPath/panel/trades?page=$page');
-    final items = List<TradeDTO>.from(response.dataAsMap()['list']['data'].map((e) => TradeDTO.fromJson(e)).toList());
+    final response =
+        await _apiHelper.request('$apiPath/panel/trades?page=$page');
+    final items = List<TradeDTO>.from(response
+        .dataAsMap()['list']['data']
+        .map((e) => TradeDTO.fromJson(e))
+        .toList());
     return PaginatedResultDTO<TradeDTO>(
       from: response.dataAsMap()['list']['from'],
       to: response.dataAsMap()['list']['to'],
@@ -294,8 +302,12 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<PaginatedResultDTO<HavaleDTO>> getHavales({required int page}) async {
-    final response = await _apiHelper.request('$apiPath/panel/havaleh?page=$page');
-    final items = List<HavaleDTO>.from(response.dataAsMap()['list']['data'].map((e) => HavaleDTO.fromJson(e)).toList());
+    final response =
+        await _apiHelper.request('$apiPath/panel/havaleh?page=$page');
+    final items = List<HavaleDTO>.from(response
+        .dataAsMap()['list']['data']
+        .map((e) => HavaleDTO.fromJson(e))
+        .toList());
     return PaginatedResultDTO<HavaleDTO>(
       from: response.dataAsMap()['list']['from'],
       to: response.dataAsMap()['list']['to'],
@@ -309,8 +321,10 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<CheckActiveTradeDTO> checkHasActiveTrade({required TradeType tradeType}) async {
-    final response = await _apiHelper.request('$apiPath/panel/trade/check-has-active-trade?trade_type=${tradeType.value}');
+  Future<CheckActiveTradeDTO> checkHasActiveTrade(
+      {required TradeType tradeType}) async {
+    final response = await _apiHelper.request(
+        '$apiPath/panel/trade/check-has-active-trade?trade_type=${tradeType.value}');
     return CheckActiveTradeDTO.fromJson(response.dataAsMap());
   }
 }

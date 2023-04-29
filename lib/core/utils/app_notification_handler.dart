@@ -2,20 +2,19 @@ import 'dart:convert';
 
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 
-class AppNotificationEvent{
+class AppNotificationEvent {
   final String type;
 
   AppNotificationEvent({
     required this.type,
   });
-
 }
 
 const String tradeResultNotificationType = "trade_result";
 const String homeDataNotificationType = "home_data";
 const String botStatusNotificationType = "logo_data";
 
-class TradeResultNotificationEvent extends AppNotificationEvent{
+class TradeResultNotificationEvent extends AppNotificationEvent {
   final int requestId;
   final String status;
   final String? totalPrice;
@@ -42,10 +41,9 @@ class TradeResultNotificationEvent extends AppNotificationEvent{
       weight: data['weight'].toString(),
     );
   }
-
 }
 
-class HomeDataNotificationEvent extends AppNotificationEvent{
+class HomeDataNotificationEvent extends AppNotificationEvent {
   final HomeScreenDataDTO data;
 
   HomeDataNotificationEvent({
@@ -53,13 +51,14 @@ class HomeDataNotificationEvent extends AppNotificationEvent{
     required this.data,
   }) : super(type: type);
 
-  factory HomeDataNotificationEvent.fromJson(Map<String, dynamic> json) => HomeDataNotificationEvent(
-    type: json['type'],
-    data: HomeScreenDataDTO.fromJson(jsonDecode(json['data'])),
-  );
+  factory HomeDataNotificationEvent.fromJson(Map<String, dynamic> json) =>
+      HomeDataNotificationEvent(
+        type: json['type'],
+        data: HomeScreenDataDTO.fromJson(jsonDecode(json['data'])),
+      );
 }
 
-class BotStatusDataNotificationEvent extends AppNotificationEvent{
+class BotStatusDataNotificationEvent extends AppNotificationEvent {
   final String logo;
   final String botStatus;
 

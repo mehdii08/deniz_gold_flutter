@@ -15,10 +15,13 @@ class PhoneDTO extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-    'title': title,
-    'phone': phone,
-  };
+        'title': title,
+        'phone': phone,
+      };
 
   @override
-  List<Object?> get props => [title, phone,];
+  List<Object?> get props => [
+        title,
+        phone,
+      ];
 }

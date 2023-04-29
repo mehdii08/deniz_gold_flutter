@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
-
   static final route = GoRoute(
     name: 'HomeScreen',
     path: '/home',

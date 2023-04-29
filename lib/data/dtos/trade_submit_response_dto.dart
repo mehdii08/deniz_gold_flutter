@@ -12,7 +12,7 @@ class TradeSubmitResponseDTO extends Equatable {
   factory TradeSubmitResponseDTO.fromJson(Map<String, dynamic> json) =>
       TradeSubmitResponseDTO(
         message: json['message'],
-        requestId : json['request_id'],
+        requestId: json['request_id'],
       );
 
   @override

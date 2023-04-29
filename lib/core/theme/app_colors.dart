@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppColors{
-
-  static  MaterialColor red = const MaterialColor(0xFFF6465D, {
+class AppColors {
+  static MaterialColor red = const MaterialColor(0xFFF6465D, {
     50: Color(0xFFFEEDEF),
     100: Color(0xFFFCC6CD),
     200: Color(0xFFFBAAB4),
@@ -15,7 +14,7 @@ class AppColors{
     900: Color(0xFF671D27),
   });
 
-  static  MaterialColor yellow = const MaterialColor(0xFFFCD535, {
+  static MaterialColor yellow = const MaterialColor(0xFFFCD535, {
     50: Color(0xFFFFFBEB),
     100: Color(0xFFFEF2C0),
     200: Color(0xFFFEECA2),
@@ -28,7 +27,7 @@ class AppColors{
     900: Color(0xFF6A5916),
   });
 
-  static  MaterialColor green = const MaterialColor(0xFF0ECB81, {
+  static MaterialColor green = const MaterialColor(0xFF0ECB81, {
     50: Color(0xFFE7FAF2),
     100: Color(0xFFB4EFD8),
     200: Color(0xFF90E7C5),
@@ -41,7 +40,7 @@ class AppColors{
     900: Color(0xFF065536),
   });
 
-  static  MaterialColor nature = const MaterialColor(0xFF717F91, {
+  static MaterialColor nature = const MaterialColor(0xFF717F91, {
     50: Color(0xFFEFEFEF),
     100: Color(0xFFD5D9DD),
     200: Color(0xFFB9BFC8),
@@ -65,5 +64,4 @@ class AppColors{
   static const MaterialColor blue = MaterialColor(0xFF4A78FF, {
     500: Color(0xFF4A78FF),
   });
-
 }

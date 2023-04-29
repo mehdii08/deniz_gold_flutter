@@ -20,12 +20,10 @@ class Failure extends Equatable {
       return ServerFailure.fromException(exception);
     }
     if (exception is AppException) {
-      return Failure._(
-          message: exception.message);
+      return Failure._(message: exception.message);
     }
     // TODO: should change the message
-    return const Failure._(
-        message: 'Failure');
+    return const Failure._(message: 'Failure');
   }
 
   @override
@@ -33,8 +31,7 @@ class Failure extends Equatable {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure()
-      : super._(message: 'NetworkFailure');
+  const NetworkFailure() : super._(message: 'NetworkFailure');
 }
 
 class ServerFailure extends Failure {

@@ -1,27 +1,36 @@
-class Strings{
+class Strings {
   static const splash = "Splash";
   static const login = "ورود";
   static const unKnownError = "خطای ناشناخته";
-  static const havlehCreated = "درخواست حواله با موفقیت ثبت شد. پس از بررسی نتیجه آن به اطلاع شما خواهد رسید";
+  static const havlehCreated =
+      "درخواست حواله با موفقیت ثبت شد. پس از بررسی نتیجه آن به اطلاع شما خواهد رسید";
   static const codeError = "کد تایید پیامکی را درست وارد کنید";
   static const nameError = "نام را درست وارد کنید";
   static const nationalCodeError = "کد ملی را درست وارد کنید";
   static const passwordError = "کلمه عبور را درست وارد کنید";
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
-  static const appName = "آبشده فروشی عقیق";
+  static const appName = "آبشده فروشی دنیز";
+  static const enterMobile = "شماره موبایل خود را وارد کنید";
   static const close = "بستن";
   static const success = "موفقیت";
   static const address = "آدرس";
-  static const unexpectedErrorHappened = "لطفا ارتباط اینترنت گوشی خود را چک کنید";
+  static const unexpectedErrorHappened =
+      "لطفا ارتباط اینترنت گوشی خود را چک کنید";
   static const youHaveActiveTrade = "شما یک معامله فعال دارید";
   static const successMessage = "درخواست شما با موفقیت تایید گردید";
-  static const failedMessage = "با عرض پوزش درخواست خرید شما به دلیل عدم تایید, لغو گردید.";
-  static const tradeDescription = "خرید و فروش به دو صورت وزنی و تومانی قابل انجام است";
-  static const tradeDescription2 = "در صورت ثبت سفارش خرید یا فروش امکان لغو آن وجود ندارد";
-  static const tradeDescription3 = "ثبت سفارش  خرید یا فروش به منظله انجام معامله نمی باشدو پس از تایید از سمت مدیریت معامله شما ثبت و نهایی خواهد شد";
-  static const havalehDescription = "از طریق این فرم می توانید درخواست حواله خود را ثبت نمایید";
-  static const havalehDescription2 = "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
+  static const failedMessage =
+      "با عرض پوزش درخواست خرید شما به دلیل عدم تایید, لغو گردید.";
+  static const tradeDescription =
+      "خرید و فروش به دو صورت وزنی و تومانی قابل انجام است";
+  static const tradeDescription2 =
+      "در صورت ثبت سفارش خرید یا فروش امکان لغو آن وجود ندارد";
+  static const tradeDescription3 =
+      "ثبت سفارش  خرید یا فروش به منظله انجام معامله نمی باشدو پس از تایید از سمت مدیریت معامله شما ثبت و نهایی خواهد شد";
+  static const havalehDescription =
+      "از طریق این فرم می توانید درخواست حواله خود را ثبت نمایید";
+  static const havalehDescription2 =
+      "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
   static const signUp = "عضویت";
   static const dot = "•";
   static const update = "بروز رسانی";
@@ -40,7 +49,7 @@ class Strings{
   static const newPassword = "کلمه عبور جدید";
   static const cancel = "انصراف";
   static const exitQuestion = "برای خروج از برنامه اطمینان دارید؟";
-  static const confirm = "تایید و ثبت";
+  static const confirm = "تایید و ادامه";
   static const weightBaseBuy = "خرید وزنی";
   static const weightBaseSell = "فروش وزنی";
   static const tomanBaseBuy = "خرید تومانی";
@@ -77,7 +86,8 @@ class Strings{
   static const buyOrderConfirmation = "تایید سفارش خرید";
   static const orderMazane = "مظنه سفارش";
   static const mazane = "مظنه";
-  static const submitOrderWarning = "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
+  static const submitOrderWarning =
+      "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
   static const requestedWeight = "وزن درخواستی";
   static const orderPrice = "مبلغ سفارش";
   static const successful = "موفقیت آمیز";
@@ -86,10 +96,14 @@ class Strings{
   static const transactionsCount = "تعداد گردش حساب";
   static const transactionsCountWarning = "مابین ۱۰ تا ۴۰ گردش حساب";
   static const listIsEmpty = "موردی جهت نمایش وجود ندارد";
-  static const activationWarning = "کاربر گرامی حساب کاربری شما فعال نمیباشد\nلطفا از طریق پشتیبانی در ارتباط باشید";
-  static const tradeDisabledWarning = "در حال حاظر امکان انجام معامله وجود ندارد";
-  static const actionDeactivatedWarning = "در حال حاظر امکان انجام این عملیات وجود ندارد";
-  static const accountingDeactivatedWarning = "این بخش برای شما فعال نمی باشد\nلطفا با پشتیبانی در تماس باشید";
+  static const activationWarning =
+      "کاربر گرامی حساب کاربری شما فعال نمیباشد\nلطفا از طریق پشتیبانی در ارتباط باشید";
+  static const tradeDisabledWarning =
+      "در حال حاظر امکان انجام معامله وجود ندارد";
+  static const actionDeactivatedWarning =
+      "در حال حاظر امکان انجام این عملیات وجود ندارد";
+  static const accountingDeactivatedWarning =
+      "این بخش برای شما فعال نمی باشد\nلطفا با پشتیبانی در تماس باشید";
   static const havaleSubmit = "ثبت حواله";
   static const show = "نمایش";
   static const accountSettings = "تنظیمات کاربری";
@@ -98,7 +112,7 @@ class Strings{
   static const shopNumber = "مغازه";
   static const officeNumber = "دفتر";
   static const workshopNumber = "کارگاه";
-  static const loginRegister = "ورود/عضویت";
+  static const loginRegister = "ورود / ثبت نام";
   static const loginTitle = "آبشده فروشی خدایی";
   static const checkPhoneNumber = "بررسی شماره تلفن";
   static const forgetPassword = "فراموشی رمز عبور";
@@ -107,11 +121,11 @@ class Strings{
   static const dollar = "دلار";
   static const goldOns = "انس طلا";
   static const goldGheramPrice = "نرخ هر گرم";
-  static const  worldGoldPrice = "طلای جهانی";
-  static const  remainingGold = "مانده طلایی";
-  static const  remainingRials = "مانده ریالی";
-  static const  gheram = "گرم";
-  static const  weekMaxPrice = "بالاترین ترین مظنه هفته";
-  static const  weekMinPrice = "پایین ترین مظنه هفته";
-  static const  updateInfo = "بروز رسانی اطلاعات";
+  static const worldGoldPrice = "طلای جهانی";
+  static const remainingGold = "مانده طلایی";
+  static const remainingRials = "مانده ریالی";
+  static const gheram = "گرم";
+  static const weekMaxPrice = "بالاترین ترین مظنه هفته";
+  static const weekMinPrice = "پایین ترین مظنه هفته";
+  static const updateInfo = "بروز رسانی اطلاعات";
 }

@@ -28,7 +28,8 @@ class HomeScreenDataDTO extends Equatable {
     required this.accountingStatus,
   });
 
-  factory HomeScreenDataDTO.fromJson(Map<String, dynamic> json) => HomeScreenDataDTO(
+  factory HomeScreenDataDTO.fromJson(Map<String, dynamic> json) =>
+      HomeScreenDataDTO(
         buyPrice: json['buy_price'] == 0 ? "0" : json['buy_price'],
         sellPrice: json['sell_price'] == 0 ? "0" : json['sell_price'],
         goldOns: json['gold_ons'] == 0 ? "0" : json['gold_ons'],
@@ -36,9 +37,17 @@ class HomeScreenDataDTO extends Equatable {
         goldWorld: json['gold_world'] == 0 ? "0" : json['gold_world'],
         rialBalance: json['rial_balance'] == 0 ? "0" : json['rial_balance'],
         goldBalance: json['gold_balance'] == 0 ? "0" : json['gold_balance'],
-        todayHighPrice: json['today_high_price'] == 0 ? "0" : json['today_high_price'],
-        todayLowPrice: json['today_low_price'] == 0 ? "0" : json['today_low_price'],
-        priceHistories: json['price_histories'] == null ? null : json['price_histories'].length == 0 ? [] : List<PriceDTO>.from(json['price_histories'].map((e) => PriceDTO.fromJson(e)).toList()),
+        todayHighPrice:
+            json['today_high_price'] == 0 ? "0" : json['today_high_price'],
+        todayLowPrice:
+            json['today_low_price'] == 0 ? "0" : json['today_low_price'],
+        priceHistories: json['price_histories'] == null
+            ? null
+            : json['price_histories'].length == 0
+                ? []
+                : List<PriceDTO>.from(json['price_histories']
+                    .map((e) => PriceDTO.fromJson(e))
+                    .toList()),
         accountingStatus: json['accounting_status'],
       );
 
@@ -57,9 +66,12 @@ class HomeScreenDataDTO extends Equatable {
         accountingStatus,
       ];
 
-  HomeScreenDataDTO update(HomeScreenDataDTO newData){
+  HomeScreenDataDTO update(HomeScreenDataDTO newData) {
     DateTime now = DateTime.now();
-    priceHistories?.add(PriceDTO(buyPrice: newData.buyPrice, sellPrice: newData.sellPrice, time: '${now.hour}:${now.minute}'));
+    priceHistories?.add(PriceDTO(
+        buyPrice: newData.buyPrice,
+        sellPrice: newData.sellPrice,
+        time: '${now.hour}:${now.minute}'));
     return HomeScreenDataDTO(
       buyPrice: newData.buyPrice,
       sellPrice: newData.sellPrice,
@@ -70,7 +82,7 @@ class HomeScreenDataDTO extends Equatable {
       goldBalance: newData.goldBalance,
       todayHighPrice: newData.todayHighPrice,
       todayLowPrice: newData.todayLowPrice,
-      priceHistories : priceHistories,
+      priceHistories: priceHistories,
       accountingStatus: newData.accountingStatus,
     );
   }

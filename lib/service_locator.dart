@@ -38,7 +38,8 @@ Future<SharedPreferences> getSharedPreferences() async {
   return await SharedPreferences.getInstance();
 }
 
-Future<String> getUserAgent() async {//todo fix me
+Future<String> getUserAgent() async {
+  //todo fix me
   try {
     // final userAgent = await FkUserAgent.getPropertyAsync('userAgent');
     // return '${FkUserAgent.getProperty('applicationName')}/${FkUserAgent.getProperty('applicationVersion')} $userAgent';
@@ -50,9 +51,9 @@ Future<String> getUserAgent() async {//todo fix me
 }
 
 @module
-abstract class RegisterModule{
+abstract class RegisterModule {
   late final dataUpdateController =
-  StreamController<AppNotificationEvent>.broadcast();
+      StreamController<AppNotificationEvent>.broadcast();
 
   @singleton
   @preResolve
@@ -60,16 +61,17 @@ abstract class RegisterModule{
 
   @singleton
   @preResolve
-  Future<SharedPreferences> get resolveSharedPreferences => getSharedPreferences();
+  Future<SharedPreferences> get resolveSharedPreferences =>
+      getSharedPreferences();
 
   @lazySingleton
   FirebaseMessaging get resolveFirebaseMessaging => FirebaseMessaging.instance;
 
   @lazySingleton
-  Sink<AppNotificationEvent> get resolveDataUpdateEventSink => dataUpdateController;
+  Sink<AppNotificationEvent> get resolveDataUpdateEventSink =>
+      dataUpdateController;
 
   @lazySingleton
   Stream<AppNotificationEvent> get resolveDataUpdateEventStream =>
       dataUpdateController.stream;
-
 }

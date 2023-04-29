@@ -27,5 +27,12 @@ class TradeDTO extends Equatable {
       );
 
   @override
-  List<Object?> get props => [title, type, mazaneh, faDate, faTime, requestId,];
+  List<Object?> get props => [
+        title,
+        type,
+        mazaneh,
+        faDate,
+        faTime,
+        requestId,
+      ];
 }

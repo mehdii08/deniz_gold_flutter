@@ -30,8 +30,12 @@ class AppConfigDTO extends Equatable {
 
   factory AppConfigDTO.fromJson(Map<String, dynamic> json) {
     List<PhoneDTO>? phones;
-    if (json.keys.contains("phones") && json['phones'] != null && json['phones'] != "null") {
-      phones = List<PhoneDTO>.from(json['phones'].map((e) => PhoneDTO.fromJson(e))).toList();
+    if (json.keys.contains("phones") &&
+        json['phones'] != null &&
+        json['phones'] != "null") {
+      phones =
+          List<PhoneDTO>.from(json['phones'].map((e) => PhoneDTO.fromJson(e)))
+              .toList();
     }
     return AppConfigDTO(
         user: UserDTO.fromJson(json['user']),
@@ -52,7 +56,7 @@ class AppConfigDTO extends Equatable {
         'user': user.toJson(),
         'logo': logo,
         'title': title,
-        'phones': phones!= null ? phones!.map((e) => e.toJson()).toList() : [],
+        'phones': phones != null ? phones!.map((e) => e.toJson()).toList() : [],
         'about_text': aboutText,
         'address': address,
         'bot_status': botStatus,

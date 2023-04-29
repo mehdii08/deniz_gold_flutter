@@ -11,12 +11,17 @@ class TradeCalculateResponseDTO extends Equatable {
     required this.weight,
   });
 
-  factory TradeCalculateResponseDTO.fromJson(Map<String, dynamic> json) => TradeCalculateResponseDTO(
+  factory TradeCalculateResponseDTO.fromJson(Map<String, dynamic> json) =>
+      TradeCalculateResponseDTO(
         totalPrice: json['total_price'],
         mazaneh: json['mazaneh'],
         weight: json['weight'],
       );
 
   @override
-  List<Object?> get props => [totalPrice, mazaneh, weight,];
+  List<Object?> get props => [
+        totalPrice,
+        mazaneh,
+        weight,
+      ];
 }

@@ -38,23 +38,23 @@ class ApiHelper {
   ApiHelper({required this.dio, required this.authenticationCubit});
 
   Future<Response> request(
-      String path, {
-        Method method = Method.get,
-        Map<String, dynamic>? data,
-        Map<String, dynamic>? queryParameters,
-        CancelToken? cancelToken,
-      }) async {
+    String path, {
+    Method method = Method.get,
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+  }) async {
     Future<Response> request() => dio.request(
-      path,
-      options: Options(
-        method: method.name,
-        followRedirects: false,
-        validateStatus: (status) => true,
-      ),
-      data: data,
-      queryParameters: queryParameters,
-      cancelToken: cancelToken,
-    );
+          path,
+          options: Options(
+            method: method.name,
+            followRedirects: false,
+            validateStatus: (status) => true,
+          ),
+          data: data,
+          queryParameters: queryParameters,
+          cancelToken: cancelToken,
+        );
     return await _handleErrorAndGetResponse(request);
   }
 
@@ -62,18 +62,22 @@ class ApiHelper {
     try {
       final result = await request();
       if (result.statusCode != null && result.statusCode! >= 300) {
-        final userStatus = result.hasData() ? result.dataAsMap()['user']['status_code'] : null;
+        final userStatus =
+            result.hasData() ? result.dataAsMap()['user']['status_code'] : null;
         if (result.statusCode == HttpStatus.unauthorized) {
           authenticationCubit.logOut();
           final message = result.data?['message'] ?? Strings.unKnownError;
           throw UnAuthorizedException(message);
-        }else if(userStatus != null && userStatus == 2 || userStatus == "2"){
+        } else if (userStatus != null && userStatus == 2 || userStatus == "2") {
           authenticationCubit.logOut();
           final message = result.data?['message'] ?? Strings.unKnownError;
           throw UnAuthorizedException(message);
-        }else{
+        } else {
           final message = result.data?['message'] ?? "error";
-          throw ServerException(statusCode: result.statusCode, message: message, response: result);
+          throw ServerException(
+              statusCode: result.statusCode,
+              message: message,
+              response: result);
         }
       }
       return result;
@@ -100,5 +104,7 @@ class ApiHelper {
 
 extension on DioErrorType {
   bool get isTimeout =>
-      this == DioErrorType.connectionTimeout || this == DioErrorType.receiveTimeout || this == DioErrorType.sendTimeout;
+      this == DioErrorType.connectionTimeout ||
+      this == DioErrorType.receiveTimeout ||
+      this == DioErrorType.sendTimeout;
 }

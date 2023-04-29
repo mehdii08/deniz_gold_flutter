@@ -13,7 +13,6 @@ import 'package:deniz_gold/data/dtos/transaction_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 
 abstract class AppRepository {
-
   Future<Either<Failure, CheckMobileExistsResponseDTO>> checkMobileExists({
     required String mobile,
   });
@@ -71,13 +70,17 @@ abstract class AppRepository {
 
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData();
 
-  Future<Either<Failure, List<TransactionDTO>>> getTransactions({String count = "10"});
+  Future<Either<Failure, List<TransactionDTO>>> getTransactions(
+      {String count = "10"});
 
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({required int page});
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
+      {required int page});
 
-  Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales({required int page});
+  Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales(
+      {required int page});
 
   Future<Either<Failure, String>> sendOTPCode({required String mobile});
 
-  Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade({required TradeType tradeType});
+  Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade(
+      {required TradeType tradeType});
 }

@@ -21,7 +21,8 @@ import 'data/repositories/shared_preferences_repository_impl.dart' as _i7;
 import 'domain/repositories/app_repository.dart' as _i13;
 import 'domain/repositories/shared_preferences_repository.dart' as _i6;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i10;
-import 'service_locator.dart' as _i15; // ignore_for_file: unnecessary_lambdas
+import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i15;
+import 'service_locator.dart' as _i16; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -65,7 +66,9 @@ Future<_i1.GetIt> $initGetIt(
       () => _i12.AppDataSourceImpl(get<_i11.ApiHelper>()));
   gh.lazySingleton<_i13.AppRepository>(
       () => _i14.AppRepositoryImpl(dataSource: get<_i12.AppDataSource>()));
+  gh.factory<_i15.CheckMobileCubit>(
+      () => _i15.CheckMobileCubit(get<_i13.AppRepository>()));
   return get;
 }
 
-class _$RegisterModule extends _i15.RegisterModule {}
+class _$RegisterModule extends _i16.RegisterModule {}

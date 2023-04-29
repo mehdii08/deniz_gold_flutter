@@ -22,7 +22,8 @@ class AppRepositoryImpl extends AppRepository {
   AppRepositoryImpl({required this.dataSource});
 
   @override
-  Future<Either<Failure, CheckMobileExistsResponseDTO>> checkMobileExists({required String mobile}) async {
+  Future<Either<Failure, CheckMobileExistsResponseDTO>> checkMobileExists(
+      {required String mobile}) async {
     try {
       return Right(await dataSource.checkMobileExists(mobile: mobile));
     } on Exception catch (e) {
@@ -173,7 +174,7 @@ class AppRepositoryImpl extends AppRepository {
     try {
       return Right(await dataSource.getConfig());
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
@@ -182,52 +183,56 @@ class AppRepositoryImpl extends AppRepository {
     try {
       return Right(await dataSource.getHomeData());
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, List<TransactionDTO>>> getTransactions({String count = "10"}) async {
+  Future<Either<Failure, List<TransactionDTO>>> getTransactions(
+      {String count = "10"}) async {
     try {
-      return Right(await dataSource.getTransactions(count : count));
+      return Right(await dataSource.getTransactions(count: count));
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({required int page}) async {
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
+      {required int page}) async {
     try {
-      return Right(await dataSource.getTrades(page : page));
+      return Right(await dataSource.getTrades(page: page));
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales({required int page}) async {
+  Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales(
+      {required int page}) async {
     try {
-      return Right(await dataSource.getHavales(page : page));
+      return Right(await dataSource.getHavales(page: page));
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
   @override
   Future<Either<Failure, String>> sendOTPCode({required String mobile}) async {
     try {
-      return Right(await dataSource.sendOTPCode(mobile : mobile));
+      return Right(await dataSource.sendOTPCode(mobile: mobile));
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade({required TradeType tradeType}) async {
+  Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade(
+      {required TradeType tradeType}) async {
     try {
-      return Right(await dataSource.checkHasActiveTrade(tradeType : tradeType));
+      return Right(await dataSource.checkHasActiveTrade(tradeType: tradeType));
     } on Exception catch (e) {
-    return Left(Failure.fromException(e));
+      return Left(Failure.fromException(e));
     }
   }
 }

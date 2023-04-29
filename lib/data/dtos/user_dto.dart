@@ -32,12 +32,14 @@ class UserDTO extends Equatable {
       };
 
   UserDTO update({String? newName, String? newNationalCode}) => UserDTO(
-      name: (newName != null && newName.isNotEmpty) ? newName : name,
-      nationalCode: (newNationalCode != null && newNationalCode.isNotEmpty) ? newNationalCode : nationalCode,
-      statusCode: statusCode,
-      statusText: statusText,
-      accountingStatus: accountingStatus,
-  );
+        name: (newName != null && newName.isNotEmpty) ? newName : name,
+        nationalCode: (newNationalCode != null && newNationalCode.isNotEmpty)
+            ? newNationalCode
+            : nationalCode,
+        statusCode: statusCode,
+        statusText: statusText,
+        accountingStatus: accountingStatus,
+      );
 
   @override
   List<Object?> get props => [name, statusCode, statusText];

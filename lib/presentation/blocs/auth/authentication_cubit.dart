@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:deniz_gold/data/keys.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';//todo fix me
 import 'package:flutter/material.dart';
@@ -18,9 +15,11 @@ const String fcmTokenKey = 'fcmTokenKey';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final SharedPreferencesRepository sharedPreferences;
 
-  AuthenticationCubit({required this.sharedPreferences}) : super(const AuthenticationInitial());
+  AuthenticationCubit({required this.sharedPreferences})
+      : super(const AuthenticationInitial());
 
-  bool get isAuthenticated => token != null && token?.isNotEmpty != null ? token!.isNotEmpty : false;
+  bool get isAuthenticated =>
+      token != null && token?.isNotEmpty != null ? token!.isNotEmpty : false;
 
   String? get token => state.token;
 
@@ -47,7 +46,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   //   return "";
   // }
 
-  storeFCMToken() async {//todo
+  storeFCMToken() async {
+    //todo
     // final fcmToken = await FirebaseMessaging.instance.getToken();
     // sharedPreferences.setString(fcmTokenKey, fcmToken ?? "empty");
     // FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {

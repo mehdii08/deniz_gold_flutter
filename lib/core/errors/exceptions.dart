@@ -12,8 +12,7 @@ class AppException extends Equatable implements Exception {
 }
 
 class UnexpectedException extends AppException {
-  const UnexpectedException()
-      : super(message: Strings.unexpectedErrorHappened);
+  const UnexpectedException() : super(message: Strings.unexpectedErrorHappened);
 }
 
 class NetworkException extends AppException {
@@ -26,7 +25,7 @@ class RequestCancelledException extends AppException {
 }
 
 class CacheException extends AppException {
-  const CacheException(): super(message: Strings.unexpectedErrorHappened);
+  const CacheException() : super(message: Strings.unexpectedErrorHappened);
 }
 
 class ServerException extends AppException {
@@ -36,8 +35,8 @@ class ServerException extends AppException {
 
   factory ServerException(
       {required int? statusCode,
-        required String? message,
-        required Response? response}) {
+      required String? message,
+      required Response? response}) {
     switch (statusCode) {
       case 401:
         return UnAuthorizedException(message);
@@ -47,7 +46,7 @@ class ServerException extends AppException {
         return RateLimitExceededException(
             message: message,
             rateLimitReset: num.tryParse(
-                response?.headers.value('RateLimit-Reset') ?? '0') ??
+                    response?.headers.value('RateLimit-Reset') ?? '0') ??
                 0);
     }
     return ServerException._(statusCode: statusCode, message: message);
@@ -70,6 +69,11 @@ class UnAuthorizedException extends ServerException {
 class ForbiddenException extends ServerException {
   const ForbiddenException(String? message)
       : super._(statusCode: 403, message: message);
+}
+
+class UnprocessableEntityException extends ServerException {
+  const UnprocessableEntityException(String? message)
+      : super._(statusCode: 422, message: message);
 }
 
 class RateLimitExceededException extends ServerException {

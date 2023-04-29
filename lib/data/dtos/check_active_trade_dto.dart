@@ -10,7 +10,8 @@ class CheckActiveTradeDTO extends Equatable {
     required this.trade,
   });
 
-  factory CheckActiveTradeDTO.fromJson(Map<String, dynamic> json) => CheckActiveTradeDTO(
+  factory CheckActiveTradeDTO.fromJson(Map<String, dynamic> json) =>
+      CheckActiveTradeDTO(
         hasActiveTrade: json['has_active_trade'],
         trade: json['trade'] != null ? TradeDTO.fromJson(json['trade']) : null,
       );
