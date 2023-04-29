@@ -26,6 +26,5 @@ class DenizApp extends StatelessWidget {
 }
 
 final appTheme = ThemeData(
-  // textTheme: _textTheme,//todo fix me
   fontFamily: 'AppFont',
 );
