@@ -65,7 +65,7 @@ class Strings {
   static const enterPriceByToman = "مبلغ مورد نظر را به (تومان) وارد کنید";
   static const enterWeightByGheram = "وزن مورد نظر را به (گرم) وارد کنید";
   static const phoneNumberPlaceHolder = "09147817188";
-  static const editPhoneNumber = "ویرایش شماره";
+  static const editPhoneNumber = "ویرایش شماره موبایل";
   static const logo = "LOGO";
   static const geram = "گرم";
   static const changePassword = "تغییر کلمه عبور";
@@ -105,6 +105,7 @@ class Strings {
   static const accountingDeactivatedWarning =
       "این بخش برای شما فعال نمی باشد\nلطفا با پشتیبانی در تماس باشید";
   static const havaleSubmit = "ثبت حواله";
+  static const verifyMobileTitle = "تایید شماره موبایل";
   static const show = "نمایش";
   static const accountSettings = "تنظیمات کاربری";
   static const exit = "خروج";

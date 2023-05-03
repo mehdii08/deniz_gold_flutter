@@ -1,6 +1,8 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/presentation/blocs/check_mobile/check_mobile_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/login_screen.dart';
+import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_logo.dart';
 import 'package:deniz_gold/presentation/widget/get_mobile_widget.dart';
@@ -36,9 +38,9 @@ class _CheckMobileScreenState extends State<CheckMobileScreen> {
         child: BlocConsumer<CheckMobileCubit, CheckMobileState>(
             listener: (context, state) {
           if (state is CheckMobileLoaded) {
-            // context.pushNamed(
-            //     state.exists ? LoginScreen.route.name! : RegisterScreen.route.name!,
-            //     queryParams: {'mobile' : state.mobile});
+            context.pushNamed(
+                state.exists ? LoginScreen.route.name! : VerifyMobileScreen.route.name!,
+                queryParams: {'mobile' : state.mobile});
           } else if (state is CheckMobileFailed) {
             showToast(
                 title: state.message,

@@ -66,6 +66,11 @@ abstract class AppRepository {
     required String password,
   });
 
+  Future<Either<Failure, String>> verifyMobile({
+    required String mobile,
+    required String code,
+  });
+
   Future<Either<Failure, AppConfigDTO>> getConfig();
 
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData();

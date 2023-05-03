@@ -68,6 +68,11 @@ abstract class AppDataSource {
     required String password,
   });
 
+  Future<String> verifyMobile({
+    required String mobile,
+    required String code,
+  });
+
   Future<AppConfigDTO> getConfig();
 
   Future<HomeScreenDataDTO> getHomeData();
@@ -243,6 +248,22 @@ class AppDataSourceImpl extends AppDataSource {
       data: {
         'mobile': mobile,
         'password': password,
+      },
+    );
+    return response.dataAsMap()['token'];
+  }
+
+  @override
+  Future<String> verifyMobile({
+    required String mobile,
+    required String code,
+  }) async {
+    final response = await _apiHelper.request(
+      '$apiPath/verify-mobile',//todo refactor hole request and respone
+      method: Method.post,
+      data: {
+        'mobile': mobile,
+        'code': code,
       },
     );
     return response.dataAsMap()['token'];

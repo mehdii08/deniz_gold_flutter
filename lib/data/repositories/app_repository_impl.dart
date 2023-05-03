@@ -170,6 +170,21 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
+  Future<Either<Failure, String>> verifyMobile({
+    required String mobile,
+    required String code,
+  }) async {
+    try {
+      return Right(await dataSource.verifyMobile(
+        mobile: mobile,
+        code: code,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, AppConfigDTO>> getConfig() async {
     try {
       return Right(await dataSource.getConfig());

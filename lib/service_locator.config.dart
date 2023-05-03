@@ -22,7 +22,10 @@ import 'domain/repositories/app_repository.dart' as _i13;
 import 'domain/repositories/shared_preferences_repository.dart' as _i6;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i10;
 import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i15;
-import 'service_locator.dart' as _i16; // ignore_for_file: unnecessary_lambdas
+import 'presentation/blocs/login/login_cubit.dart' as _i16;
+import 'presentation/blocs/register/register_cubit.dart' as _i17;
+import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i18;
+import 'service_locator.dart' as _i19; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -68,7 +71,17 @@ Future<_i1.GetIt> $initGetIt(
       () => _i14.AppRepositoryImpl(dataSource: get<_i12.AppDataSource>()));
   gh.factory<_i15.CheckMobileCubit>(
       () => _i15.CheckMobileCubit(get<_i13.AppRepository>()));
+  gh.factory<_i16.LoginCubit>(() => _i16.LoginCubit(
+        appRepository: get<_i13.AppRepository>(),
+        sharedPreferences: get<_i6.SharedPreferencesRepository>(),
+      ));
+  gh.factory<_i17.RegisterCubit>(
+      () => _i17.RegisterCubit(get<_i13.AppRepository>()));
+  gh.factory<_i18.VerifyMobileCubit>(() => _i18.VerifyMobileCubit(
+        appRepository: get<_i13.AppRepository>(),
+        sharedPreferences: get<_i6.SharedPreferencesRepository>(),
+      ));
   return get;
 }
 
-class _$RegisterModule extends _i16.RegisterModule {}
+class _$RegisterModule extends _i19.RegisterModule {}

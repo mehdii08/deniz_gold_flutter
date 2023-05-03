@@ -12,10 +12,12 @@ class Dimens {
   static const double standard7X = 56.0;
   static const double standard8X = 64.0;
   static const double standard40 = 40.0;
+  static const double standard4 = 4.0;
   static const double standard8 = 8.0;
   static const double standard10 = 10.0;
   static const double standard12 = 12.0;
   static const double standard16 = 16.0;
+  static const double standard20 = 20.0;
   static const double standard24 = 24.0;
   static const double standard32 = 32.0;
   static const double standard48 = 48.0;
