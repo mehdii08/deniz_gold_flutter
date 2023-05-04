@@ -1,4 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/widget/flat_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:deniz_gold/presentation/blocs/register/register_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
-import 'package:deniz_gold/presentation/widget/app_logo.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 
@@ -59,7 +59,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.blue,
+      appBar: const AuthAppBar(),
+      backgroundColor: AppColors.background,
       body: BlocProvider<RegisterCubit>(
         create: (_) => sl(),
         child: BlocConsumer<RegisterCubit, RegisterState>(
@@ -67,132 +68,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (state is RegisterLoaded) {
               context.read<AuthenticationCubit>().saveToken(state.token);
             } else if (state is RegisterFailed) {
-              showToast(title: state.message,context: context,toastType: ToastType.error);
+              showToast(title: state.message, context: context, toastType: ToastType.error);
             }
           },
           builder: (context, state) {
             return ValueListenableBuilder<RegisterErrors>(
               valueListenable: errors,
               builder: (context, registerErrors, _) => SafeArea(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    width: double.infinity,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const AppLogo(),
-                        const SizedBox(height: Dimens.standard2X),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimens.horizontalPadding),
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard4X),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        widget.mobile,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(color: AppColors.blue, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: GestureDetector(
-                                        onTap: () => Navigator.of(context).pop(),
-                                        child: Text(
-                                          Strings.editPhoneNumber,
-                                          style: Theme.of(context).textTheme.caption?.copyWith(
-                                                color: AppColors.red,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: Dimens.standard2X),
-                                    Text(
-                                      Strings.smsVerificationCode,
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppTextField(
-                                        controller: codeController,
-                                        keyboardType: TextInputType.number,
-                                        // error: registerErrors.codeError
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    Text(
-                                      Strings.fullName,
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppTextField(
-                                        controller: nameController,
-                                        // error: registerErrors.nameError
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    Text(
-                                      Strings.nationalCode,
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppTextField(
-                                        controller: nationalCodeController,
-                                        keyboardType: TextInputType.number,
-                                        // error: registerErrors.nationalCodeError
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    Text(
-                                      Strings.password,
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppTextField(
-                                        controller: passwordController,
-                                        // obscureText: true,//todo add
-                                        // error: registerErrors.passwordError
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    Text(
-                                      Strings.passwordConfirmation,
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppTextField(
-                                        controller: passwordConfirmationController,
-                                        // obscureText: true,
-                                        // error: registerErrors.passwordConfirmationError
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                    AppButton(
-                                      isLoading: state is RegisterLoading,
-                                      text: Strings.signUp,
-                                      onPressed: () => _validateThenSubmit(() => context.read<RegisterCubit>().register(
-                                            code: codeController.text,
-                                            mobile: widget.mobile,
-                                            name: nameController.text,
-                                            nationalCode: nationalCodeController.text,
-                                            password: passwordController.text,
-                                            passwordConfirmation: passwordConfirmationController.text,
-                                          )),
-                                    ),
-                                    const SizedBox(height: Dimens.standardX),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
+                        const SizedBox(height: Dimens.standard24),
+                        AppTextField(
+                            controller: nameController, title: Strings.fullName, error: registerErrors.nameError),
+                        const SizedBox(height: Dimens.standard20),
+                        AppTextField(
+                            controller: nationalCodeController,
+                            keyboardType: TextInputType.number,
+                            title: Strings.nationalCode,
+                            error: registerErrors.nationalCodeError),
+                        const SizedBox(height: Dimens.standard20),
+                        AppTextField(
+                            controller: passwordController,
+                            title: Strings.password,
+                            obscureText: true,
+                            info: Strings.atLeast6Chars,
+                            error: registerErrors.passwordError),
+                        const SizedBox(height: Dimens.standard40),
+                        AppButton(
+                          isLoading: state is RegisterLoading,
+                          text: Strings.signUp,
+                          onPressed: () => _validateThenSubmit(() => context.read<RegisterCubit>().register(
+                                code: codeController.text,
+                                mobile: widget.mobile,
+                                name: nameController.text,
+                                nationalCode: nationalCodeController.text,
+                                password: passwordController.text,
+                                passwordConfirmation: passwordConfirmationController.text,
+                              )),
+                        ),
+                        const SizedBox(height: Dimens.standardX)
                       ],
                     ),
                   ),

@@ -27,8 +27,8 @@ class VerifyMobileCubit extends Cubit<VerifyMobileState> {
       (l) => emit(VerifyMobileFailed(message: l.message != null ? l.message! : "")),
       (r) {
         sharedPreferences.setString(authTokenKey, r);
-        // emit(VerifyMobileSuccess(token : r.token));//todo fim me
-        emit(const VerifyMobileSuccess(token : "r.token"));
+        // emit(VerifyMobileSuccess(token : r.token));//todo fix me
+        emit(const VerifyMobileSuccess(token: "r.token"));
       },
     );
   }

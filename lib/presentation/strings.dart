@@ -10,6 +10,7 @@ class Strings {
   static const passwordError = "کلمه عبور را درست وارد کنید";
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
+  static const atLeast6Chars = "حداقل ۶ کاراکتر";
   static const appName = "آبشده فروشی دنیز";
   static const enterMobile = "شماره موبایل خود را وارد کنید";
   static const close = "بستن";
@@ -31,7 +32,7 @@ class Strings {
       "از طریق این فرم می توانید درخواست حواله خود را ثبت نمایید";
   static const havalehDescription2 =
       "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
-  static const signUp = "عضویت";
+  static const signUp = "تایید و عضویت";
   static const dot = "•";
   static const update = "بروز رسانی";
   static const later = "بعدا";
@@ -45,7 +46,7 @@ class Strings {
   static const phoneNumber = "شماره موبایل";
   static const storeGoldenHavale = "ثبت حواله طلایی";
   static const lastStoredHavaleh = "حواله های ثبت شده اخیر";
-  static const password = "کلمه عبور";
+  static const password = "رمز عبور";
   static const newPassword = "کلمه عبور جدید";
   static const cancel = "انصراف";
   static const exitQuestion = "برای خروج از برنامه اطمینان دارید؟";

@@ -55,7 +55,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
-          (Timer timer) {
+      (Timer timer) {
         if (_time == 0) {
           setState(() {
             //todo show resend button
@@ -86,72 +86,69 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
             child: BlocConsumer<VerifyMobileCubit, VerifyMobileState>(
               listener: (context, state) {
                 if (state is VerifyMobileSuccess) {
-                  context.goNamed(RegisterScreen.route.name!, queryParams: {'token' : state.token});
+                  context.goNamed(RegisterScreen.route.name!, queryParams: {'token': state.token});
                 } else if (state is VerifyMobileFailed) {
                   showToast(title: state.message, context: context, toastType: ToastType.error);
                 }
               },
               builder: (context, state) {
-                return SizedBox(
+                return Container(
                   width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(Dimens.standard16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          AppText(
-                            getDescription(widget.mobile),
-                            textStyle: AppTextStyle.body4,
-                            color: AppColors.nature.shade900,
-                          ),
-                          const SizedBox(height: Dimens.standard8),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: ()=> context.pop(),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
-                                child: AppText(
-                                  Strings.editPhoneNumber,
-                                  textStyle: AppTextStyle.button4,
-                                  color: AppColors.blue,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: Dimens.standard32),
-                          AppTextField(
-                              controller: controller,
-                              keyboardType: TextInputType.phone,
-                              enabled: state is! VerifyMobileLoading,
-                              onChanged: (text) {
-                                codeIsValid.value = text.length == 6;
-                              }
-                          ),
-                          const SizedBox(height: Dimens.standard12),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
+                  padding: const EdgeInsets.all(Dimens.standard16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppText(
+                        getDescription(widget.mobile),
+                        textStyle: AppTextStyle.body4,
+                        color: AppColors.nature.shade900,
+                      ),
+                      const SizedBox(height: Dimens.standard8),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () => context.pop(),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
                             child: AppText(
-                              getCountDownText(),
-                              textStyle: AppTextStyle.body5,
-                              color: AppColors.nature.shade600,
+                              Strings.editPhoneNumber,
+                              textStyle: AppTextStyle.button4,
+                              color: AppColors.blue,
                             ),
                           ),
-                          const SizedBox(height: Dimens.standard24),
-                          ValueListenableBuilder<bool>(
-                              valueListenable: codeIsValid,
-                              builder: (context, isValid, _) => AppButton(
+                        ),
+                      ),
+                      const SizedBox(height: Dimens.standard32),
+                      AppTextField(
+                          controller: controller,
+                          keyboardType: TextInputType.phone,
+                          enabled: state is! VerifyMobileLoading,
+                          onChanged: (text) {
+                            codeIsValid.value = text.length == 6;
+                          }),
+                      const SizedBox(height: Dimens.standard12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
+                        child: AppText(
+                          getCountDownText(),
+                          textStyle: AppTextStyle.body5,
+                          color: AppColors.nature.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: Dimens.standard24),
+                      ValueListenableBuilder<bool>(
+                          valueListenable: codeIsValid,
+                          builder: (context, isValid, _) => AppButton(
                                 onPressed: isValid
                                     // ? () => context.read<VerifyMobileCubit>().verify(mobile: widget.mobile, code: controller.text)
-                                    ? () => context.goNamed(RegisterScreen.route.name!, queryParams: {'token' : 'state.token'})//todo remove me
+                                    ? () => context.goNamed(RegisterScreen.route.name!,
+                                        queryParams: {'token': 'state.token'}) //todo remove me
                                     : null,
                                 text: Strings.confirm,
                                 isLoading: state is VerifyMobileLoading,
                               ))
-                        ],
-                      ),
-                    ),
+                    ],
                   ),
                 );
               },
