@@ -20,16 +20,17 @@ import 'data/repositories/app_repository_impl.dart' as _i14;
 import 'data/repositories/shared_preferences_repository_impl.dart' as _i7;
 import 'domain/repositories/app_repository.dart' as _i13;
 import 'domain/repositories/shared_preferences_repository.dart' as _i6;
-import 'presentation/blocs/app_config/app_config_cubit.dart' as _i22;
+import 'presentation/blocs/app_config/app_config_cubit.dart' as _i23;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i10;
 import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i15;
 import 'presentation/blocs/forgetPassword/forget_password_cubit.dart' as _i16;
-import 'presentation/blocs/login/login_cubit.dart' as _i17;
-import 'presentation/blocs/register/register_cubit.dart' as _i18;
-import 'presentation/blocs/reset_password/reset_password_cubit.dart' as _i19;
-import 'presentation/blocs/splash/splash_cubit.dart' as _i20;
-import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i21;
-import 'service_locator.dart' as _i23; // ignore_for_file: unnecessary_lambdas
+import 'presentation/blocs/home/home_screen_cubit.dart' as _i17;
+import 'presentation/blocs/login/login_cubit.dart' as _i18;
+import 'presentation/blocs/register/register_cubit.dart' as _i19;
+import 'presentation/blocs/reset_password/reset_password_cubit.dart' as _i20;
+import 'presentation/blocs/splash/splash_cubit.dart' as _i21;
+import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i22;
+import 'service_locator.dart' as _i24; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -77,23 +78,27 @@ Future<_i1.GetIt> $initGetIt(
       () => _i15.CheckMobileCubit(get<_i13.AppRepository>()));
   gh.factory<_i16.ForgetPasswordCubit>(
       () => _i16.ForgetPasswordCubit(get<_i13.AppRepository>()));
-  gh.factory<_i17.LoginCubit>(() => _i17.LoginCubit(
+  gh.factory<_i17.HomeScreenCubit>(() => _i17.HomeScreenCubit(
+        appRepository: get<_i13.AppRepository>(),
+        appNotificationEvents: get<_i9.Stream<_i8.AppNotificationEvent>>(),
+      ));
+  gh.factory<_i18.LoginCubit>(() => _i18.LoginCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i18.RegisterCubit>(
-      () => _i18.RegisterCubit(get<_i13.AppRepository>()));
-  gh.factory<_i19.ResetPasswordCubit>(
-      () => _i19.ResetPasswordCubit(get<_i13.AppRepository>()));
-  gh.factory<_i20.SplashCubit>(() => _i20.SplashCubit(
+  gh.factory<_i19.RegisterCubit>(
+      () => _i19.RegisterCubit(get<_i13.AppRepository>()));
+  gh.factory<_i20.ResetPasswordCubit>(
+      () => _i20.ResetPasswordCubit(get<_i13.AppRepository>()));
+  gh.factory<_i21.SplashCubit>(() => _i21.SplashCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i21.VerifyMobileCubit>(() => _i21.VerifyMobileCubit(
+  gh.factory<_i22.VerifyMobileCubit>(() => _i22.VerifyMobileCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
       ));
-  gh.lazySingleton<_i22.AppConfigCubit>(() => _i22.AppConfigCubit(
+  gh.lazySingleton<_i23.AppConfigCubit>(() => _i23.AppConfigCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
         appNotificationEvents: get<_i9.Stream<_i8.AppNotificationEvent>>(),
@@ -101,4 +106,4 @@ Future<_i1.GetIt> $initGetIt(
   return get;
 }
 
-class _$RegisterModule extends _i23.RegisterModule {}
+class _$RegisterModule extends _i24.RegisterModule {}

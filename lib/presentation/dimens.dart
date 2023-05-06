@@ -13,19 +13,26 @@ class Dimens {
   static const double standard8X = 64.0;
   static const double standard40 = 40.0;
   static const double standard4 = 4.0;
+  static const double standard6 = 6.0;
   static const double standard8 = 8.0;
   static const double standard10 = 10.0;
   static const double standard12 = 12.0;
+  static const double standard14 = 14.0;
   static const double standard16 = 16.0;
+  static const double standard18 = 18.0;
   static const double standard20 = 20.0;
   static const double standard24 = 24.0;
+  static const double standard30 = 30.0;
   static const double standard32 = 32.0;
   static const double standard48 = 48.0;
+  static const double standard53 = 53.0;
+  static const double standard64 = 64.0;
+  static const double standard80 = 80.0;
   static const double standard100 = 100.0;
   static const double screenHorizontalPadding = 16.0;
   static const double horizontalPadding = 36.0;
   static const double halfHorizontalPadding = 18.0;
   static const double textFieldHeight = 36.0;
   static const int passwordLength = 6;
-  static const double bottomBarHeight = 70;
+  static const double bottomBarHeight = 90;
 }

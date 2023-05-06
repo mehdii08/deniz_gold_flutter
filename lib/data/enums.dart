@@ -15,3 +15,7 @@ enum CalculateType {
 
   final int value;
 }
+
+enum ChangeType { increased, decreased, unchanged }
+
+enum IconAlign { right, left }

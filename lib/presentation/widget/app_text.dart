@@ -7,6 +7,7 @@ class AppText extends StatelessWidget {
   final TextStyle? textStyle;
   final Color? color;
   final TextAlign? textAlign;
+  final TextDirection textDirection;
 
   const AppText(
     this.text, {
@@ -14,6 +15,7 @@ class AppText extends StatelessWidget {
     this.textStyle,
     this.textAlign,
     this.color,
+    this.textDirection = TextDirection.rtl,
   }) : super(key: key);
 
   @override
@@ -22,6 +24,6 @@ class AppText extends StatelessWidget {
         style: textStyle?.copyWith(color: color ?? AppColors.nature.shade900) ??
             AppTextStyle.body1.copyWith(color: color ?? AppColors.nature.shade900),
         textAlign: textAlign,
-        textDirection: TextDirection.rtl,
+        textDirection: textDirection,
       );
 }
