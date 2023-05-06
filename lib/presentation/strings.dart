@@ -10,6 +10,9 @@ class Strings {
   static const passwordError = "کلمه عبور را درست وارد کنید";
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
+  static const getVerifyCode = "دریافت کد تایید";
+  static const mobile = "شماره موبایل";
+  static const registerTitle = "ثبت اطلاعات شخصی";
   static const atLeast6Chars = "حداقل ۶ کاراکتر";
   static const appName = "آبشده فروشی دنیز";
   static const enterMobile = "شماره موبایل خود را وارد کنید";
@@ -47,6 +50,8 @@ class Strings {
   static const storeGoldenHavale = "ثبت حواله طلایی";
   static const lastStoredHavaleh = "حواله های ثبت شده اخیر";
   static const password = "رمز عبور";
+  static const enterPassword = "رمز عبور را وارد کنید";
+  static const enterNewPassword = "رمز عبور جدید را وارد کنید";
   static const newPassword = "کلمه عبور جدید";
   static const cancel = "انصراف";
   static const exitQuestion = "برای خروج از برنامه اطمینان دارید؟";
@@ -71,6 +76,7 @@ class Strings {
   static const geram = "گرم";
   static const changePassword = "تغییر کلمه عبور";
   static const resetPassword = "بازیابی کلمه عبور";
+  static const resetPasswordTitle = "ایجاد رمز عبور";
   static const editFullName = "ویرایش نام و نام خانوادگی";
   static const sellPrice = "مظنه فروش";
   static const sell = "فروش";
@@ -118,6 +124,8 @@ class Strings {
   static const loginTitle = "آبشده فروشی خدایی";
   static const checkPhoneNumber = "بررسی شماره تلفن";
   static const forgetPassword = "فراموشی رمز عبور";
+  static const forgetPasswordTitle = "بازیابی رمز عبور";
+  static const forgetPasswordDescription = "شماره موبایلی که با آن ثبت‌نام کرده اید را وارد کنید.";
   static const appBarTitle = "آبشده خدایی";
   static const toman = " تومان";
   static const dollar = "دلار";

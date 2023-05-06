@@ -40,7 +40,7 @@ class _CheckMobileScreenState extends State<CheckMobileScreen> {
           if (state is CheckMobileLoaded) {
             context.pushNamed(
                 state.exists ? LoginScreen.route.name! : VerifyMobileScreen.route.name!,
-                queryParams: {'mobile' : state.mobile});
+                queryParams: {'mobile' : state.mobile, 'isRegister' : 'true'});
           } else if (state is CheckMobileFailed) {
             showToast(
                 title: state.message,

@@ -55,7 +55,7 @@ class _GetMobileWidgetState extends State<GetMobileWidget> {
               color: AppColors.nature,
             ),
             enabled: !widget.isLoading,
-            onChanged: (text) {
+            onChange: (text) {
               mobileIsValid.value = isMobile(text);
             }),
         const SizedBox(height: Dimens.standard32),

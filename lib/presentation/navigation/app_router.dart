@@ -1,8 +1,10 @@
 import 'package:deniz_gold/presentation/home_scaffold.dart';
 import 'package:deniz_gold/presentation/pages/check_mobile_screen.dart';
+import 'package:deniz_gold/presentation/pages/forget_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/login_screen.dart';
 import 'package:deniz_gold/presentation/pages/register_screen.dart';
+import 'package:deniz_gold/presentation/pages/reset_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,7 @@ GoRouter buildRouter(BuildContext context) {
   return GoRouter(
     debugLogDiagnostics: true,
     navigatorKey: rootNavigatorKey,
-    // initialLocation: SplashScreen.route.path,
-    initialLocation: CheckMobileScreen.route.path,
+    initialLocation: SplashScreen.route.path,
     redirect: (_, state) {
       return null;
     },
@@ -32,8 +33,8 @@ final _normalRoutes = [
   RegisterScreen.route,
   LoginScreen.route,
   VerifyMobileScreen.route,
-  // ForgetPasswordScreen.route,
-  // ResetPasswordScreen.route,
+  ForgetPasswordScreen.route,
+  ResetPasswordScreen.route,
 ];
 
 final _authenticationGuardedRoutes = [

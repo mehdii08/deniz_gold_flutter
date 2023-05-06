@@ -1,6 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
-import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/support_icon.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,12 @@ import 'package:go_router/go_router.dart';
 const toolbarHeight = 74.0;
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const AuthAppBar({Key? key}) : super(key: key);
+  final String title;
+
+  const AuthAppBar({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -23,13 +27,13 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
             const SupportIcon(),
             Expanded(
                 child: AppText(
-              Strings.verifyMobileTitle,
+              title,
               textStyle: AppTextStyle.subTitle3,
-                  textAlign: TextAlign.right,
+              textAlign: TextAlign.right,
             )),
             const SizedBox(width: Dimens.standard20),
             GestureDetector(
-              onTap: ()=> context.pop(),
+              onTap: () => context.pop(),
               child: SvgPicture.asset(
                 'assets/images/arrow_right.svg',
                 fit: BoxFit.none,

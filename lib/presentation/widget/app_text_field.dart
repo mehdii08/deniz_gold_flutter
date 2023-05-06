@@ -15,7 +15,7 @@ class AppTextField extends StatefulWidget {
   final bool enabled;
   final bool obscureText;
   final bool showClearIcon;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onChange;
   final TextInputType? keyboardType;
   final FocusNode? focusNode;
 
@@ -25,7 +25,7 @@ class AppTextField extends StatefulWidget {
     this.hint,
     this.prefixIcon,
     this.title,
-    this.onChanged,
+    this.onChange,
     this.info,
     this.error,
     this.keyboardType,
@@ -62,10 +62,13 @@ class _AppTextFieldState extends State<AppTextField> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (widget.title != null)
-            AppText(
-              widget.title!,
-              textStyle: AppTextStyle.body5,
-              color: AppColors.nature.shade600,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard4),
+              child: AppText(
+                widget.title!,
+                textStyle: AppTextStyle.body5,
+                color: AppColors.nature.shade600,
+              ),
             ),
           const SizedBox(height: Dimens.standard8),
           Container(
@@ -77,7 +80,7 @@ class _AppTextFieldState extends State<AppTextField> {
               keyboardType: widget.keyboardType,
               onChanged: (text) {
                 _showClearButton();
-                widget.onChanged?.call(text);
+                widget.onChange?.call(text);
               },
               textDirection: TextDirection.rtl,
               controller: widget.controller,
@@ -99,7 +102,8 @@ class _AppTextFieldState extends State<AppTextField> {
                             ? GestureDetector(
                                 onTap: () {
                                   widget.controller.clear();
-                                  widget.onChanged?.call("");
+                                  widget.onChange?.call("");
+                                  hasFocus.value = false;
                                 },
                                 child: SvgPicture.asset(
                                   'assets/images/close.svg',

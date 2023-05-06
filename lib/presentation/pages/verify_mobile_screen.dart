@@ -4,6 +4,7 @@ import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/blocs/verify_mobile/verify_mobile_cubit.dart';
 import 'package:deniz_gold/presentation/pages/register_screen.dart';
+import 'package:deniz_gold/presentation/pages/reset_password_screen.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/flat_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
@@ -23,15 +24,16 @@ class VerifyMobileScreen extends StatefulWidget {
   const VerifyMobileScreen({
     Key? key,
     required this.mobile,
-    this.isRegister = true,
+    required this.isRegister,
   }) : super(key: key);
 
   static final route = GoRoute(
     name: 'VerifyMobileScreen',
     path: '/verify-mobile',
     builder: (_, state) => VerifyMobileScreen(
-      mobile: state.queryParams['mobile']!,
-    ), //make mobile nullable and check null for web version, or you can use redirect for handling it
+        mobile: state.queryParams['mobile']!,
+        isRegister: state.queryParams['isRegister']! ==
+            "true"), //make mobile nullable and check null for web version, or you can use redirect for handling it
   );
 
   @override
@@ -79,14 +81,15 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
         child: Scaffold(
-          appBar: const AuthAppBar(),
+          appBar: const AuthAppBar(title: Strings.verifyMobileTitle),
           backgroundColor: AppColors.background,
           body: BlocProvider<VerifyMobileCubit>(
             create: (_) => sl(),
             child: BlocConsumer<VerifyMobileCubit, VerifyMobileState>(
               listener: (context, state) {
                 if (state is VerifyMobileSuccess) {
-                  context.goNamed(RegisterScreen.route.name!, queryParams: {'token': state.token});
+                  context.pushNamed(widget.isRegister ? RegisterScreen.route.name! : ResetPasswordScreen.route.name!,
+                      queryParams: {'token': state.token, 'mobile': widget.mobile});
                 } else if (state is VerifyMobileFailed) {
                   showToast(title: state.message, context: context, toastType: ToastType.error);
                 }
@@ -124,7 +127,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                           controller: controller,
                           keyboardType: TextInputType.phone,
                           enabled: state is! VerifyMobileLoading,
-                          onChanged: (text) {
+                          onChange: (text) {
                             codeIsValid.value = text.length == 6;
                           }),
                       const SizedBox(height: Dimens.standard12),
@@ -141,9 +144,11 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                           valueListenable: codeIsValid,
                           builder: (context, isValid, _) => AppButton(
                                 onPressed: isValid
-                                    // ? () => context.read<VerifyMobileCubit>().verify(mobile: widget.mobile, code: controller.text)
-                                    ? () => context.goNamed(RegisterScreen.route.name!,
-                                        queryParams: {'token': 'state.token'}) //todo remove me
+                                    ? () => context.pushNamed(
+                                        widget.isRegister
+                                            ? RegisterScreen.route.name!
+                                            : ResetPasswordScreen.route.name!,
+                                        queryParams: {'token': "state.token", 'mobile': widget.mobile})
                                     : null,
                                 text: Strings.confirm,
                                 isLoading: state is VerifyMobileLoading,

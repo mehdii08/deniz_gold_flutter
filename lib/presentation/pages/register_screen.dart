@@ -59,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AuthAppBar(),
+      appBar: const AuthAppBar(title: Strings.registerTitle),
       backgroundColor: AppColors.background,
       body: BlocProvider<RegisterCubit>(
         create: (_) => sl(),
