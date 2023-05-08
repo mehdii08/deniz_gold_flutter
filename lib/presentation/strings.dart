@@ -135,6 +135,7 @@ class Strings {
   static const accountSettings = "تنظیمات کاربری";
   static const exit = "خروج";
   static const support = "پشتیبانی";
+  static const callToSupport = "تماس با پشتیبانی";
   static const shopNumber = "مغازه";
   static const officeNumber = "دفتر";
   static const workshopNumber = "کارگاه";

@@ -8,34 +8,42 @@ import 'package:flutter_svg/flutter_svg.dart';
 class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String text;
+  final String? svgIcon;
   final bool isLoading;
+  final Color? color;
 
   const AppButton({
     Key? key,
     required this.onPressed,
     required this.text,
+    this.svgIcon,
     this.isLoading = false,
+    this.color,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Dimens.standard100),
         )),
-        elevation: MaterialStateProperty.resolveWith<double>(
-            (Set<MaterialState> states) => Dimens.standard0),
+        elevation: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) => Dimens.standard0),
         foregroundColor: MaterialStateProperty.all(AppColors.yellow),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return AppColors.yellow.shade400;
+              return color != null ? color! : AppColors.yellow.shade400;
             } else if (states.contains(MaterialState.disabled)) {
-              return AppColors.yellow.shade200;
+              return color != null ? color! : AppColors.yellow.shade200;
             }
-            return isLoading ? AppColors.yellow.shade200 : AppColors.yellow;
+            return isLoading
+                ? color != null
+                    ? color!
+                    : AppColors.yellow.shade200
+                : color != null
+                    ? color!
+                    : AppColors.yellow;
           },
         ),
       ),
@@ -51,11 +59,21 @@ class AppButton extends StatelessWidget {
               textStyle: AppTextStyle.body4,
               color: AppColors.nature.shade900,
             ),
+            if (!isLoading && svgIcon != null) ...[
+              const SizedBox(width: Dimens.standard8),
+              SvgPicture.asset(
+                svgIcon!,
+                width: Dimens.standard24,
+                fit: BoxFit.fitWidth,
+                color: AppColors.nature.shade900,
+              )
+            ],
             if (isLoading) ...[
               const SizedBox(width: Dimens.standard8),
               SvgPicture.asset(
                 'assets/images/loading.svg',
-                fit: BoxFit.none,
+                width: Dimens.standard24,
+                fit: BoxFit.fitWidth,
                 color: AppColors.nature.shade900,
               )
             ]

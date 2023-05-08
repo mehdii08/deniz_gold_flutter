@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:deniz_gold/data/dtos/app_config_dto.dart';
+import 'package:deniz_gold/data/keys.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';//todo fix me
 import 'package:flutter/material.dart';
@@ -55,12 +59,12 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     // }).onError((err) {/*todo*/});
   }
 
-  // AppConfigDTO? getLocalAppConfig(){//todo get this from app config cubit
-  //   final String appConfigString = sharedPreferences.getString(appConfigKey);
-  //   if(appConfigString.isNotEmpty){
-  //     return AppConfigDTO.fromJson(jsonDecode(appConfigString));
-  //   }
-  //   return null;
-  // }
+  AppConfigDTO? getLocalAppConfig(){//todo get this from app config cubit
+    final String appConfigString = sharedPreferences.getString(appConfigKey);
+    if(appConfigString.isNotEmpty){
+      return AppConfigDTO.fromJson(jsonDecode(appConfigString));
+    }
+    return null;
+  }
 
 }

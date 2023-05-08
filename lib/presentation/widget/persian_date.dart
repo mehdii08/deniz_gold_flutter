@@ -30,28 +30,28 @@ class PersianDateWidget extends StatelessWidget {
             ),
           ],
         ),
-        AppText('${now.year}/${now.month}/${now.day}', textStyle: AppTextStyle.body5, color: AppColors.nature.shade800),
+        AppText('${now.year}/${now.month < 10 ? "0${now.month}" : now.month}/${now.day < 10 ? "0${now.day}" : now.day}',
+            textStyle: AppTextStyle.body5, color: AppColors.nature.shade800),
       ],
     );
   }
 }
 
-extension DateExt on Jalali{
-
-  String dayOfWeek(){
-    if(weekDay == 1){
+extension DateExt on Jalali {
+  String dayOfWeek() {
+    if (weekDay == 1) {
       return Strings.shanbe;
-    }else if(weekDay == 2){
+    } else if (weekDay == 2) {
       return Strings.yekshanbe;
-    }else if(weekDay == 3){
+    } else if (weekDay == 3) {
       return Strings.doshanbe;
-    }else if(weekDay == 4){
+    } else if (weekDay == 4) {
       return Strings.seshanbe;
-    }else if(weekDay == 5){
+    } else if (weekDay == 5) {
       return Strings.chaharshanbe;
-    }else if(weekDay == 6){
+    } else if (weekDay == 6) {
       return Strings.panjshanbe;
-    }else {
+    } else {
       return Strings.jome;
     }
   }
