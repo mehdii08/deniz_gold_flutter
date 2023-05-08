@@ -11,10 +11,12 @@ class Strings {
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
   static const home = "خانه";
+  static const settings = "تنظیمات";
   static const getVerifyCode = "دریافت کد تایید";
   static const mobile = "شماره موبایل";
   static const tradeCondition = "وضعیت بازار";
   static const trade = "خرید و فروش";
+  static const logout = "خروج از حساب";
   static const priceChangesTitle = "لیست تغییرات نرخ امروز";
   static const myAccount = "حساب من";
   static const registerTitle = "ثبت اطلاعات شخصی";
@@ -59,7 +61,7 @@ class Strings {
   static const pleaseChooseSellType = "لطفا نوع فروش خود را انتخاب کنید";
   static const pleaseChooseBuyType = "لطفا نوع خرید خود را انتخاب کنید";
   static const phoneNumber = "شماره موبایل";
-  static const storeGoldenHavale = "ثبت حواله طلایی";
+  static const storeGoldenHavale = "ثبت حواله طلا";
   static const lastStoredHavaleh = "حواله های ثبت شده اخیر";
   static const password = "رمز عبور";
   static const enterPassword = "رمز عبور را وارد کنید";
@@ -111,12 +113,14 @@ class Strings {
       "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
   static const requestedWeight = "وزن درخواستی";
   static const orderPrice = "مبلغ سفارش";
+  static const accountInfo = "اطلاعات حساب کاربری";
   static const successful = "موفقیت آمیز";
   static const failed = "رد شده";
   static const sellOrderConfirmation = "تایید سفارش فروش";
   static const transactionsCount = "تعداد گردش حساب";
   static const transactionsCountWarning = "مابین ۱۰ تا ۴۰ گردش حساب";
   static const listIsEmpty = "موردی جهت نمایش وجود ندارد";
+  static const account = "حساب کاربری";
   static const activationWarning =
       "کاربر گرامی حساب کاربری شما فعال نمیباشد\nلطفا از طریق پشتیبانی در ارتباط باشید";
   static const tradeDisabledWarning =
@@ -150,6 +154,7 @@ class Strings {
   static const worldGoldPrice = "طلای جهانی (مثقال)";
   static const remainingGold = "موجودی طلا (گرم)";
   static const remainingRials = "موجودی تومان";
+  static const remainingCash = "موجودی نقدی (تومان)";
   static const gheram = "گرم";
   static const weekMaxPrice = "بالاترین ترین مظنه هفته";
   static const weekMinPrice = "پایین ترین مظنه هفته";

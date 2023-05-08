@@ -2,6 +2,7 @@ import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
+import 'package:deniz_gold/presentation/pages/profile_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class AppBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentRoute = GoRouter.of(context).location;
-    final tradeIsSelected = currentRoute == '/trade';//todo replace with TradeScreen.route.path
+    final tradeIsSelected = currentRoute == '/trade'; //todo replace with TradeScreen.route.path
     return SafeArea(
       child: SizedBox(
         height: Dimens.bottomBarHeight + (tradeIsSelected ? 3 : 0),
@@ -59,7 +60,7 @@ class AppBottomBar extends StatelessWidget {
                     child: Row(
                       children: [
                         BottomBarItem(
-                          isSelected : currentRoute == '/profile',//todo replace with ProfileScreen.route.path
+                          isSelected: currentRoute == ProfileScreen.route.path,
                           title: Strings.myAccount,
                           icon: SvgPicture.asset(
                             'assets/images/user_nav_liner.svg',
@@ -67,12 +68,14 @@ class AppBottomBar extends StatelessWidget {
                             color: AppColors.nature.shade900,
                             width: Dimens.standard24,
                           ),
-                        ),
-                        const BottomBarItem(
-                          title: Strings.trade,
+                          onTap: () => context.goNamed(ProfileScreen.route.name!),
                         ),
                         BottomBarItem(
-                          isSelected : currentRoute == HomeScreen.route.path,
+                          title: Strings.trade,
+                          onTap: () {},
+                        ),
+                        BottomBarItem(
+                          isSelected: currentRoute == HomeScreen.route.path,
                           title: Strings.home,
                           icon: SvgPicture.asset(
                             'assets/images/home_liner.svg',
@@ -80,6 +83,7 @@ class AppBottomBar extends StatelessWidget {
                             color: AppColors.nature.shade900,
                             width: Dimens.standard24,
                           ),
+                          onTap: () => context.goNamed(HomeScreen.route.name!),
                         ),
                       ],
                     ),
@@ -96,7 +100,7 @@ class AppBottomBar extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: AppColors.yellow,
                     border: Border.all(
-                        color: tradeIsSelected ? AppColors.yellow.shade100 : AppColors.yellow.shade600,
+                      color: tradeIsSelected ? AppColors.yellow.shade100 : AppColors.yellow.shade600,
                       width: tradeIsSelected ? Dimens.standard6 : Dimens.standard1,
                     )),
                 child: SvgPicture.asset(
@@ -119,33 +123,37 @@ class BottomBarItem extends StatelessWidget {
   final Widget? icon;
   final String title;
   final bool isSelected;
+  final VoidCallback onTap;
 
   const BottomBarItem({
     Key? key,
     required this.title,
+    required this.onTap,
     this.icon,
     this.isSelected = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Expanded(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (icon != null) Container(
-            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20, vertical: Dimens.standard4),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard30)),
-              color: isSelected ? AppColors.yellow.shade100 : AppColors.transparent
-            ),
-              child: icon!
-          ),
-          if (icon == null) const SizedBox(height: Dimens.standard24),
-          AppText(
-            title,
-            textStyle: AppTextStyle.button5,
-            color: AppColors.nature.shade700,
-          )
-        ],
+          child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null)
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20, vertical: Dimens.standard4),
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard30)),
+                      color: isSelected ? AppColors.yellow.shade100 : AppColors.transparent),
+                  child: icon!),
+            if (icon == null) const SizedBox(height: Dimens.standard24),
+            AppText(
+              title,
+              textStyle: AppTextStyle.button5,
+              color: AppColors.nature.shade700,
+            )
+          ],
+        ),
       ));
 }

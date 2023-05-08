@@ -14,15 +14,31 @@ class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => BlocBuilder<AppConfigCubit, AppConfigState>(
         builder: (context, state) => Container(
+          width: double.infinity,
           color: AppColors.white,
           padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16, vertical: Dimens.standard6),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: [
-              const SupportIcon(),
-              Expanded(child: state.appConfig != null ? Image.network(state.appConfig!.logo, width: Dimens.standard80, height: Dimens.standard53,) : const SizedBox()),
-              const SizedBox(width: Dimens.standard20),
-              const PersianDateWidget(),
+              Align(
+                alignment: Alignment.center,
+                child: Row(
+                  children: const [
+                    SupportIcon(),
+                    Spacer(),
+                    PersianDateWidget(),
+                  ],
+                ),
+              ),
+              Align(
+                  alignment: Alignment.center,
+                  child: Expanded(
+                      child: state.appConfig != null
+                          ? Image.network(
+                              state.appConfig!.logo,
+                              width: Dimens.standard80,
+                              height: Dimens.standard53,
+                            )
+                          : const SizedBox())),
             ],
           ),
         ),
