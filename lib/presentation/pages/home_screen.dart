@@ -11,7 +11,7 @@ import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/balance_widget.dart';
 import 'package:deniz_gold/presentation/widget/buy_and_sell_prices.dart';
 import 'package:deniz_gold/presentation/widget/confirm_dialog.dart';
-import 'package:deniz_gold/presentation/widget/flat_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/prices_list.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/service_locator.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return false;
       },
       child: Scaffold(
-        appBar: const FlatAppBar(),
+        appBar: const LogoAppBar(),
         backgroundColor: AppColors.background,
         body: UserStatusChecker(
           child: BlocProvider<HomeScreenCubit>(

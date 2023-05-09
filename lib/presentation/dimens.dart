@@ -29,6 +29,7 @@ class Dimens {
   static const double standard48 = 48.0;
   static const double standard53 = 53.0;
   static const double standard54 = 54.0;
+  static const double standard56 = 56.0;
   static const double standard64 = 64.0;
   static const double standard80 = 80.0;
   static const double standard100 = 100.0;

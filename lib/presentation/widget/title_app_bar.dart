@@ -9,10 +9,10 @@ import 'package:go_router/go_router.dart';
 
 const toolbarHeight = 74.0;
 
-class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const AuthAppBar({
+  const TitleAppBar({
     Key? key,
     required this.title,
   }) : super(key: key);

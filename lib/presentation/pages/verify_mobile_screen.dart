@@ -6,7 +6,7 @@ import 'package:deniz_gold/presentation/blocs/verify_mobile/verify_mobile_cubit.
 import 'package:deniz_gold/presentation/pages/register_screen.dart';
 import 'package:deniz_gold/presentation/pages/reset_password_screen.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
-import 'package:deniz_gold/presentation/widget/auth_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,7 +81,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
         child: Scaffold(
-          appBar: const AuthAppBar(title: Strings.verifyMobileTitle),
+          appBar: const TitleAppBar(title: Strings.verifyMobileTitle),
           backgroundColor: AppColors.background,
           body: BlocProvider<VerifyMobileCubit>(
             create: (_) => sl(),

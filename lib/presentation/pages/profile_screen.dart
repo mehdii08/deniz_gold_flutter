@@ -1,5 +1,6 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/presentation/pages/trades_screen.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
-import 'package:deniz_gold/presentation/widget/flat_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 
 const userIconHeight = 80.0;
@@ -41,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.white,
-        appBar: const FlatAppBar(),
+        appBar: const LogoAppBar(),
         body: BlocProvider<ProfileCubit>(
           create: (_) => sl<ProfileCubit>()..updateData(),
           child: BlocConsumer<ProfileCubit, ProfileState>(
@@ -143,8 +144,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(height: Dimens.standard16),
                           SettingsItem(
                             icon: "assets/images/change_trade.svg",
-                            title: Strings.storeGoldenHavale,
-                            onTap: () {},
+                            title: Strings.myTrades,
+                            onTap: () => context.pushNamed(TradesScreen.route.name!),
                           ),
                           const SizedBox(height: Dimens.standard16),
                           SettingsItem(
@@ -216,35 +217,38 @@ class SettingsItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          if (showArrow)
-            SvgPicture.asset(
-              'assets/images/left.svg',
-              width: Dimens.standard24,
-              fit: BoxFit.fitWidth,
-            ),
-          const Spacer(),
-          AppText(
-            title,
-            textStyle: AppTextStyle.button4,
-            color: AppColors.nature.shade800,
-          ),
-          const SizedBox(
-            width: Dimens.standard12,
-          ),
-          Container(
-            width: Dimens.standard40,
-            height: Dimens.standard40,
-            padding: const EdgeInsets.all(Dimens.standard8),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle, color: AppColors.white, border: Border.all(color: AppColors.nature.shade50)),
-            child: SvgPicture.asset(
-              icon,
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: onTap,
+        child: Row(
+          children: [
+            if (showArrow)
+              SvgPicture.asset(
+                'assets/images/left.svg',
+                width: Dimens.standard24,
+                fit: BoxFit.fitWidth,
+              ),
+            const Spacer(),
+            AppText(
+              title,
+              textStyle: AppTextStyle.button4,
               color: AppColors.nature.shade800,
             ),
-          ),
-        ],
+            const SizedBox(
+              width: Dimens.standard12,
+            ),
+            Container(
+              width: Dimens.standard40,
+              height: Dimens.standard40,
+              padding: const EdgeInsets.all(Dimens.standard8),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: AppColors.white, border: Border.all(color: AppColors.nature.shade50)),
+              child: SvgPicture.asset(
+                icon,
+                color: AppColors.nature.shade800,
+              ),
+            ),
+          ],
+        ),
       );
 }
 

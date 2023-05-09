@@ -1,5 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
-import 'package:deniz_gold/presentation/widget/auth_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +41,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AuthAppBar(title: Strings.resetPasswordTitle,),
+      appBar: const TitleAppBar(title: Strings.resetPasswordTitle,),
       backgroundColor: AppColors.background,
       body: BlocProvider<ResetPasswordCubit>(
         create: (_) => sl(),

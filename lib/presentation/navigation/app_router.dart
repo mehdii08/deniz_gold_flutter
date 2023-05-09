@@ -7,6 +7,7 @@ import 'package:deniz_gold/presentation/pages/profile_screen.dart';
 import 'package:deniz_gold/presentation/pages/register_screen.dart';
 import 'package:deniz_gold/presentation/pages/reset_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
+import 'package:deniz_gold/presentation/pages/trades_screen.dart';
 import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -49,7 +50,7 @@ final _authenticationGuardedRoutes = [
     routes: [
       HomeScreen.route,
       // TransactionsScreen.route,
-      // TradesScreen.route,
+      TradesScreen.route,
       ProfileScreen.route,
       // ChangePasswordScreen.route,
       // UpdateProfileScreen.route,

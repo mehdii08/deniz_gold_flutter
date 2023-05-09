@@ -310,8 +310,8 @@ class AppDataSourceImpl extends AppDataSource {
         .map((e) => TradeDTO.fromJson(e))
         .toList());
     return PaginatedResultDTO<TradeDTO>(
-      from: response.dataAsMap()['list']['from'],
-      to: response.dataAsMap()['list']['to'],
+      from: response.dataAsMap()['list']['from'] ?? 0,
+      to: response.dataAsMap()['list']['to'] ?? 0,
       total: response.dataAsMap()['list']['total'],
       count: response.dataAsMap()['list']['count'],
       perPage: response.dataAsMap()['list']['per_page'],

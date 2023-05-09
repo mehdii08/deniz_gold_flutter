@@ -5,7 +5,7 @@ import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
-import 'package:deniz_gold/presentation/widget/auth_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +48,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AuthAppBar(title: Strings.forgetPasswordTitle),
+      appBar: const TitleAppBar(title: Strings.forgetPasswordTitle),
       backgroundColor: AppColors.background,
       body: BlocProvider<ForgetPasswordCubit>(
         create: (_) => sl(),

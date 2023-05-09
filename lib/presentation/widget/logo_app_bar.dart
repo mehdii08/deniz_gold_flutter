@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 const toolbarHeight = 74.0;
 
-class FlatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const FlatAppBar({Key? key}) : super(key: key);
+class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const LogoAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AppConfigCubit, AppConfigState>(

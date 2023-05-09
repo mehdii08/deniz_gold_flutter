@@ -14,7 +14,9 @@ class Strings {
   static const settings = "تنظیمات";
   static const getVerifyCode = "دریافت کد تایید";
   static const mobile = "شماره موبایل";
+  static const eachGeramPrice = "قیمت هر گرم";
   static const tradeCondition = "وضعیت بازار";
+  static const tradeType = "نوع معامله";
   static const trade = "خرید و فروش";
   static const logout = "خروج از حساب";
   static const priceChangesTitle = "لیست تغییرات نرخ امروز";
@@ -33,6 +35,7 @@ class Strings {
   static const panjshanbe = "پنج شنبه";
   static const jome = "جمعه";
   static const address = "آدرس";
+  static const weight = "وزن";
   static const unexpectedErrorHappened =
       "لطفا ارتباط اینترنت گوشی خود را چک کنید";
   static const youHaveActiveTrade = "شما یک معامله فعال دارید";
@@ -67,6 +70,7 @@ class Strings {
   static const enterPassword = "رمز عبور را وارد کنید";
   static const enterNewPassword = "رمز عبور جدید را وارد کنید";
   static const newPassword = "کلمه عبور جدید";
+  static const myTrades = "معاملات من";
   static const cancel = "انصراف";
   static const exitQuestion = "برای خروج از برنامه اطمینان دارید؟";
   static const confirm = "تایید و ادامه";
@@ -114,6 +118,7 @@ class Strings {
   static const requestedWeight = "وزن درخواستی";
   static const orderPrice = "مبلغ سفارش";
   static const accountInfo = "اطلاعات حساب کاربری";
+  static const selectDate = "انتخاب تاریخ";
   static const successful = "موفقیت آمیز";
   static const failed = "رد شده";
   static const sellOrderConfirmation = "تایید سفارش فروش";
