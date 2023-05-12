@@ -12,14 +12,14 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   ResetPasswordCubit(this.appRepository) : super(const ResetPasswordInitial());
 
   resetPassword({
-    required String code,
+    required String token,
     required String mobile,
     required String password,
     required String passwordConfirmation,
   }) async {
     emit(const ResetPasswordLoading());
     final result = await appRepository.resetPassword(
-        code: code,
+        token: token,
         mobile: mobile,
         password: password,
         passwordConfirmation: passwordConfirmation);

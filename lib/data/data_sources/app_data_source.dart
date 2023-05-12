@@ -20,7 +20,7 @@ abstract class AppDataSource {
   });
 
   Future<String> register({
-    required String code,
+    required String token,
     required String mobile,
     required String name,
     required String nationalCode,
@@ -29,7 +29,7 @@ abstract class AppDataSource {
   });
 
   Future<String> resetPassword({
-    required String code,
+    required String token,
     required String mobile,
     required String password,
     required String passwordConfirmation,
@@ -68,9 +68,10 @@ abstract class AppDataSource {
     required String password,
   });
 
-  Future<String> verifyMobile({
+  Future<String> verifyMobileRegister({
     required String mobile,
     required String code,
+    required bool isRegister,
   });
 
   Future<AppConfigDTO> getConfig();
@@ -105,7 +106,7 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<String> register({
-    required String code,
+    required String token,
     required String mobile,
     required String name,
     required String nationalCode,
@@ -116,7 +117,7 @@ class AppDataSourceImpl extends AppDataSource {
       '$apiPath/register',
       method: Method.post,
       data: {
-        'code': code,
+        'data_token': token,
         'mobile': mobile,
         'name': name,
         'national_code': nationalCode,
@@ -129,7 +130,7 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<String> resetPassword({
-    required String code,
+    required String token,
     required String mobile,
     required String password,
     required String passwordConfirmation,
@@ -138,7 +139,7 @@ class AppDataSourceImpl extends AppDataSource {
       '$apiPath/forget-password/update-password',
       method: Method.post,
       data: {
-        'code': code,
+        'data_token': token,
         'mobile': mobile,
         'password': password,
         'password_confirmation': passwordConfirmation,
@@ -254,19 +255,20 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<String> verifyMobile({
+  Future<String> verifyMobileRegister({
     required String mobile,
     required String code,
+    required bool isRegister,
   }) async {
     final response = await _apiHelper.request(
-      '$apiPath/verify-mobile',//todo refactor hole request and respone
+      '$apiPath/${isRegister ? "register" : "forget-password"}/check-otp-code',
       method: Method.post,
       data: {
         'mobile': mobile,
         'code': code,
       },
     );
-    return response.dataAsMap()['token'];
+    return response.dataAsMap()['data_token'];
   }
 
   @override

@@ -14,10 +14,12 @@ import 'package:deniz_gold/presentation/widget/toast.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   final String mobile;
+  final String token;
 
   const ResetPasswordScreen({
     Key? key,
     required this.mobile,
+    required this.token,
   }) : super(key: key);
 
   static final route = GoRoute(
@@ -25,6 +27,7 @@ class ResetPasswordScreen extends StatefulWidget {
     path: '/reset-password',
     builder: (_, state) => ResetPasswordScreen(
       mobile: state.queryParams['mobile']!,
+      token: state.queryParams['token']!,
     ), //make mobile nullable and check null for web version, or you can use redirect for handling it
   );
 
@@ -33,9 +36,7 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final codeController = TextEditingController();
   final passwordController = TextEditingController();
-  final passwordConfirmationController = TextEditingController();
   final errors = ValueNotifier<ResetPasswordErrors>(const ResetPasswordErrors());
 
   @override
@@ -79,10 +80,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               text: Strings.resetPassword,
                               onPressed: () =>
                                   _validateThenSubmit(() => context.read<ResetPasswordCubit>().resetPassword(
-                                    code: codeController.text,
+                                    token: widget.token,
                                     mobile: widget.mobile,
                                     password: passwordController.text,
-                                    passwordConfirmation: passwordConfirmationController.text,
+                                    passwordConfirmation: passwordController.text,
                                   )),
                             ),
                             const SizedBox(height: Dimens.standardX)
@@ -100,41 +101,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   _validateThenSubmit(VoidCallback onSubmit) {
-    String? code;
     String? password;
-    String? passwordConfirmation;
 
-    if (codeController.text.length < 6) {
-      code = Strings.codeError;
-    }
     if (passwordController.text.length < Dimens.passwordLength) {
       password = Strings.passwordError;
     }
-    if (passwordConfirmationController.text.length < Dimens.passwordLength ||
-        passwordController.text != passwordConfirmationController.text) {
-      passwordConfirmation = Strings.passwordConfirmationError;
-    }
 
     errors.value = ResetPasswordErrors(
-      codeError: code,
       passwordError: password,
-      passwordConfirmationError: passwordConfirmation,
     );
 
-    if (code == null && password == null && passwordConfirmation == null) {
+    if (password == null) {
       onSubmit();
     }
   }
 }
 
 class ResetPasswordErrors {
-  final String? codeError;
   final String? passwordError;
-  final String? passwordConfirmationError;
 
   const ResetPasswordErrors({
-    this.codeError,
     this.passwordError,
-    this.passwordConfirmationError,
   });
 }

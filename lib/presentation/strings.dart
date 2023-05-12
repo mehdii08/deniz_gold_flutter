@@ -11,7 +11,9 @@ class Strings {
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
   static const home = "خانه";
+  static const all = "همه";
   static const settings = "تنظیمات";
+  static const tradeGold = "خرید و فروش آبشده";
   static const getVerifyCode = "دریافت کد تایید";
   static const mobile = "شماره موبایل";
   static const eachGeramPrice = "قیمت هر گرم";
@@ -124,6 +126,7 @@ class Strings {
   static const sellOrderConfirmation = "تایید سفارش فروش";
   static const transactionsCount = "تعداد گردش حساب";
   static const transactionsCountWarning = "مابین ۱۰ تا ۴۰ گردش حساب";
+  static const tradesListIsEmpty = "تاکنون معامله‌ای انجام نداده‌اید";
   static const listIsEmpty = "موردی جهت نمایش وجود ندارد";
   static const account = "حساب کاربری";
   static const activationWarning =

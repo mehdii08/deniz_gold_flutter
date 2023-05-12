@@ -33,7 +33,7 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, String>> register({
-    required String code,
+    required String token,
     required String mobile,
     required String name,
     required String nationalCode,
@@ -42,7 +42,7 @@ class AppRepositoryImpl extends AppRepository {
   }) async {
     try {
       return Right(await dataSource.register(
-        code: code,
+        token: token,
         mobile: mobile,
         name: name,
         nationalCode: nationalCode,
@@ -56,14 +56,14 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, String>> resetPassword({
-    required String code,
+    required String token,
     required String mobile,
     required String password,
     required String passwordConfirmation,
   }) async {
     try {
       return Right(await dataSource.resetPassword(
-        code: code,
+        token: token,
         mobile: mobile,
         password: password,
         passwordConfirmation: password,
@@ -173,11 +173,13 @@ class AppRepositoryImpl extends AppRepository {
   Future<Either<Failure, String>> verifyMobile({
     required String mobile,
     required String code,
+    required bool isRegister,
   }) async {
     try {
-      return Right(await dataSource.verifyMobile(
+      return Right(await dataSource.verifyMobileRegister(
         mobile: mobile,
         code: code,
+          isRegister : isRegister,
       ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));

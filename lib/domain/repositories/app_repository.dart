@@ -18,7 +18,7 @@ abstract class AppRepository {
   });
 
   Future<Either<Failure, String>> register({
-    required String code,
+    required String token,
     required String mobile,
     required String name,
     required String nationalCode,
@@ -27,7 +27,7 @@ abstract class AppRepository {
   });
 
   Future<Either<Failure, String>> resetPassword({
-    required String code,
+    required String token,
     required String mobile,
     required String password,
     required String passwordConfirmation,
@@ -69,6 +69,7 @@ abstract class AppRepository {
   Future<Either<Failure, String>> verifyMobile({
     required String mobile,
     required String code,
+    required bool isRegister,
   });
 
   Future<Either<Failure, AppConfigDTO>> getConfig();

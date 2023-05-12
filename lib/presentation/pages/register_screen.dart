@@ -1,4 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +15,20 @@ import 'package:deniz_gold/presentation/widget/toast.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String mobile;
+  final String token;
 
   const RegisterScreen({
     Key? key,
     required this.mobile,
+    required this.token,
   }) : super(key: key);
 
   static final route = GoRoute(
     name: 'RegisterScreen',
     path: '/register',
     builder: (_, state) => RegisterScreen(
-      mobile: state.queryParams['token']!,
+      mobile: state.queryParams['mobile']!,
+      token: state.queryParams['token']!,
     ), //make mobile nullable and check null for web version, or you can use redirect for handling it
   );
 
@@ -37,23 +41,19 @@ class RegisterErrors {
   final String? nameError;
   final String? nationalCodeError;
   final String? passwordError;
-  final String? passwordConfirmationError;
 
   const RegisterErrors({
     this.codeError,
     this.nameError,
     this.nationalCodeError,
-    this.passwordError,
-    this.passwordConfirmationError,
+    this.passwordError
   });
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final codeController = TextEditingController();
   final nameController = TextEditingController();
   final nationalCodeController = TextEditingController();
   final passwordController = TextEditingController();
-  final passwordConfirmationController = TextEditingController();
   final errors = ValueNotifier<RegisterErrors>(const RegisterErrors());
 
   @override
@@ -67,6 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           listener: (context, state) {
             if (state is RegisterLoaded) {
               context.read<AuthenticationCubit>().saveToken(state.token);
+              context.goNamed(SplashScreen.route.name!);
             } else if (state is RegisterFailed) {
               showToast(title: state.message, context: context, toastType: ToastType.error);
             }
@@ -103,12 +104,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           isLoading: state is RegisterLoading,
                           text: Strings.signUp,
                           onPressed: () => _validateThenSubmit(() => context.read<RegisterCubit>().register(
-                                code: codeController.text,
+                                token: widget.token,
                                 mobile: widget.mobile,
                                 name: nameController.text,
                                 nationalCode: nationalCodeController.text,
                                 password: passwordController.text,
-                                passwordConfirmation: passwordConfirmationController.text,
+                                passwordConfirmation: passwordController.text,
                               )),
                         ),
                         const SizedBox(height: Dimens.standardX)
@@ -125,38 +126,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   _validateThenSubmit(VoidCallback onSubmit) {
-    String? code;
     String? name;
     String? nationalCode;
     String? password;
     String? passwordConfirmation;
 
-    if (codeController.text.length < 6) {
-      code = Strings.codeError;
-    }
     if (nameController.text.length < 3) {
       name = Strings.nameError;
     }
-    if (nationalCodeController.text.length < 10) {
+    if (nationalCodeController.text.length != 10) {
       nationalCode = Strings.nationalCodeError;
     }
     if (passwordController.text.length < Dimens.passwordLength) {
       password = Strings.passwordError;
     }
-    if (passwordConfirmationController.text.length < Dimens.passwordLength ||
-        passwordController.text != passwordConfirmationController.text) {
-      passwordConfirmation = Strings.passwordConfirmationError;
-    }
 
     errors.value = RegisterErrors(
-      codeError: code,
       nameError: name,
       nationalCodeError: nationalCode,
-      passwordError: password,
-      passwordConfirmationError: passwordConfirmation,
+      passwordError: password
     );
 
-    if (code == null && name == null && nationalCode == null && password == null && passwordConfirmation == null) {
+    if (name == null && nationalCode == null && password == null && passwordConfirmation == null) {
       onSubmit();
     }
   }

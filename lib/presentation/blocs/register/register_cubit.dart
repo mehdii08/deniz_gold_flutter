@@ -12,7 +12,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit(this.appRepository) : super(const RegisterInitial());
 
   register({
-    required String code,
+    required String token,
     required String mobile,
     required String name,
     required String nationalCode,
@@ -21,7 +21,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   }) async {
     emit(const RegisterLoading());
     final result = await appRepository.register(
-        code: code,
+        token: token,
         mobile: mobile,
         name: name,
         nationalCode: nationalCode,

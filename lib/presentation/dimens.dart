@@ -4,6 +4,7 @@ class Dimens {
   static const double standardXQuarter = 2.0;
   static const double standardXHalf = 4.0;
   static const double standardX = 8.0;
+  static const double standard15 = 15.0;
   static const double standard2X = 16.0;
   static const double standard3X = 24.0;
   static const double standard4X = 32.0;

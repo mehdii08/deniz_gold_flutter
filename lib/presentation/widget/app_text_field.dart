@@ -75,6 +75,7 @@ class _AppTextFieldState extends State<AppTextField> {
             height: Dimens.standard48,
             color: AppColors.white,
             child: TextField(
+              textAlign: TextAlign.center,
               focusNode: focusNode,
               obscureText: widget.obscureText,
               keyboardType: widget.keyboardType,
@@ -85,6 +86,7 @@ class _AppTextFieldState extends State<AppTextField> {
               textDirection: TextDirection.rtl,
               controller: widget.controller,
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.zero,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: widget.error != null ? AppColors.red : AppColors.nature.shade900, width: 1.0),
@@ -112,7 +114,8 @@ class _AppTextFieldState extends State<AppTextField> {
                                 ),
                               )
                             : const SizedBox();
-                      })),
+                      }),
+              ),
             ),
           ),
           const SizedBox(height: Dimens.standard8),

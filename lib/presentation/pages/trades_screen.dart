@@ -1,13 +1,12 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
-import 'package:deniz_gold/core/theme/app_text_style.dart';
-import 'package:deniz_gold/data/enums.dart';
-import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/empty_view.dart';
+import 'package:deniz_gold/presentation/widget/filter_item.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/trade_item.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/presentation/blocs/trades/trades_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
@@ -56,6 +55,17 @@ class _TradesScreenState extends State<TradesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dateFilterItems = <String,int>{
+      '۶ ماه پیش' : 6,
+      '۳ ماه پیش' : 3,
+      '۲ ماه پیش' : 3,
+      '۱ ماه پیش' : 1,
+    };
+
+    final tradeTypeFilterItems = <String,int>{
+      'خرید' : 1,
+      'فروش' : 0,
+    };
     return WillPopScope(
       onWillPop: () async {
         context.goNamed(HomeScreen.route.name!);
@@ -89,44 +99,32 @@ class _TradesScreenState extends State<TradesScreen> {
                       const SizedBox(height: Dimens.standard2X),
                       if (state is TradesLoaded && state.result.items.isEmpty) ...[
                         const SizedBox(height: Dimens.standard8X),
-                        const Text(Strings.listIsEmpty),
+                        EmptyView(
+                          text: Strings.tradesListIsEmpty,
+                          buttonText: Strings.tradeGold,
+                          // onTap: ()=> context.goNamed(TradeScreen.route.name!),//todo
+                          onTap: () {},
+                        ),
                       ] else ...[
                         Row(
                           textDirection: TextDirection.rtl,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Dimens.standard16,
-                                vertical: Dimens.standard6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
-                                border: Border.all(color: AppColors.nature.shade50),
-                              ),
-                              child: AppText(
-                                Strings.selectDate,
-                                textStyle: AppTextStyle.button4,
-                                color: AppColors.nature.shade600,
-                              ),
+                            FilterItem(
+                              title: Strings.selectDate,
+                              svgIcon: 'assets/images/calendar.svg',
+                              selectableItems: dateFilterItems,
+                              onChange: (selectedKey){
+                                // print('--------- key : $selectedKey');
+                              },
                             ),
                             const SizedBox(width: Dimens.standard8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: Dimens.standard16,
-                                vertical: Dimens.standard6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.white,
-                                borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
-                                border: Border.all(color: AppColors.nature.shade50),
-                              ),
-                              child: AppText(
-                                Strings.tradeType,
-                                textStyle: AppTextStyle.button4,
-                                color: AppColors.nature.shade600,
-                              ),
-                            )
+                            FilterItem(
+                              title: Strings.tradeType,
+                              selectableItems: tradeTypeFilterItems,
+                              onChange: (selectedKey){
+                                // print('--------- key : $selectedKey');
+                              },
+                            ),
                           ],
                         ),
                         ListView.builder(
@@ -152,102 +150,4 @@ class _TradesScreenState extends State<TradesScreen> {
       ),
     );
   }
-}
-
-class TradeItem extends StatelessWidget {
-  final TradeDTO trade;
-
-  const TradeItem({
-    Key? key,
-    required this.trade,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          const SizedBox(height: Dimens.standard12),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        AppText(
-                          "۴۵,۵۰۰,۰۰۰",
-                          textStyle: AppTextStyle.subTitle3,
-                        ),
-                        const Spacer(),
-                        AppText(
-                          trade.title.length > 10 ? trade.title.substring(0, 13) : trade.title,
-                          textStyle: AppTextStyle.subTitle4,
-                          color: trade.type == TradeType.sell.value ? AppColors.red : AppColors.green,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        AppText(
-                          Strings.toman,
-                          textStyle: AppTextStyle.body6,
-                          color: AppColors.nature.shade600,
-                        ),
-                        const Spacer(),
-                        AppText(
-                          '${trade.faDate} - ${trade.faTime}',
-                          textStyle: AppTextStyle.body5,
-                          color: AppColors.nature.shade600,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: Dimens.standard16),
-              Container(
-                width: Dimens.standard4,
-                height: Dimens.standard56,
-                color: trade.type == TradeType.sell.value ? AppColors.red : AppColors.green,
-              )
-            ],
-          ),
-          const SizedBox(height: Dimens.standard12),
-          Row(
-            children: [
-              AppText(
-                Strings.eachGeramPrice,
-                textStyle: AppTextStyle.body6,
-                color: AppColors.nature.shade600,
-              ),
-              const Spacer(),
-              AppText(
-                Strings.weight,
-                textStyle: AppTextStyle.body6,
-                color: AppColors.nature.shade600,
-              ),
-              const SizedBox(width: Dimens.standard20),
-            ],
-          ),
-          Row(
-            children: [
-              AppText(
-                '۲,۶۷۵,۰۰۰',
-                textStyle: AppTextStyle.body4,
-                color: AppColors.nature.shade700,
-              ),
-              const Spacer(),
-              AppText(
-                '۲۰ گرم',
-                textStyle: AppTextStyle.body4,
-                color: AppColors.nature.shade700,
-              ),
-              const SizedBox(width: Dimens.standard20),
-            ],
-          ),
-          const SizedBox(height: Dimens.standard12),
-          Divider(
-            color: AppColors.nature.shade50,
-          )
-        ],
-      );
 }

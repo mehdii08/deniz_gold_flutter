@@ -39,70 +39,68 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordValidator = ValueNotifier<bool>(false);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TitleAppBar(title: Strings.loginTitle),
-      backgroundColor: AppColors.background,
-      body: BlocProvider<LoginCubit>(
-        create: (_) => sl(),
-        child: BlocConsumer<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state is LoginSuccess) {
-              context.pushNamed(SplashScreen.route.name!);
-            } else if (state is LoginFailed) {
-              showToast(title: state.message,context: context,toastType: ToastType.error);
-            }
-          },
-          builder: (context, state) {
-            return SafeArea(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: Dimens.standard32),
-                    AppTextField(
-                      title: Strings.enterPassword,
-                      controller: controller,
-                      obscureText: true,
-                      onChange: (value) => passwordValidator.value = value.length >= Dimens.passwordLength,
-                    ),
-                    const SizedBox(height: Dimens.standard12),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () => context.pushNamed(ForgetPasswordScreen.route.name!,
-                            queryParams: {'mobile': widget.mobile}),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Text(
-                            Strings.forgetPassword,
-                            style: AppTextStyle.button4.copyWith(color: AppColors.blue),
-                          ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: const TitleAppBar(title: Strings.loginTitle),
+    backgroundColor: AppColors.background,
+    body: BlocProvider<LoginCubit>(
+      create: (_) => sl(),
+      child: BlocConsumer<LoginCubit, LoginState>(
+        listener: (context, state) {
+          if (state is LoginSuccess) {
+            context.pushNamed(SplashScreen.route.name!);
+          } else if (state is LoginFailed) {
+            showToast(title: state.message,context: context,toastType: ToastType.error);
+          }
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: Dimens.standard32),
+                  AppTextField(
+                    title: Strings.enterPassword,
+                    controller: controller,
+                    obscureText: true,
+                    onChange: (value) => passwordValidator.value = value.length >= Dimens.passwordLength,
+                  ),
+                  const SizedBox(height: Dimens.standard12),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () => context.pushNamed(ForgetPasswordScreen.route.name!,
+                          queryParams: {'mobile': widget.mobile}),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Text(
+                          Strings.forgetPassword,
+                          style: AppTextStyle.button4.copyWith(color: AppColors.blue),
                         ),
                       ),
                     ),
-                    const SizedBox(height: Dimens.standard32),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: passwordValidator,
-                      builder: (context, isValid, _) => AppButton(
-                        isLoading: state is LoginLoading,
-                        text: Strings.login,
-                        onPressed: isValid ? () {
-                          context
-                              .read<LoginCubit>()
-                              .login(mobile: widget.mobile, password: controller.text);
-                        } : null,
-                      ),
+                  ),
+                  const SizedBox(height: Dimens.standard32),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: passwordValidator,
+                    builder: (context, isValid, _) => AppButton(
+                      isLoading: state is LoginLoading,
+                      text: Strings.login,
+                      onPressed: isValid ? () {
+                        context
+                            .read<LoginCubit>()
+                            .login(mobile: widget.mobile, password: controller.text);
+                      } : null,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
-    );
-  }
+    ),
+  );
 }

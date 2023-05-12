@@ -79,88 +79,86 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: Scaffold(
-          appBar: const TitleAppBar(title: Strings.verifyMobileTitle),
-          backgroundColor: AppColors.background,
-          body: BlocProvider<VerifyMobileCubit>(
-            create: (_) => sl(),
-            child: BlocConsumer<VerifyMobileCubit, VerifyMobileState>(
-              listener: (context, state) {
-                if (state is VerifyMobileSuccess) {
-                  context.pushNamed(widget.isRegister ? RegisterScreen.route.name! : ResetPasswordScreen.route.name!,
-                      queryParams: {'token': state.token, 'mobile': widget.mobile});
-                } else if (state is VerifyMobileFailed) {
-                  showToast(title: state.message, context: context, toastType: ToastType.error);
-                }
-              },
-              builder: (context, state) {
-                return Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(Dimens.standard16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AppText(
-                        getDescription(widget.mobile),
-                        textStyle: AppTextStyle.body4,
-                        color: AppColors.nature.shade900,
+  Widget build(BuildContext context) => Scaffold(
+    appBar: const TitleAppBar(title: Strings.verifyMobileTitle),
+    backgroundColor: AppColors.background,
+    body: BlocProvider<VerifyMobileCubit>(
+      create: (_) => sl(),
+      child: BlocConsumer<VerifyMobileCubit, VerifyMobileState>(
+        listener: (context, state) {
+          if (state is VerifyMobileSuccess) {
+            context.pushNamed(widget.isRegister ? RegisterScreen.route.name! : ResetPasswordScreen.route.name!,
+                queryParams: {'token': state.token, 'mobile': widget.mobile});
+          } else if (state is VerifyMobileFailed) {
+            showToast(title: state.message, context: context, toastType: ToastType.error);
+          }
+        },
+        builder: (context, state) {
+          return Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(Dimens.standard16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppText(
+                  getDescription(widget.mobile),
+                  textStyle: AppTextStyle.body4,
+                  color: AppColors.nature.shade900,
+                ),
+                const SizedBox(height: Dimens.standard8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () => context.pop(),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
+                      child: AppText(
+                        Strings.editPhoneNumber,
+                        textStyle: AppTextStyle.button4,
+                        color: AppColors.blue,
                       ),
-                      const SizedBox(height: Dimens.standard8),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () => context.pop(),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
-                            child: AppText(
-                              Strings.editPhoneNumber,
-                              textStyle: AppTextStyle.button4,
-                              color: AppColors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: Dimens.standard32),
-                      AppTextField(
-                          controller: controller,
-                          keyboardType: TextInputType.phone,
-                          enabled: state is! VerifyMobileLoading,
-                          onChange: (text) {
-                            codeIsValid.value = text.length == 6;
-                          }),
-                      const SizedBox(height: Dimens.standard12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
-                        child: AppText(
-                          getCountDownText(),
-                          textStyle: AppTextStyle.body5,
-                          color: AppColors.nature.shade600,
-                        ),
-                      ),
-                      const SizedBox(height: Dimens.standard24),
-                      ValueListenableBuilder<bool>(
-                          valueListenable: codeIsValid,
-                          builder: (context, isValid, _) => AppButton(
-                                onPressed: isValid
-                                    ? () => context.pushNamed(
-                                        widget.isRegister
-                                            ? RegisterScreen.route.name!
-                                            : ResetPasswordScreen.route.name!,
-                                        queryParams: {'token': "state.token", 'mobile': widget.mobile})
-                                    : null,
-                                text: Strings.confirm,
-                                isLoading: state is VerifyMobileLoading,
-                              ))
-                    ],
+                    ),
                   ),
-                );
-              },
+                ),
+                const SizedBox(height: Dimens.standard32),
+                AppTextField(
+                    controller: controller,
+                    keyboardType: TextInputType.phone,
+                    enabled: state is! VerifyMobileLoading,
+                    onChange: (text) {
+                      codeIsValid.value = text.length == 6;
+                    }),
+                const SizedBox(height: Dimens.standard12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
+                  child: AppText(
+                    getCountDownText(),
+                    textStyle: AppTextStyle.body5,
+                    color: AppColors.nature.shade600,
+                  ),
+                ),
+                const SizedBox(height: Dimens.standard24),
+                ValueListenableBuilder<bool>(
+                    valueListenable: codeIsValid,
+                    builder: (context, isValid, _) => AppButton(
+                          onPressed: isValid
+                              ? () => context.read<VerifyMobileCubit>().verify(
+                                    mobile: widget.mobile,
+                                    code: controller.text,
+                                    isRegister: true,
+                                  )
+                              : null,
+                          text: Strings.confirm,
+                          isLoading: state is VerifyMobileLoading,
+                        ))
+              ],
             ),
-          ),
-        ),
-      );
+          );
+        },
+      ),
+    ),
+  );
 
   String getDescription(String mobile) =>
       "کد ۴ رقمی به شماره $mobile ارسال شد. لطفا پس از دریافت، کد را در کادر پایین وارد کنید.";

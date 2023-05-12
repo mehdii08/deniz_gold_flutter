@@ -1,23 +1,21 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/profile/profile_cubit.dart';
+import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/home_screen.dart';
+import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
+import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deniz_gold/data/dtos/transaction_dto.dart';
-import 'package:deniz_gold/presentation/blocs/profile/profile_cubit.dart';
-import 'package:deniz_gold/presentation/dimens.dart';
-import 'package:deniz_gold/presentation/pages/home_screen.dart';
-import 'package:deniz_gold/presentation/strings.dart';
-import 'package:deniz_gold/presentation/widget/app_button.dart';
-import 'package:deniz_gold/presentation/widget/app_text_field.dart';
-import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
-import 'package:deniz_gold/presentation/widget/toast.dart';
-
-const userIconHeight = 80.0;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -184,7 +182,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SettingsItem(
                             icon: "assets/images/logout.svg",
                             title: Strings.logout,
-                            onTap: () {},
+                            onTap: () {
+                              context.read<AppConfigCubit>().reset();
+                              context.read<AuthenticationCubit>().logOut();
+                              context.pushNamed(SplashScreen.route.name!);
+                            },
                             showArrow: false,
                           ),
                           const SizedBox(height: Dimens.standard100),
@@ -250,121 +252,4 @@ class SettingsItem extends StatelessWidget {
           ],
         ),
       );
-}
-
-class GetIntegerValueCard extends StatelessWidget {
-  final Function(String) onSubmit;
-  final bool isLoading;
-
-  GetIntegerValueCard({
-    Key? key,
-    required this.onSubmit,
-    this.isLoading = false,
-  }) : super(key: key);
-
-  final controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: AppColors.white),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                Strings.transactionsCount,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ),
-            const SizedBox(height: 8),
-            AppTextField(
-              enabled: !isLoading,
-              controller: controller,
-              keyboardType: TextInputType.number,
-            ), //todo add validation
-            const SizedBox(height: 8),
-            Text(
-              Strings.transactionsCountWarning,
-              style: Theme.of(context).textTheme.caption?.copyWith(color: AppColors.nature.shade900),
-            ),
-            const SizedBox(height: 8),
-            if (isLoading)
-              const CircularProgressIndicator()
-            else
-              AppButton(
-                text: Strings.show,
-                onPressed: () {
-                  onSubmit(controller.text);
-                },
-              )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TransactionItem extends StatelessWidget {
-  final TransactionDTO transaction;
-
-  const TransactionItem({
-    Key? key,
-    required this.transaction,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: AppColors.white),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  transaction.title,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blue),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      transaction.time,
-                      style: Theme.of(context).textTheme.caption?.copyWith(color: AppColors.blue),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.timelapse,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 16),
-                    Text(
-                      transaction.date,
-                      style: Theme.of(context).textTheme.caption?.copyWith(color: AppColors.blue),
-                    ),
-                    const SizedBox(width: 4),
-                    const Icon(
-                      Icons.date_range,
-                      size: 16,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8)
-      ],
-    );
-  }
 }

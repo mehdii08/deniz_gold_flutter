@@ -10,7 +10,11 @@ class AppButton extends StatelessWidget {
   final String text;
   final String? svgIcon;
   final bool isLoading;
+  final bool fullWidth;
   final Color? color;
+  final Color? textColor;
+  final EdgeInsetsGeometry contentPadding;
+  final TextStyle? textStyle;
 
   const AppButton({
     Key? key,
@@ -18,7 +22,11 @@ class AppButton extends StatelessWidget {
     required this.text,
     this.svgIcon,
     this.isLoading = false,
+    this.fullWidth = true,
+    this.contentPadding = const EdgeInsets.all(Dimens.standard10),
+    this.textStyle,
     this.color,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -49,15 +57,16 @@ class AppButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.standard10),
+        padding: contentPadding,
         child: Row(
+          mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (isLoading) const SizedBox(width: Dimens.standard32),
             AppText(
               text,
-              textStyle: AppTextStyle.body4,
-              color: AppColors.nature.shade900,
+              textStyle: textStyle ?? AppTextStyle.body4,
+              color: textColor ?? AppColors.nature.shade900,
             ),
             if (!isLoading && svgIcon != null) ...[
               const SizedBox(width: Dimens.standard8),
