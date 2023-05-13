@@ -15,6 +15,7 @@ class AppButton extends StatelessWidget {
   final Color? textColor;
   final EdgeInsetsGeometry contentPadding;
   final TextStyle? textStyle;
+  final double borderRadius;
 
   const AppButton({
     Key? key,
@@ -27,6 +28,7 @@ class AppButton extends StatelessWidget {
     this.textStyle,
     this.color,
     this.textColor,
+    this.borderRadius = Dimens.standard100,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,7 @@ class AppButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Dimens.standard100),
+          borderRadius: BorderRadius.circular(borderRadius),
         )),
         elevation: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) => Dimens.standard0),
         foregroundColor: MaterialStateProperty.all(AppColors.yellow),
@@ -43,7 +45,7 @@ class AppButton extends StatelessWidget {
             if (states.contains(MaterialState.pressed)) {
               return color != null ? color! : AppColors.yellow.shade400;
             } else if (states.contains(MaterialState.disabled)) {
-              return color != null ? color! : AppColors.yellow.shade200;
+              return color != null ? color!.withOpacity(0.4) : AppColors.yellow.shade200;
             }
             return isLoading
                 ? color != null

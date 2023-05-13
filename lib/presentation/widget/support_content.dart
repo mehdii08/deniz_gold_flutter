@@ -41,7 +41,7 @@ class _SupportContentState extends State<SupportContent> {
           ],
         ))
             .toList(),
-        const SizedBox(height: Dimens.standard4),
+        const SizedBox(height: Dimens.standard40),
       ],
     ),
   );

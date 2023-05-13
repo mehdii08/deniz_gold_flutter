@@ -19,6 +19,7 @@ class Strings {
   static const eachGeramPrice = "قیمت هر گرم";
   static const tradeCondition = "وضعیت بازار";
   static const tradeType = "نوع معامله";
+  static const tradeType_ = "نوع سفارش";
   static const trade = "خرید و فروش";
   static const logout = "خروج از حساب";
   static const priceChangesTitle = "لیست تغییرات نرخ امروز";
@@ -88,8 +89,8 @@ class Strings {
   static const smsVerificationCode = "کد تایید پیامکی";
   static const fullName = "نام و نام خانوادگی";
   static const nationalCode = "کد ملی";
-  static const enterPriceByToman = "مبلغ مورد نظر را به (تومان) وارد کنید";
-  static const enterWeightByGheram = "وزن مورد نظر را به (گرم) وارد کنید";
+  static const enterPriceByToman = "مبلغ مورد نظر را به تومان وارد کنید";
+  static const enterWeightByGheram = "وزن مورد نظر را به گرم وارد کنید";
   static const phoneNumberPlaceHolder = "09147817188";
   static const editPhoneNumber = "ویرایش شماره موبایل";
   static const logo = "LOGO";
@@ -110,17 +111,25 @@ class Strings {
   static const buy = "خرید";
   static const firstPage = "صفحه نخست";
   static const todayTrades = "معاملات امروز";
+  static const eachGeramPrice_ = "نرخ هر گرم:";
   static const todayTradesList = "لیست معاملات امروز";
   static const transactions = "گردش حساب";
   static const buyOrderConfirmation = "تایید سفارش خرید";
   static const orderMazane = "مظنه سفارش";
+  static const validatingOrder = "در حال بررسی سفارش";
   static const mazane = "مظنه";
   static const submitOrderWarning =
       "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
   static const requestedWeight = "وزن درخواستی";
   static const orderPrice = "مبلغ سفارش";
+  static const orderNotConfirmed = "سفارش تایید نشد.";
+  static const orderConfirmed = "معامله با موفقیت انجام شد.";
+  static const orderNotConfirmedDescription = "سفارش خرید شما به دلیل عدم تایید مدیر تایید نشد. در صورت نیاز میتوانید با پشتیبانی تماس بگیرید.";
   static const accountInfo = "اطلاعات حساب کاربری";
+  static const tradeTotalPrice = "مبلغ کل سفارش";
   static const selectDate = "انتخاب تاریخ";
+  static const buyDescription = "سفارش خرید شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
+  static const sellDescription = "سفارش فروش شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
   static const successful = "موفقیت آمیز";
   static const failed = "رد شده";
   static const sellOrderConfirmation = "تایید سفارش فروش";
@@ -144,6 +153,7 @@ class Strings {
   static const exit = "خروج";
   static const support = "پشتیبانی";
   static const callToSupport = "تماس با پشتیبانی";
+  static const confirmTradeDetails = "تایید جزئیات سفارش";
   static const shopNumber = "مغازه";
   static const officeNumber = "دفتر";
   static const workshopNumber = "کارگاه";
@@ -156,8 +166,10 @@ class Strings {
   static const appBarTitle = "آبشده خدایی";
   static const toman = " تومان";
   static const sellGold = " فروش آبشده";
+  static const confirmAndSubmitOrder = " تایید و ثبت سفارش";
   static const buyGold = " خرید آبشده";
   static const dollar = "دلار";
+  static const understand = "متوجه شدم";
   static const goldOns = "انس طلا";
   static const goldGheramPrice = "نرخ هر گرم";
   static const worldGoldPrice = "طلای جهانی (مثقال)";

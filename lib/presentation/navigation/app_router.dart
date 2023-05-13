@@ -7,6 +7,7 @@ import 'package:deniz_gold/presentation/pages/profile_screen.dart';
 import 'package:deniz_gold/presentation/pages/register_screen.dart';
 import 'package:deniz_gold/presentation/pages/reset_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
+import 'package:deniz_gold/presentation/pages/trade_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
 import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,7 @@ final _authenticationGuardedRoutes = [
       // ChangePasswordScreen.route,
       // UpdateProfileScreen.route,
       // HavaleScreen.route,
-      // TradeScreen.route,
+      TradeScreen.route,
     ],
   )
 ];

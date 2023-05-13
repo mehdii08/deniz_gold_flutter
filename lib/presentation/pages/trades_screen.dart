@@ -113,17 +113,13 @@ class _TradesScreenState extends State<TradesScreen> {
                               title: Strings.selectDate,
                               svgIcon: 'assets/images/calendar.svg',
                               selectableItems: dateFilterItems,
-                              onChange: (selectedKey){
-                                // print('--------- key : $selectedKey');
-                              },
+                              onChange: (selectedKey){},
                             ),
                             const SizedBox(width: Dimens.standard8),
                             FilterItem(
                               title: Strings.tradeType,
                               selectableItems: tradeTypeFilterItems,
-                              onChange: (selectedKey){
-                                // print('--------- key : $selectedKey');
-                              },
+                              onChange: (selectedKey){},
                             ),
                           ],
                         ),

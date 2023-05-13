@@ -1,10 +1,14 @@
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
+import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/trade/trade_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/bottom_sheet_header.dart';
 import 'package:deniz_gold/presentation/widget/support_content.dart';
+import 'package:deniz_gold/presentation/widget/trade_calculate_data_bottom_sheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -86,6 +90,32 @@ showSingleSelectBottomSheet<T>({
               .toList(),
           const SizedBox(height: Dimens.standard32),
         ],
+      ),
+    ),
+  );
+}
+
+showTradeCalculateDataBottomSheet({
+  required BuildContext context,
+  required TradeCalculateResponseDTO data,
+  required bool isSell,
+  required VoidCallback onConfirmClicked,
+  required Function(TradeSubmitResponseDTO) onTradeSubmitted,
+  required TradeCubit tradeCubit,
+}) {
+  showModalBottomSheet(
+    context: context,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+    builder: (context) => BottomSheetHeader(
+      title: Strings.confirmTradeDetails,
+      child: TradeCalculateDataBottomSheetContent(
+        data: data,
+        isSell: isSell,
+        onConfirmClicked: onConfirmClicked,
+        onTradeSubmitted: onTradeSubmitted,
+        tradeCubit: tradeCubit,
       ),
     ),
   );

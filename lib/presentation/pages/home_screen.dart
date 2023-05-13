@@ -36,176 +36,178 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  Widget build(BuildContext context) => WillPopScope(
-      onWillPop: () async {
-        showDialog(
-          context: context,
-          builder: (context) => ConfirmDialog(
-            question: Strings.exitQuestion,
-            confirmTitle: Strings.exit,
-            cancelTitle: Strings.cancel,
-            onConfirmClicked: () {
-              SystemNavigator.pop();
-            },
-            onCancelClicked: () {
-              context.pop();
-            },
-          ),
-        );
-        return false;
-      },
-      child: Scaffold(
-        appBar: const LogoAppBar(),
-        backgroundColor: AppColors.background,
-        body: UserStatusChecker(
-          child: BlocProvider<HomeScreenCubit>(
-            create: (_) => sl<HomeScreenCubit>()..getData(),
-            child: BlocConsumer<HomeScreenCubit, HomeScreenState>(listener: (context, state) {
-              if (state is HomeScreenFailed) {
-                showToast(title: state.message, context: context, toastType: ToastType.error);
-              }
-            }, builder: (context, state) {
-              if (state is HomeScreenLoaded) {
-                final data = state.data;
-                return Column(
-                  children: [
-                    Container(
-                      color: AppColors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                      child: Column(
-                        children: [
-                          UserAccountingChecker(
-                            updateUser: true,
-                            placeHolder: const SizedBox(),
+  Widget build(BuildContext context) => SafeArea(
+    child: WillPopScope(
+        onWillPop: () async {
+          showDialog(
+            context: context,
+            builder: (context) => ConfirmDialog(
+              question: Strings.exitQuestion,
+              confirmTitle: Strings.exit,
+              cancelTitle: Strings.cancel,
+              onConfirmClicked: () {
+                SystemNavigator.pop();
+              },
+              onCancelClicked: () {
+                context.pop();
+              },
+            ),
+          );
+          return false;
+        },
+        child: Scaffold(
+          appBar: const LogoAppBar(),
+          backgroundColor: AppColors.background,
+          body: UserStatusChecker(
+            child: BlocProvider<HomeScreenCubit>(
+              create: (_) => sl<HomeScreenCubit>()..getData(),
+              child: BlocConsumer<HomeScreenCubit, HomeScreenState>(listener: (context, state) {
+                if (state is HomeScreenFailed) {
+                  showToast(title: state.message, context: context, toastType: ToastType.error);
+                }
+              }, builder: (context, state) {
+                if (state is HomeScreenLoaded) {
+                  final data = state.data;
+                  return Column(
+                    children: [
+                      Container(
+                        color: AppColors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                        child: Column(
+                          children: [
+                            UserAccountingChecker(
+                              updateUser: true,
+                              placeHolder: const SizedBox(),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: BalanceWidget(
+                                          title: Strings.remainingRials,
+                                          balance: data.rialBalance.numberFormat(),
+                                          icon: SvgPicture.asset("assets/images/gold_price.svg",
+                                              width: Dimens.standard32, fit: BoxFit.fitWidth),
+                                          iconAlign: IconAlign.left,
+                                        ),
+                                      ),
+                                      const SizedBox(width: Dimens.standardX),
+                                      Expanded(
+                                        child: BalanceWidget(
+                                          title: Strings.remainingGold,
+                                          balance: data.goldBalance.numberFormat(),
+                                          icon: Image.asset("assets/images/iran_flagg.png", width: Dimens.standard32),
+                                          iconAlign: IconAlign.right,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: Dimens.standard4),
+                            BuyAndSellPrices(
+                              buyPrice: data.buyPrice,
+                              sellPrice: data.sellPrice,
+                            ),
+                            const SizedBox(height: Dimens.standard16),
+                          ],
+                        ),
+                      ),
+                      Divider(height: Dimens.standard1, color: AppColors.nature.shade50),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(Dimens.standard16),
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
+                                AppText(
+                                  Strings.tradeCondition,
+                                  textStyle: AppTextStyle.subTitle3,
+                                ),
+                                const SizedBox(height: Dimens.standard8),
+                                KeyValueWidget(
+                                  title: Strings.goldOns,
+                                  value: "${data.goldOns} ${Strings.toman}",
+                                ),
+                                const SizedBox(height: Dimens.standard8),
+                                KeyValueWidget(
+                                  title: Strings.goldGheramPrice,
+                                  value: "${data.goldGheram.numberFormat()} ${Strings.toman}",
+                                ),
+                                const SizedBox(height: Dimens.standard8),
+                                KeyValueWidget(
+                                  title: Strings.worldGoldPrice,
+                                  value: "${data.goldWorld.numberFormat()} ${Strings.toman}",
+                                ),
+                                const SizedBox(height: Dimens.standard8),
+                                KeyValueWidget(
+                                  title: Strings.weekMaxPrice,
+                                  value: "${data.todayHighPrice.numberFormat()} ${Strings.toman}",
+                                ),
+                                const SizedBox(height: Dimens.standard8),
+                                KeyValueWidget(
+                                  title: Strings.weekMinPrice,
+                                  value: "${data.todayLowPrice.numberFormat()} ${Strings.toman}",
+                                ),
+                                const SizedBox(height: Dimens.standard20),
+                                AppText(
+                                  Strings.priceChangesTitle,
+                                  textStyle: AppTextStyle.subTitle3,
+                                ),
+                                const SizedBox(height: Dimens.standard12),
                                 Row(
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Expanded(
-                                      child: BalanceWidget(
-                                        title: Strings.remainingRials,
-                                        balance: data.rialBalance.numberFormat(),
-                                        icon: SvgPicture.asset("assets/images/gold_price.svg",
-                                            width: Dimens.standard32, fit: BoxFit.fitWidth),
-                                        iconAlign: IconAlign.left,
+                                      flex: 1,
+                                      child: AppText(
+                                        Strings.sellPrice,
+                                        textAlign: TextAlign.end,
+                                        textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
                                       ),
                                     ),
-                                    const SizedBox(width: Dimens.standardX),
                                     Expanded(
-                                      child: BalanceWidget(
-                                        title: Strings.remainingGold,
-                                        balance: data.goldBalance.numberFormat(),
-                                        icon: Image.asset("assets/images/iran_flagg.png", width: Dimens.standard32),
-                                        iconAlign: IconAlign.right,
+                                      flex: 1,
+                                      child: AppText(
+                                        Strings.sellPrice,
+                                        textAlign: TextAlign.center,
+                                        textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: AppText(
+                                        Strings.sellPrice,
+                                        textAlign: TextAlign.start,
+                                        textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
                                       ),
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: Dimens.standard8),
+                                Divider(color: AppColors.nature.shade50),
+                                const SizedBox(height: Dimens.standard14),
+                                if (data.priceHistories != null) PricesList(prices: data.priceHistories!)
                               ],
                             ),
                           ),
-                          const SizedBox(height: Dimens.standard4),
-                          BuyAndSellPrices(
-                            buyPrice: data.buyPrice,
-                            sellPrice: data.sellPrice,
-                          ),
-                          const SizedBox(height: Dimens.standard16),
-                        ],
-                      ),
-                    ),
-                    Divider(height: Dimens.standard1, color: AppColors.nature.shade50),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(Dimens.standard16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              AppText(
-                                Strings.tradeCondition,
-                                textStyle: AppTextStyle.subTitle3,
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              KeyValueWidget(
-                                title: Strings.goldOns,
-                                value: "${data.goldOns} ${Strings.toman}",
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              KeyValueWidget(
-                                title: Strings.goldGheramPrice,
-                                value: "${data.goldGheram.numberFormat()} ${Strings.toman}",
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              KeyValueWidget(
-                                title: Strings.worldGoldPrice,
-                                value: "${data.goldWorld.numberFormat()} ${Strings.toman}",
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              KeyValueWidget(
-                                title: Strings.weekMaxPrice,
-                                value: "${data.todayHighPrice.numberFormat()} ${Strings.toman}",
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              KeyValueWidget(
-                                title: Strings.weekMinPrice,
-                                value: "${data.todayLowPrice.numberFormat()} ${Strings.toman}",
-                              ),
-                              const SizedBox(height: Dimens.standard20),
-                              AppText(
-                                Strings.priceChangesTitle,
-                                textStyle: AppTextStyle.subTitle3,
-                              ),
-                              const SizedBox(height: Dimens.standard12),
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: AppText(
-                                      Strings.sellPrice,
-                                      textAlign: TextAlign.end,
-                                      textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: AppText(
-                                      Strings.sellPrice,
-                                      textAlign: TextAlign.center,
-                                      textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: AppText(
-                                      Strings.sellPrice,
-                                      textAlign: TextAlign.start,
-                                      textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: Dimens.standard8),
-                              Divider(color: AppColors.nature.shade50),
-                              const SizedBox(height: Dimens.standard14),
-                              if (data.priceHistories != null) PricesList(prices: data.priceHistories!)
-                            ],
-                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
+              }),
+            ),
           ),
-        ),
-      ));
+        )),
+  );
 }
 
 class KeyValueWidget extends StatelessWidget {
