@@ -1,3 +1,4 @@
+import 'package:deniz_gold/data/dtos/balance_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
 import 'package:deniz_gold/core/network/api_helper.dart';
@@ -75,6 +76,8 @@ abstract class AppDataSource {
   });
 
   Future<AppConfigDTO> getConfig();
+
+  Future<BalanceDTO> getBalance();
 
   Future<HomeScreenDataDTO> getHomeData();
 
@@ -275,6 +278,13 @@ class AppDataSourceImpl extends AppDataSource {
   Future<AppConfigDTO> getConfig() async {
     final response = await _apiHelper.request('$apiPath/panel/get-config');
     final result = AppConfigDTO.fromJson(response.dataAsMap());
+    return result;
+  }
+
+  @override
+  Future<BalanceDTO> getBalance() async {
+    final response = await _apiHelper.request('$apiPath/panel/get-balance');
+    final result = BalanceDTO.fromJson(response.dataAsMap());
     return result;
   }
 

@@ -7,6 +7,7 @@ import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
+import 'package:deniz_gold/presentation/pages/transactions_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
@@ -32,8 +33,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
+  Widget build(BuildContext context) => SafeArea(
+    child: WillPopScope(
       onWillPop: () async {
         context.goNamed(HomeScreen.route.name!);
         return false;
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         textStyle: AppTextStyle.subTitle4,
                       ),
                       AppText(
-                        "replace me with phone",
+                        state.appConfig.user.mobile,
                         textStyle: AppTextStyle.body5,
                         color: AppColors.nature.shade600,
                       ),
@@ -78,19 +79,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           children: [
                             Expanded(
                                 child: Column(
-                              children: [
-                                AppText(
-                                  Strings.remainingGold,
-                                  textStyle: AppTextStyle.body5,
-                                  color: AppColors.nature.shade600,
-                                ),
-                                AppText(
-                                  "replace me",
-                                  textStyle: AppTextStyle.body4,
-                                  color: AppColors.nature.shade800,
-                                )
-                              ],
-                            )),
+                                  children: [
+                                    AppText(
+                                      Strings.remainingGold,
+                                      textStyle: AppTextStyle.body5,
+                                      color: AppColors.nature.shade600,
+                                    ),
+                                    AppText(
+                                      state.goldBalance,
+                                      textStyle: AppTextStyle.body4,
+                                      color: AppColors.nature.shade800,
+                                    )
+                                  ],
+                                )),
                             SizedBox(
                               height: Dimens.standard32,
                               child: VerticalDivider(
@@ -99,19 +100,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Expanded(
                                 child: Column(
-                              children: [
-                                AppText(
-                                  Strings.remainingCash,
-                                  textStyle: AppTextStyle.body5,
-                                  color: AppColors.nature.shade600,
-                                ),
-                                AppText(
-                                  "replace me",
-                                  textStyle: AppTextStyle.body4,
-                                  color: AppColors.nature.shade800,
-                                )
-                              ],
-                            ))
+                                  children: [
+                                    AppText(
+                                      Strings.remainingCash,
+                                      textStyle: AppTextStyle.body5,
+                                      color: AppColors.nature.shade600,
+                                    ),
+                                    AppText(
+                                      state.rialBalance,
+                                      textStyle: AppTextStyle.body4,
+                                      color: AppColors.nature.shade800,
+                                    )
+                                  ],
+                                ))
                           ],
                         ),
                       )
@@ -149,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SettingsItem(
                             icon: "assets/images/repeat_rotate.svg",
                             title: Strings.transactions,
-                            onTap: () {},
+                            onTap: () => context.pushNamed(TransactionsScreen.route.name!),
                           ),
                           const SizedBox(height: Dimens.standard24),
                           Align(
@@ -200,8 +201,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class SettingsItem extends StatelessWidget {

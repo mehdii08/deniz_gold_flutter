@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:deniz_gold/core/errors/failures.dart';
 import 'package:deniz_gold/data/data_sources/app_data_source.dart';
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
+import 'package:deniz_gold/data/dtos/balance_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
@@ -190,6 +191,15 @@ class AppRepositoryImpl extends AppRepository {
   Future<Either<Failure, AppConfigDTO>> getConfig() async {
     try {
       return Right(await dataSource.getConfig());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BalanceDTO>> getBalance() async {
+    try {
+      return Right(await dataSource.getBalance());
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

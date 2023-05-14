@@ -14,16 +14,38 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final AppRepository appRepository;
   final SharedPreferencesRepository sharedPreferences;
+  String _goldBalance = "";
+  String _rialBalance = "";
 
   ProfileCubit({
     required this.appRepository,
     required this.sharedPreferences,
-  }) : super(const ProfileInitial());
+  }) : super(const ProfileInitial()){
+    getBalance();
+  }
+
+  getBalance() async {
+    final result = await appRepository.getBalance();
+    result.fold(
+      (l) {},
+      (r) async {
+        _goldBalance = r.goldBalance;
+        _rialBalance = r.rialBalance;
+        if (state is ProfileSuccess) {//todo its not emitted
+          emit((state as ProfileSuccess).copy(goldBalance: _goldBalance, rialBalance: _rialBalance));
+        }
+      },
+    );
+  }
 
   updateData() {
     final String appConfigString = sharedPreferences.getString(appConfigKey);
     if (appConfigString.isNotEmpty) {
-      emit(ProfileSuccess(appConfig: AppConfigDTO.fromJson(jsonDecode(appConfigString))));
+      emit(ProfileSuccess(
+        appConfig: AppConfigDTO.fromJson(jsonDecode(appConfigString)),
+        rialBalance: _rialBalance,
+        goldBalance: _goldBalance,
+      ));
     }
   }
 }

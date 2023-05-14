@@ -5,6 +5,7 @@ class UserDTO extends Equatable {
   final int statusCode;
   final String statusText;
   final String nationalCode;
+  final String mobile;
   final bool accountingStatus;
 
   const UserDTO({
@@ -12,6 +13,7 @@ class UserDTO extends Equatable {
     required this.statusCode,
     required this.statusText,
     required this.nationalCode,
+    required this.mobile,
     required this.accountingStatus,
   });
 
@@ -20,6 +22,7 @@ class UserDTO extends Equatable {
         statusCode: json['status_code'],
         statusText: json['status_text'],
         nationalCode: json['national_code'],
+        mobile: json['mobile'],
         accountingStatus: json['accounting_status'],
       );
 
@@ -28,19 +31,19 @@ class UserDTO extends Equatable {
         'status_code': statusCode,
         'status_text': statusText,
         'national_code': nationalCode,
+        'mobile': mobile,
         'accounting_status': accountingStatus,
       };
 
   UserDTO update({String? newName, String? newNationalCode}) => UserDTO(
         name: (newName != null && newName.isNotEmpty) ? newName : name,
-        nationalCode: (newNationalCode != null && newNationalCode.isNotEmpty)
-            ? newNationalCode
-            : nationalCode,
+        nationalCode: (newNationalCode != null && newNationalCode.isNotEmpty) ? newNationalCode : nationalCode,
         statusCode: statusCode,
         statusText: statusText,
+        mobile: mobile,
         accountingStatus: accountingStatus,
       );
 
   @override
-  List<Object?> get props => [name, statusCode, statusText];
+  List<Object?> get props => [name, statusCode, statusText, mobile, nationalCode, accountingStatus];
 }

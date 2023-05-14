@@ -1,8 +1,9 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/blocs/transactions/transactions_cubit.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
 import 'package:deniz_gold/presentation/widget/filter_item.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
-import 'package:deniz_gold/presentation/widget/trade_item.dart';
+import 'package:deniz_gold/presentation/widget/transaction_item.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,44 +14,27 @@ import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 
-class TradesScreen extends StatefulWidget {
-  const TradesScreen({Key? key}) : super(key: key);
+class TransactionsScreen extends StatefulWidget {
+  const TransactionsScreen({Key? key}) : super(key: key);
 
   static final route = GoRoute(
-    name: 'TradesScreen',
-    path: '/trades',
-    builder: (_, __) => const TradesScreen(),
+    name: 'TransactionsScreen',
+    path: '/transactions',
+    builder: (_, __) => const TransactionsScreen(),
   );
 
   @override
-  State<TradesScreen> createState() => _TradesScreenState();
+  State<TransactionsScreen> createState() => _TransactionsScreenState();
 }
 
-class _TradesScreenState extends State<TradesScreen> {
+class _TransactionsScreenState extends State<TransactionsScreen> {
   final scrollController = ScrollController();
-  final cubit = sl<TradesCubit>();
+  final cubit = sl<TransactionsCubit>();
 
   @override
   void initState() {
     super.initState();
     cubit.getData();
-    scrollController.addListener(_onScrollControllerChanged);
-  }
-
-  @override
-  void dispose() {
-    scrollController.removeListener(_onScrollControllerChanged);
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  _onScrollControllerChanged() {
-    if (scrollController.position.maxScrollExtent - scrollController.position.pixels < 100) {
-      if (cubit.state is TradesLoading) {
-        return;
-      }
-      cubit.getData();
-    }
   }
 
   @override
@@ -74,17 +58,17 @@ class _TradesScreenState extends State<TradesScreen> {
         },
         child: Scaffold(
           backgroundColor: AppColors.background,
-          appBar: const TitleAppBar(title: Strings.myTrades),
-          body: BlocProvider<TradesCubit>(
+          appBar: const TitleAppBar(title: Strings.transactions),
+          body: BlocProvider<TransactionsCubit>(
             create: (_) => cubit,
-            child: BlocConsumer<TradesCubit, TradesState>(
+            child: BlocConsumer<TransactionsCubit, TransactionsState>(
               listener: (context, state) {
-                if (state is TradesFailed) {
+                if (state is TransactionsFailed) {
                   showToast(title: state.message, context: context, toastType: ToastType.error);
                 }
               },
               builder: (context, state) {
-                if (state is TradesLoading && state.result.items.isEmpty) {
+                if (state is TransactionsLoading) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -98,7 +82,7 @@ class _TradesScreenState extends State<TradesScreen> {
                     child: Column(
                       children: [
                         const SizedBox(height: Dimens.standard2X),
-                        if (state is TradesLoaded && state.result.items.isEmpty) ...[
+                        if (state is TradesLoaded && state.transactions.isEmpty) ...[
                           const SizedBox(height: Dimens.standard8X),
                           EmptyView(
                             text: Strings.tradesListIsEmpty,
@@ -127,13 +111,8 @@ class _TradesScreenState extends State<TradesScreen> {
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == state.result.items.length) {
-                                return const SizedBox(height: 24, width: 24, child: CircularProgressIndicator());
-                              }
-                              return TradeItem(trade: state.result.items[index]);
-                            },
+                            itemCount: state.transactions.length,
+                            itemBuilder: (context, index) => TransactionItem(transaction: state.transactions[index]),
                           )
                         ],
                         const SizedBox(height: 130),

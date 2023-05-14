@@ -20,7 +20,7 @@ import 'data/repositories/app_repository_impl.dart' as _i14;
 import 'data/repositories/shared_preferences_repository_impl.dart' as _i7;
 import 'domain/repositories/app_repository.dart' as _i13;
 import 'domain/repositories/shared_preferences_repository.dart' as _i6;
-import 'presentation/blocs/app_config/app_config_cubit.dart' as _i26;
+import 'presentation/blocs/app_config/app_config_cubit.dart' as _i27;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i10;
 import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i15;
 import 'presentation/blocs/forgetPassword/forget_password_cubit.dart' as _i16;
@@ -32,8 +32,9 @@ import 'presentation/blocs/reset_password/reset_password_cubit.dart' as _i21;
 import 'presentation/blocs/splash/splash_cubit.dart' as _i22;
 import 'presentation/blocs/trade/trade_cubit.dart' as _i23;
 import 'presentation/blocs/trades/trades_cubit.dart' as _i24;
-import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i25;
-import 'service_locator.dart' as _i27; // ignore_for_file: unnecessary_lambdas
+import 'presentation/blocs/transactions/transactions_cubit.dart' as _i25;
+import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i26;
+import 'service_locator.dart' as _i28; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -108,11 +109,13 @@ Future<_i1.GetIt> $initGetIt(
       ));
   gh.factory<_i24.TradesCubit>(
       () => _i24.TradesCubit(get<_i13.AppRepository>()));
-  gh.factory<_i25.VerifyMobileCubit>(() => _i25.VerifyMobileCubit(
+  gh.factory<_i25.TransactionsCubit>(
+      () => _i25.TransactionsCubit(get<_i13.AppRepository>()));
+  gh.factory<_i26.VerifyMobileCubit>(() => _i26.VerifyMobileCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
       ));
-  gh.lazySingleton<_i26.AppConfigCubit>(() => _i26.AppConfigCubit(
+  gh.lazySingleton<_i27.AppConfigCubit>(() => _i27.AppConfigCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
         appNotificationEvents: get<_i9.Stream<_i8.AppNotificationEvent>>(),
@@ -120,4 +123,4 @@ Future<_i1.GetIt> $initGetIt(
   return get;
 }
 
-class _$RegisterModule extends _i27.RegisterModule {}
+class _$RegisterModule extends _i28.RegisterModule {}
