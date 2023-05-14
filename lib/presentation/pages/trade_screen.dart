@@ -27,13 +27,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class TradeScreen extends StatefulWidget {
-  const TradeScreen({Key? key}) : super(key: key);
+  final bool isSell;
+
+  const TradeScreen({
+    Key? key,
+    required this.isSell,
+  }) : super(key: key);
 
   static final route = GoRoute(
     name: 'TradeScreen',
     path: '/trade',
     builder: (_, state) {
-      return TradeScreen(key: ValueKey(DateTime.now()));
+      final isSell = state.queryParams['is_sell'] == "true";
+      return TradeScreen(key: ValueKey(DateTime.now()), isSell: isSell);
     },
   );
 
@@ -46,13 +52,14 @@ class _TradeScreenState extends State<TradeScreen> {
   final cubit = sl<HomeScreenCubit>()..getData();
   final isTomanNotifier = ValueNotifier<bool>(false);
   final canSubmitNotifier = ValueNotifier<bool>(false);
-  final tradeTypeValueNotifier = ValueNotifier<TradeType>(TradeType.buy);
+  late ValueNotifier<TradeType> tradeTypeValueNotifier;
   final textController = TextEditingController(text: "0");
   final focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+    tradeTypeValueNotifier = ValueNotifier<TradeType>(widget.isSell ? TradeType.sell : TradeType.buy);
     cubit.getData();
   }
 

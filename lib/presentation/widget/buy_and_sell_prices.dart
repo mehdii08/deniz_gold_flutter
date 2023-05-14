@@ -1,9 +1,10 @@
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
-import 'package:deniz_gold/presentation/widget/toast.dart';
+import 'package:deniz_gold/presentation/pages/trade_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/price_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class BuyAndSellPrices extends StatelessWidget {
   final String buyPrice;
@@ -22,8 +23,7 @@ class BuyAndSellPrices extends StatelessWidget {
         Flexible(
           flex: 1,
           child: GestureDetector(
-            // onTap: () => context.goNamed(TradeScreen.route.name!, queryParams: {'is_sell' : "true"}),
-            onTap: () => showToast(title: 'navigate to TradeScreen 1', context: context),
+            onTap: () => context.goNamed(TradeScreen.route.name!, queryParams: {'is_sell' : "true"}),
             child: PriceWidget(
               title: Strings.sellPriceMesgal,
               price: sellPrice,
@@ -36,8 +36,7 @@ class BuyAndSellPrices extends StatelessWidget {
         Flexible(
           flex: 1,
           child: GestureDetector(
-            // onTap: () => context.goNamed(TradeScreen.route.name!, queryParams: {'is_sell' : "false"}),
-            onTap: () => showToast(title: 'navigate to TradeScreen 2', context: context),
+            onTap: () => context.goNamed(TradeScreen.route.name!, queryParams: {'is_sell' : "false"}),
             child: PriceWidget(
               title: Strings.buyPrice,
               price: buyPrice,
