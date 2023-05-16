@@ -70,20 +70,17 @@ class _TradeScreenState extends State<TradeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async {
-          context.goNamed(HomeScreen.route.name!);
-          return false;
-        },
-        child: Scaffold(
-          backgroundColor: AppColors.background,
-          appBar: const LogoAppBar(),
-          body: UserStatusChecker(
-            updateUser: true,
-            checkTrade: true,
-            child: MultiBlocProvider(
+  Widget build(BuildContext context) => UserStatusChecker(
+      child: SafeArea(
+        child: WillPopScope(
+          onWillPop: () async {
+            context.goNamed(HomeScreen.route.name!);
+            return false;
+          },
+          child: Scaffold(
+            backgroundColor: AppColors.background,
+            appBar: const LogoAppBar(),
+            body: MultiBlocProvider(
                 providers: [
                   BlocProvider<HomeScreenCubit>(
                     create: (_) => cubit,
@@ -296,7 +293,6 @@ class _TradeScreenState extends State<TradeScreen> {
         ),
       ),
     );
-  }
 
   bool isValidNumInput({required String value}) {
     try {

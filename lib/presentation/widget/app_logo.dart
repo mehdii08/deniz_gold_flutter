@@ -4,7 +4,12 @@ import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:flutter/material.dart';
 
 class AppLogo extends StatelessWidget {
-  const AppLogo({Key? key}) : super(key: key);
+  final bool showTitle;
+
+  const AppLogo({
+    Key? key,
+    this.showTitle = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +20,11 @@ class AppLogo extends StatelessWidget {
           'assets/images/logo.png',
           fit: BoxFit.none,
         ),
-        AppText(
-          Strings.appName,
-          textStyle: AppTextStyle.subTitle3,
-        )
+        if (showTitle)
+          AppText(
+            Strings.appName,
+            textStyle: AppTextStyle.subTitle3,
+          )
       ],
     );
   }

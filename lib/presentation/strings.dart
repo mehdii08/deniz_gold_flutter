@@ -34,6 +34,8 @@ class Strings {
   static const registerTitle = "ثبت اطلاعات شخصی";
   static const atLeast6Chars = "حداقل ۶ کاراکتر";
   static const appName = "آبشده فروشی دنیز";
+  static const welcomeToDeniz = "به آبشده فروشی دنیز خوش آمدید.";
+  static const welcomeToDenizDescription = "ثبت‌نام شما با موفقیت ثبت شد و در حال بررسی توسط مدیر است، پس از تایید حساب شما فعال خواهد شد.";
   static const enterMobile = "شماره موبایل خود را وارد کنید";
   static const close = "بستن";
   static const success = "موفقیت";

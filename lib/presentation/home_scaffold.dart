@@ -5,6 +5,7 @@ import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/profile_screen.dart';
 import 'package:deniz_gold/presentation/pages/trade_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
+import 'package:deniz_gold/presentation/widget/UserStatusChecker.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,17 +25,19 @@ class HomeScaffold extends StatefulWidget {
 
 class _HomeScaffoldState extends State<HomeScaffold> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Stack(
-          children: [
-            widget.child,
-            const Align(
-              alignment: Alignment.bottomCenter,
-              child: AppBottomBar(),
-            )
-          ],
+  Widget build(BuildContext context) => UserStatusChecker(
+    child: Scaffold(
+          body: Stack(
+            children: [
+              widget.child,
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: AppBottomBar(),
+              )
+            ],
+          ),
         ),
-      );
+  );
 }
 
 class AppBottomBar extends StatelessWidget {

@@ -1,3 +1,11 @@
+import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/widget/app_button.dart';
+import 'package:deniz_gold/presentation/widget/app_logo.dart';
+import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
@@ -25,31 +33,90 @@ class UserStatusChecker extends StatefulWidget {
 class _UserStatusCheckerState extends State<UserStatusChecker> {
   @override
   Widget build(BuildContext context) {
-    if(widget.updateUser){
+    if (widget.updateUser) {
       context.read<AppConfigCubit>().getConfig();
     }
     return BlocConsumer<AppConfigCubit, AppConfigState>(
-      listener: (context, state){
-        if(state.appConfig == null && context.read<AuthenticationCubit>().isAuthenticated){
+      listener: (context, state) {
+        if (state.appConfig == null && context.read<AuthenticationCubit>().isAuthenticated) {
           context.read<AppConfigCubit>().getConfig();
         }
       },
-      builder: (context, state){
-        if(state.appConfig == null){
+      builder: (context, state) {
+        if (state.appConfig == null) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if(state.appConfig?.user.statusCode == 0){
-          return widget.placeHolder ?? Center(
-            child: Text(Strings.activationWarning,textAlign: TextAlign.center, style: Theme.of(context).textTheme.labelLarge,),
-          );
-        }else if(widget.checkTrade && state.appConfig?.botStatus == "0"){
-          return widget.placeHolder ?? Center(
-            child: Text(Strings.tradeDisabledWarning,textAlign: TextAlign.center, style: Theme.of(context).textTheme.labelLarge,),
-          );
+        } else if (state.appConfig?.user.statusCode == 0) {
+          return widget.placeHolder ?? const DeActiveUserScreen();
+        } else if (widget.checkTrade && state.appConfig?.botStatus == "0") {
+          return widget.placeHolder ??
+              Center(
+                child: Text(
+                  Strings.tradeDisabledWarning,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              );
         }
         return widget.child;
       },
     );
   }
+}
+
+class DeActiveUserScreen extends StatelessWidget {
+  const DeActiveUserScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+        child: Scaffold(
+          appBar: const LogoAppBar(showLogo: false, backgroundColor: AppColors.transparent),
+          body: Stack(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  'assets/images/splash_bg.png',
+                  fit: BoxFit.fill,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard32),
+                  decoration: BoxDecoration(
+                      color: AppColors.transparentWhite,
+                      borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard160))),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const AppLogo(showTitle: false),
+                      const SizedBox(height: Dimens.standard12),
+                      AppText(
+                        Strings.welcomeToDeniz,
+                        textStyle: AppTextStyle.subTitle3,
+                      ),
+                      const SizedBox(height: Dimens.standard8),
+                      AppText(
+                        Strings.welcomeToDenizDescription,
+                        textStyle: AppTextStyle.body4,
+                        color: AppColors.nature.shade700,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: Dimens.standard24),
+                      AppButton(
+                        text: Strings.callToSupport,
+                        svgIcon: 'assets/images/support.svg',
+                        onPressed: () => showSupportBottomSheet(context: context),
+                      ),
+                      const SizedBox(height: Dimens.standard160),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
 }

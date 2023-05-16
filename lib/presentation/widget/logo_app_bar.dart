@@ -12,13 +12,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 const toolbarHeight = 74.0;
 
 class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LogoAppBar({Key? key}) : super(key: key);
+  final Color backgroundColor;
+  final bool showLogo;
+
+  const LogoAppBar({
+    Key? key,
+    this.backgroundColor = AppColors.white,
+    this.showLogo = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AppConfigCubit, AppConfigState>(
         builder: (context, state) => Container(
           width: double.infinity,
-          color: AppColors.white,
+          color: backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16, vertical: Dimens.standard6),
           child: Stack(
             children: [
@@ -32,16 +39,20 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ],
                 ),
               ),
-              Align(
-                  alignment: Alignment.center,
-                  child: state.appConfig != null
-                      ? Image.network(
-                          state.appConfig!.logo,
-                          width: Dimens.standard80,
-                          height: Dimens.standard53,
-                          errorBuilder : (context, _, __) => AppText(Strings.appName, textStyle: AppTextStyle.title4,),
-                        )
-                      : const SizedBox()),
+              if (showLogo)
+                Align(
+                    alignment: Alignment.center,
+                    child: state.appConfig != null
+                        ? Image.network(
+                            state.appConfig!.logo,
+                            width: Dimens.standard80,
+                            height: Dimens.standard53,
+                            errorBuilder: (context, _, __) => AppText(
+                              Strings.appName,
+                              textStyle: AppTextStyle.title4,
+                            ),
+                          )
+                        : const SizedBox()),
             ],
           ),
         ),

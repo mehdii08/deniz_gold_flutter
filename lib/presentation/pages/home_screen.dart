@@ -55,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
           );
           return false;
         },
-        child: Scaffold(
-          appBar: const LogoAppBar(),
-          backgroundColor: AppColors.background,
-          body: UserStatusChecker(
-            child: BlocProvider<HomeScreenCubit>(
+        child: UserStatusChecker(
+          child: Scaffold(
+            appBar: const LogoAppBar(),
+            backgroundColor: AppColors.background,
+            body: BlocProvider<HomeScreenCubit>(
               create: (_) => sl<HomeScreenCubit>()..getData(),
               child: BlocConsumer<HomeScreenCubit, HomeScreenState>(listener: (context, state) {
                 if (state is HomeScreenFailed) {

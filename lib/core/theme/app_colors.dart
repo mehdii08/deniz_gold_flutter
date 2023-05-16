@@ -68,4 +68,6 @@ class AppColors {
   static const MaterialColor transparent = MaterialColor(0x00000000, {
     500: Color(0x00000000),
   });
+
+  static Color transparentWhite = const Color(0x80FFFFFF);
 }
