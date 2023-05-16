@@ -141,15 +141,9 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, String>> updateProfile({
-    required String? name,
-    required String? nationalCode,
-  }) async {
+  Future<Either<Failure, String>> updateName({required String name}) async {
     try {
-      return Right(await dataSource.updateProfile(
-        name: name,
-        nationalCode: nationalCode,
-      ));
+      return Right(await dataSource.updateName(name: name));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

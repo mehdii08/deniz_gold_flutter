@@ -4,6 +4,7 @@ import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/profile/profile_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
@@ -12,6 +13,7 @@ import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
+import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -165,13 +167,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SettingsItem(
                             icon: "assets/images/user_nav_liner.svg",
                             title: Strings.accountInfo,
-                            onTap: () {},
+                            onTap: () => context.pushNamed(AccountInfoScreen.route.name!),
                           ),
                           const SizedBox(height: Dimens.standard16),
                           SettingsItem(
                             icon: "assets/images/key.svg",
                             title: Strings.changePassword,
-                            onTap: () {},
+                            onTap: () => showPasswordEditBottomSheet(context: context),
                           ),
                           const SizedBox(height: Dimens.standard16),
                           const Divider(

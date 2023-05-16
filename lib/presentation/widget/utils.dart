@@ -7,13 +7,15 @@ import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/bottom_sheet_header.dart';
+import 'package:deniz_gold/presentation/widget/edit_name_sheet_content.dart';
+import 'package:deniz_gold/presentation/widget/edit_password_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/support_content.dart';
 import 'package:deniz_gold/presentation/widget/trade_calculate_data_bottom_sheet_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-showSupportBottomSheet(BuildContext context) {
+showSupportBottomSheet({required BuildContext context}) {
   final appConfig = context.read<AuthenticationCubit>().getLocalAppConfig();
   if (appConfig != null) {
     showModalBottomSheet(
@@ -24,7 +26,7 @@ showSupportBottomSheet(BuildContext context) {
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
       builder: (context) => BottomSheetHeader(
         title: Strings.callToSupport,
-        child: SupportContent(appConfig: appConfig),
+        child: SupportSheetContent(appConfig: appConfig),
       ),
     );
   }
@@ -117,6 +119,35 @@ showTradeCalculateDataBottomSheet({
         onTradeSubmitted: onTradeSubmitted,
         tradeCubit: tradeCubit,
       ),
+    ),
+  );
+}
+
+showNameEditBottomSheet({required BuildContext context, required String name, required VoidCallback onNameEdited}) {
+  showModalBottomSheet(
+    context: context,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+    builder: (context) => BottomSheetHeader(
+      title: Strings.editFullName,
+      child: EditNameSheetContent(
+        name: name,
+        onNameEdited: onNameEdited,
+      ),
+    ),
+  );
+}
+
+showPasswordEditBottomSheet({required BuildContext context}) {
+  showModalBottomSheet(
+    context: context,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+    builder: (context) => const BottomSheetHeader(
+      title: Strings.editPassword,
+      child: EditPasswordSheetContent(),
     ),
   );
 }

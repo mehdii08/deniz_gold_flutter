@@ -11,11 +11,16 @@ class Strings {
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
   static const home = "خانه";
+  static const edit = "ویرایش";
   static const all = "همه";
+  static const enterFullName = "نام و نام خانوادگی خود را وارد کنید";
   static const settings = "تنظیمات";
   static const tradeGold = "خرید و فروش آبشده";
+  static const editPassword = "تغییر رمز عبور";
   static const getVerifyCode = "دریافت کد تایید";
   static const mobile = "شماره موبایل";
+  static const enterYourCurrentPassword = "رمز عبور فعلی را وارد کنید";
+  static const enterYourNewPassword = "رمز عبور جدید را وارد کنید";
   static const eachGeramPrice = "قیمت هر گرم";
   static const tradeCondition = "وضعیت بازار";
   static const tradeType = "نوع معامله";
@@ -167,6 +172,7 @@ class Strings {
   static const toman = " تومان";
   static const sellGold = " فروش آبشده";
   static const confirmAndSubmitOrder = " تایید و ثبت سفارش";
+  static const confirmAndSubmitChanges = " تایید و ذخیره تغییرات";
   static const buyGold = " خرید آبشده";
   static const dollar = "دلار";
   static const understand = "متوجه شدم";

@@ -605,7 +605,7 @@ class TradeAnswerDialog extends StatelessWidget {
             AppButton(
               onPressed: () {
                 context.pop();
-                showSupportBottomSheet(context);
+                showSupportBottomSheet(context : context);
               },
               text: Strings.callToSupport,
               svgIcon: 'assets/images/support.svg',

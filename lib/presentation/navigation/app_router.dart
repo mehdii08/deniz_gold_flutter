@@ -1,4 +1,5 @@
 import 'package:deniz_gold/presentation/home_scaffold.dart';
+import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/check_mobile_screen.dart';
 import 'package:deniz_gold/presentation/pages/forget_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
@@ -54,6 +55,7 @@ final _authenticationGuardedRoutes = [
       TransactionsScreen.route,
       TradesScreen.route,
       ProfileScreen.route,
+      AccountInfoScreen.route,
       // ChangePasswordScreen.route,
       // UpdateProfileScreen.route,
       // HavaleScreen.route,

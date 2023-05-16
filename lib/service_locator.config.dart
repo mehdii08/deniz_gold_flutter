@@ -20,7 +20,8 @@ import 'data/repositories/app_repository_impl.dart' as _i14;
 import 'data/repositories/shared_preferences_repository_impl.dart' as _i7;
 import 'domain/repositories/app_repository.dart' as _i13;
 import 'domain/repositories/shared_preferences_repository.dart' as _i6;
-import 'presentation/blocs/app_config/app_config_cubit.dart' as _i27;
+import 'presentation/blocs/account_info/account_info_cubit.dart' as _i27;
+import 'presentation/blocs/app_config/app_config_cubit.dart' as _i28;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i10;
 import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i15;
 import 'presentation/blocs/forgetPassword/forget_password_cubit.dart' as _i16;
@@ -34,7 +35,7 @@ import 'presentation/blocs/trade/trade_cubit.dart' as _i23;
 import 'presentation/blocs/trades/trades_cubit.dart' as _i24;
 import 'presentation/blocs/transactions/transactions_cubit.dart' as _i25;
 import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i26;
-import 'service_locator.dart' as _i28; // ignore_for_file: unnecessary_lambdas
+import 'service_locator.dart' as _i29; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -115,7 +116,9 @@ Future<_i1.GetIt> $initGetIt(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
       ));
-  gh.lazySingleton<_i27.AppConfigCubit>(() => _i27.AppConfigCubit(
+  gh.factory<_i27.AccountInfoCubit>(
+      () => _i27.AccountInfoCubit(get<_i13.AppRepository>()));
+  gh.lazySingleton<_i28.AppConfigCubit>(() => _i28.AppConfigCubit(
         appRepository: get<_i13.AppRepository>(),
         sharedPreferences: get<_i6.SharedPreferencesRepository>(),
         appNotificationEvents: get<_i9.Stream<_i8.AppNotificationEvent>>(),
@@ -123,4 +126,4 @@ Future<_i1.GetIt> $initGetIt(
   return get;
 }
 
-class _$RegisterModule extends _i28.RegisterModule {}
+class _$RegisterModule extends _i29.RegisterModule {}

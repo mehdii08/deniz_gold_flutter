@@ -59,10 +59,7 @@ abstract class AppDataSource {
     required String fcmToken,
   });
 
-  Future<String> updateProfile({
-    required String? name,
-    required String? nationalCode,
-  });
+  Future<String> updateName({required String name});
 
   Future<String> login({
     required String mobile,
@@ -226,17 +223,11 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<String> updateProfile({
-    required String? name,
-    required String? nationalCode,
-  }) async {
+  Future<String> updateName({required String name}) async {
     final response = await _apiHelper.request(
       '$apiPath/panel/profile/edit-profile',
       method: Method.post,
-      data: {
-        if (name != null) 'name': name,
-        if (nationalCode != null) 'national_code': nationalCode,
-      },
+      data: {'name': name},
     );
     return response.data['message'];
   }

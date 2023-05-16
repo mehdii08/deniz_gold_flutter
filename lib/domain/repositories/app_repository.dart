@@ -57,10 +57,7 @@ abstract class AppRepository {
     required String fcmToken,
   });
 
-  Future<Either<Failure, String>> updateProfile({
-    required String? name,
-    required String? nationalCode,
-  });
+  Future<Either<Failure, String>> updateName({required String name});
 
   Future<Either<Failure, String>> login({
     required String mobile,

@@ -10,7 +10,7 @@ class SupportIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => showSupportBottomSheet(context),
+      onTap: () => showSupportBottomSheet(context: context),
       child: Container(
         width: Dimens.standard40,
         height: Dimens.standard40,

@@ -3,3 +3,6 @@ bool isMobile(String value) {
   RegExp regExp = RegExp(pattern);
   return value.isNotEmpty && regExp.hasMatch(value);
 }
+
+
+bool passwordIsValid({required String password}) => password.length >= 6;
