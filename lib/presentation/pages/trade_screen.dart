@@ -411,7 +411,7 @@ _showTradeAnswerWaitingDialog({
 }) {
   showDialog(
     context: context,
-    barrierDismissible: true,
+    barrierDismissible: false,
     builder: (context) {
       return TradeAnswerWaitingDialog(
         data: data,

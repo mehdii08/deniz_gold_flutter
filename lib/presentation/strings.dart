@@ -12,8 +12,10 @@ class Strings {
   static const error = "خطا";
   static const home = "خانه";
   static const edit = "ویرایش";
+  static const havaleNazde = "حواله نزد...؟";
   static const all = "همه";
   static const enterFullName = "نام و نام خانوادگی خود را وارد کنید";
+  static const latestHavales = "حواله‌های ثبت شده اخیر";
   static const settings = "تنظیمات";
   static const tradeGold = "خرید و فروش آبشده";
   static const editPassword = "تغییر رمز عبور";
@@ -57,7 +59,7 @@ class Strings {
   static const tradeDescription3 =
       "ثبت سفارش  خرید یا فروش به منظله انجام معامله نمی باشدو پس از تایید از سمت مدیریت معامله شما ثبت و نهایی خواهد شد";
   static const havalehDescription =
-      "از طریق این فرم می توانید درخواست حواله خود را ثبت نمایید";
+      "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید، حواله انجام خواهد شد.";
   static const havalehDescription2 =
       "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
   static const signUp = "تایید و عضویت";
@@ -66,8 +68,9 @@ class Strings {
   static const later = "بعدا";
   static const updateDescription = "برنامه نیاز به بروز رسانی دارد";
   static const howMuchGold = "چند گرم طلا؟";
-  static const havaleOwnerName = "حواله به اسم چه کسی است؟";
+  static const havaleOwnerName = "حواله به نام چه کسی باشد؟";
   static const storeHavale = "ثبت حواله";
+  static const storeHavaleRequest = "ثبت درخواست حواله";
   static const havaleOwnerMobile = "شماره موبایل دریافت کننده حواله";
   static const pleaseChooseSellType = "لطفا نوع فروش خود را انتخاب کنید";
   static const pleaseChooseBuyType = "لطفا نوع خرید خود را انتخاب کنید";
@@ -137,6 +140,7 @@ class Strings {
   static const sellDescription = "سفارش فروش شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
   static const successful = "موفقیت آمیز";
   static const failed = "رد شده";
+  static const noAnyHavale = "حواله ثبت شده‌ای وجود ندارد.";
   static const sellOrderConfirmation = "تایید سفارش فروش";
   static const transactionsCount = "تعداد گردش حساب";
   static const transactionsCountWarning = "مابین ۱۰ تا ۴۰ گردش حساب";

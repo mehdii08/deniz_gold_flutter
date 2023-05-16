@@ -1,5 +1,8 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
+import 'package:deniz_gold/presentation/strings.dart';
+import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/persian_date.dart';
 import 'package:deniz_gold/presentation/widget/support_icon.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +34,14 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               Align(
                   alignment: Alignment.center,
-                  child: Expanded(
-                      child: state.appConfig != null
-                          ? Image.network(
-                              state.appConfig!.logo,
-                              width: Dimens.standard80,
-                              height: Dimens.standard53,
-                            )
-                          : const SizedBox())),
+                  child: state.appConfig != null
+                      ? Image.network(
+                          state.appConfig!.logo,
+                          width: Dimens.standard80,
+                          height: Dimens.standard53,
+                          errorBuilder : (context, _, __) => AppText(Strings.appName, textStyle: AppTextStyle.title4,),
+                        )
+                      : const SizedBox()),
             ],
           ),
         ),

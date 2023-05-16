@@ -12,42 +12,43 @@ class EmptyView extends StatelessWidget {
   final String? svgIcon;
   final Color? buttonColor;
   final Color? textColor;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const EmptyView({
     Key? key,
     required this.text,
-    required this.buttonText,
+    this.buttonText = "",
     this.svgIcon,
     this.buttonColor,
     this.textColor,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) => SizedBox(
-    width: MediaQuery.of(context).size.width,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset('assets/images/paper.svg'),
-        const SizedBox(height: Dimens.standard12),
-        AppText(
-          text,
-          textStyle: AppTextStyle.body5,
-          color: AppColors.nature.shade600,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/images/paper.svg'),
+            const SizedBox(height: Dimens.standard12),
+            AppText(
+              text,
+              textStyle: AppTextStyle.body5,
+              color: AppColors.nature.shade600,
+            ),
+            const SizedBox(height: Dimens.standard16),
+            if (onTap != null)
+              AppButton(
+                text: buttonText,
+                fullWidth: false,
+                textColor: textColor ?? AppColors.nature.shade900,
+                textStyle: AppTextStyle.button5,
+                color: buttonColor ?? AppColors.yellow,
+                contentPadding: const EdgeInsets.symmetric(horizontal: Dimens.standard16, vertical: Dimens.standard4),
+                onPressed: onTap,
+              )
+          ],
         ),
-        const SizedBox(height: Dimens.standard16),
-        AppButton(
-          text: buttonText,
-          fullWidth: false,
-          textColor: textColor ?? AppColors.nature.shade900,
-          textStyle: AppTextStyle.button5,
-          color: buttonColor ?? AppColors.yellow,
-          contentPadding: const EdgeInsets.symmetric(horizontal: Dimens.standard16, vertical: Dimens.standard4),
-          onPressed: onTap,
-        )
-      ],
-    ),
-  );
+      );
 }

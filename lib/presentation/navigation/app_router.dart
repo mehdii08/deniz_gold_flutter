@@ -2,6 +2,7 @@ import 'package:deniz_gold/presentation/home_scaffold.dart';
 import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/check_mobile_screen.dart';
 import 'package:deniz_gold/presentation/pages/forget_password_screen.dart';
+import 'package:deniz_gold/presentation/pages/havale_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/login_screen.dart';
 import 'package:deniz_gold/presentation/pages/profile_screen.dart';
@@ -58,7 +59,7 @@ final _authenticationGuardedRoutes = [
       AccountInfoScreen.route,
       // ChangePasswordScreen.route,
       // UpdateProfileScreen.route,
-      // HavaleScreen.route,
+      HavaleScreen.route,
       TradeScreen.route,
     ],
   )

@@ -4,6 +4,7 @@ import 'package:deniz_gold/presentation/deniz_app.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -14,15 +15,15 @@ void main() async {
   );
   final notificationEventSink = sl<Sink<AppNotificationEvent>>();
 
-  await FirebaseMessaging.instance.subscribeToTopic("all");
+  if (!kIsWeb) await FirebaseMessaging.instance.subscribeToTopic("all");
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('----------> Message data: ${message.data}');
 
     if (message.data['type'] == tradeResultNotificationType) {
       notificationEventSink.add(TradeResultNotificationEvent.fromJson(message.data));
-    }else if (message.data['type'] == homeDataNotificationType) {
+    } else if (message.data['type'] == homeDataNotificationType) {
       notificationEventSink.add(HomeDataNotificationEvent.fromJson(message.data));
-    }else if (message.data['type'] == botStatusNotificationType) {
+    } else if (message.data['type'] == botStatusNotificationType) {
       notificationEventSink.add(BotStatusDataNotificationEvent.fromJson(message.data));
     }
   });

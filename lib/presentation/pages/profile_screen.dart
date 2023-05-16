@@ -5,6 +5,7 @@ import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/profile/profile_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
+import 'package:deniz_gold/presentation/pages/havale_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
@@ -140,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           SettingsItem(
                             icon: "assets/images/task_list.svg",
                             title: Strings.storeGoldenHavale,
-                            onTap: () {},
+                            onTap: () => context.pushNamed(HavaleScreen.route.name!),
                           ),
                           const SizedBox(height: Dimens.standard16),
                           SettingsItem(
