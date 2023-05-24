@@ -1,3 +1,3 @@
-String get serverUrl => "https://app.goldaghigh.ir"; //todo fix me
+String get serverUrl => "https://golddeniz.ir";//todo
 
 String get apiPath => "/api/v1";

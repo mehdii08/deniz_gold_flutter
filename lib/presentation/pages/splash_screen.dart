@@ -28,8 +28,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
       body: BlocProvider<SplashCubit>(
         create: (_) => sl<SplashCubit>()..checkAuthentication(),
         child: BlocConsumer<SplashCubit, SplashState>(
@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Image.asset(
-                    'assets/images/splash_bg.png',
+                  'assets/images/splash_bg.png',
                   fit: BoxFit.fill,
                 ),
               ),
@@ -72,8 +72,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 padding: const EdgeInsets.symmetric(vertical: Dimens.standard125, horizontal: Dimens.standard16),
                 child: Container(
                   decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(Dimens.standard160))
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(Dimens.standard160))
                   ),
                   child: const Center(
                     child: AppLogo(),
@@ -84,6 +84,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
