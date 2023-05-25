@@ -77,10 +77,13 @@ abstract class AppRepository {
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData();
 
   Future<Either<Failure, List<TransactionDTO>>> getTransactions(
-      {String count = "10"});
+      {int page = 1});
 
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
-      {required int page});
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+        required int page,
+        int? tradeType,
+        int? period,
+      });
 
   Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales(
       {required int page});

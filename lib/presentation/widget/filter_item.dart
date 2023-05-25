@@ -47,7 +47,10 @@ class _FilterItemState<T> extends State<FilterItem<T>> {
             children: [
               if (selectedKey != null) ...[
                 GestureDetector(
-                  onTap: ()=> selectedKeyNotifier.value = null,
+                  onTap: (){
+                    selectedKeyNotifier.value = null;
+                    widget.onChange.call(null);
+                  },
                   child: SvgPicture.asset(
                     'assets/images/close.svg',
                     width: Dimens.standard20,

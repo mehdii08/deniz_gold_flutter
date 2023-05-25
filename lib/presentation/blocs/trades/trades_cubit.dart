@@ -14,16 +14,23 @@ class TradesCubit extends Cubit<TradesState> {
 
   TradesCubit(this.appRepository) : super(const TradesInitial(result: PaginatedResultDTO()));
 
-  getData() async {
+
+
+  getData({int? tradeType,int? period, bool reset = false}) async {
     final result = state.result;
-    if(state is! TradesInitial && result.currentPage == result.lastPage){
+    if(!reset && state is! TradesInitial && result.currentPage == result.lastPage){
       return;
     }
+    emit(const TradesLoaded(result: PaginatedResultDTO()));
     emit(TradesLoading(result: state.result));
-    final data = await appRepository.getTrades(page: state.result.currentPage + 1);
+    final data = await appRepository.getTrades(
+        page: reset ? 1 : state.result.currentPage + 1,
+        tradeType: tradeType,
+        period: period,
+    );
     data.fold(
       (l) => emit(TradesFailed(result: state.result, message: l.message != null ? l.message! : "")),
-      (r) => emit(TradesLoaded(result: state.result.update(result: r))),
+      (r) => emit(TradesLoaded(result: reset ? r : state.result.update(result: r))),
     );
   }
 }

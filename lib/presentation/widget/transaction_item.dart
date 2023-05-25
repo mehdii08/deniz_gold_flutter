@@ -34,14 +34,14 @@ class TransactionItem extends StatelessWidget {
                     ),
                     const Spacer(),
                     AppText(
-                      "replace me",
+                      transaction.title,
                       textStyle: AppTextStyle.subTitle4,
                     ),
                   ],
                 ),
                 const SizedBox(height: Dimens.standard16),
                 AppText(
-                  transaction.title,
+                  transaction.description,
                   textStyle: AppTextStyle.body5,
                   color: AppColors.nature.shade700,
                 ),
@@ -52,12 +52,12 @@ class TransactionItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: Dimens.standard8),
             child: SvgPicture.asset(
-              "assets/images/plus_circle.svg",
-              // "assets/images/negative_circle.svg",//todo
+              transaction.type == "inc" ?
+              "assets/images/plus_circle.svg":
+              "assets/images/negative_circle.svg",
               width: Dimens.standard15,
               fit: BoxFit.fitWidth,
-              color: AppColors.green,
-              // color: AppColors.red,//todo
+              color: transaction.type == "inc" ? AppColors.green : AppColors.red,
             ),
           )
         ],

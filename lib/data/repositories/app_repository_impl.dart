@@ -210,19 +210,26 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, List<TransactionDTO>>> getTransactions(
-      {String count = "10"}) async {
+      {int page = 1}) async {
     try {
-      return Right(await dataSource.getTransactions(count: count));
+      return Right(await dataSource.getTransactions(page: page));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
-      {required int page}) async {
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
     try {
-      return Right(await dataSource.getTrades(page: page));
+      return Right(await dataSource.getTrades(
+          page: page,
+          tradeType: tradeType,
+          period: period,
+      ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

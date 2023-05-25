@@ -78,9 +78,13 @@ abstract class AppDataSource {
 
   Future<HomeScreenDataDTO> getHomeData();
 
-  Future<List<TransactionDTO>> getTransactions({String count = "10"});
+  Future<List<TransactionDTO>> getTransactions({int page = 1});
 
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({required int page});
+  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  });
 
   Future<PaginatedResultDTO<HavaleDTO>> getHavales({required int page});
 
@@ -286,9 +290,9 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<List<TransactionDTO>> getTransactions({String count = "10"}) async {
+  Future<List<TransactionDTO>> getTransactions({int page = 1}) async {
     final response =
-        await _apiHelper.request('$apiPath/panel/transactions?count=$count');
+        await _apiHelper.request('$apiPath/panel/transactions?page=$page');
     return List<TransactionDTO>.from(response
         .dataAsMap()['list']
         .map((e) => TransactionDTO.fromJson(e))
@@ -305,9 +309,13 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({required int page}) async {
+  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
     final response =
-        await _apiHelper.request('$apiPath/panel/trades?page=$page');
+        await _apiHelper.request('$apiPath/panel/trades?page=$page${tradeType != null ? '&trade_type=$tradeType' : ''}${period != null ? '&period=$period' : ''}');
     final items = List<TradeDTO>.from(response
         .dataAsMap()['list']['data']
         .map((e) => TradeDTO.fromJson(e))

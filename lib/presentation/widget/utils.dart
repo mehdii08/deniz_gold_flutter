@@ -50,24 +50,6 @@ showSingleSelectBottomSheet<T>({
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              AppText(
-                Strings.all,
-                textStyle: AppTextStyle.body4,
-              ),
-              const SizedBox(width: Dimens.standard16),
-              Radio(
-                value: null,
-                groupValue: selectedKey,
-                onChanged: (key) {
-                  onChange.call(key);
-                  context.pop();
-                },
-              ),
-            ],
-          ),
           ...selectableItems.keys
               .map(
                 (key) => Row(
