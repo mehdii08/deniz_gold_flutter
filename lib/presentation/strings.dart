@@ -14,6 +14,7 @@ class Strings {
   static const edit = "ویرایش";
   static const havaleNazde = "حواله نزد...؟";
   static const all = "همه";
+  static const stars = "****";
   static const enterFullName = "نام و نام خانوادگی خود را وارد کنید";
   static const latestHavales = "حواله‌های ثبت شده اخیر";
   static const settings = "تنظیمات";
