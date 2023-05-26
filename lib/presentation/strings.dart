@@ -12,7 +12,10 @@ class Strings {
   static const error = "خطا";
   static const home = "خانه";
   static const edit = "ویرایش";
+  static const yourself = "خودتان";
+  static const toName = "به نام";
   static const havaleNazde = "حواله نزد...؟";
+  static const nazde = "نزد";
   static const all = "همه";
   static const stars = "****";
   static const enterFullName = "نام و نام خانوادگی خود را وارد کنید";

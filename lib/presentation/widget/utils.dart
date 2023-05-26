@@ -2,6 +2,7 @@ import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/havlehOwner/havaleh_owner_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/trade/trade_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
@@ -11,6 +12,7 @@ import 'package:deniz_gold/presentation/widget/edit_name_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/edit_password_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/support_content.dart';
 import 'package:deniz_gold/presentation/widget/trade_calculate_data_bottom_sheet_content.dart';
+import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +32,83 @@ showSupportBottomSheet({required BuildContext context}) {
       ),
     );
   }
+}
+
+showHavalehSelectorSelectorBottomSheet({
+  required BuildContext context,
+  required String? selectedKey,
+  required Function(String?, int?) onChange,
+}) {
+  showModalBottomSheet(
+    context: context,
+    // enableDrag: true,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+    builder: (context) => SafeArea(
+      child: BottomSheetHeader(
+        title: Strings.havaleNazde,
+        child: BlocProvider<HavalehOwnerCubit>(
+          create: (_) => sl<HavalehOwnerCubit>(),
+          child: BlocBuilder<HavalehOwnerCubit,HavalehOwnerState>(
+            builder: (context, state) {
+              if(state is HavalehOwnerLoaded){
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AppText(
+                          Strings.yourself,
+                          textStyle: AppTextStyle.body4,
+                        ),
+                        const SizedBox(width: Dimens.standard16),
+                        Radio(
+                          value: null,
+                          groupValue: selectedKey,
+                          onChanged: (key) {
+                            onChange.call(null, null);
+                            context.pop();
+                          },
+                        ),
+                      ],
+                    ),
+                    ...state.selectableItems.keys
+                        .map(
+                          (key) => Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AppText(
+                            key,
+                            textStyle: AppTextStyle.body4,
+                          ),
+                          const SizedBox(width: Dimens.standard16),
+                          Radio(
+                            value: key,
+                            groupValue: selectedKey,
+                            onChanged: (key) {
+                              onChange.call(key, state.selectableItems[key]);
+                              context.pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    )
+                        .toList(),
+                    const SizedBox(height: Dimens.standard32),
+                  ],
+                );
+              }
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: Dimens.standard40),
+                  child: CircularProgressIndicator());
+            }
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 showSingleSelectBottomSheet<T>({

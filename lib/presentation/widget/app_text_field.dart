@@ -57,8 +57,7 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
+  Widget build(BuildContext context) => IgnorePointer(
       ignoring: !widget.enabled,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -79,6 +78,14 @@ class _AppTextFieldState extends State<AppTextField> {
             child: TextField(
               textAlign: TextAlign.center,
               focusNode: focusNode,
+              onTap: () {
+                if (widget.controller.selection ==
+                    TextSelection.fromPosition(TextPosition(offset: widget.controller.text.length - 1))) {
+                  setState(() {
+                    widget.controller.selection = TextSelection.fromPosition(TextPosition(offset: widget.controller.text.length));
+                  });
+                }
+              },
               obscureText: widget.obscureText,
               keyboardType: widget.keyboardType,
               onChanged: (text) {
@@ -160,5 +167,4 @@ class _AppTextFieldState extends State<AppTextField> {
         ],
       ),
     );
-  }
 }

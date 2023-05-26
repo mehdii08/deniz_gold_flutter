@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return false;
         },
         child: UserStatusChecker(
+          updateUser: true,
           child: Scaffold(
             appBar: const LogoAppBar(),
             backgroundColor: AppColors.background,
