@@ -140,7 +140,12 @@ class _TradesScreenState extends State<TradesScreen> {
                               itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
                               itemBuilder: (context, index) {
                                 if (index == state.result.items.length) {
-                                  return const SizedBox(height: 24, width: 24, child: CircularProgressIndicator());
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      CircularProgressIndicator()
+                                    ],
+                                  );
                                 }
                                 return TradeItem(trade: state.result.items[index]);
                               },

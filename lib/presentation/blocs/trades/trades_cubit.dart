@@ -21,7 +21,9 @@ class TradesCubit extends Cubit<TradesState> {
     if(!reset && state is! TradesInitial && result.currentPage == result.lastPage){
       return;
     }
-    emit(const TradesLoaded(result: PaginatedResultDTO()));
+    if(reset){
+      emit(const TradesLoaded(result: PaginatedResultDTO()));
+    }
     emit(TradesLoading(result: state.result));
     final data = await appRepository.getTrades(
         page: reset ? 1 : state.result.currentPage + 1,
