@@ -1,8 +1,11 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/core/utils/extensions.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,9 +38,9 @@ class _HavaleScreenState extends State<HavaleScreen> {
   final scrollController = ScrollController();
   final valueController = TextEditingController(text: "0");
   final nameController = TextEditingController();
-  final nazdController = TextEditingController(text: "خودتان");
   final cubit = sl<HavaleCubit>()..getData();
   final canSubmitNotifier = ValueNotifier<bool>(false);
+  final havalehOwnerNotifier = ValueNotifier<HavalehOwnerDTO?>(null);
 
   @override
   void initState() {
@@ -83,6 +86,8 @@ class _HavaleScreenState extends State<HavaleScreen> {
                     } else if (state is HavaleLoaded && state.message != null) {
                       valueController.clear();
                       nameController.clear();
+                      havalehOwnerNotifier.value = null;
+                      canSubmitNotifier.value = false;
                       showToast(title: state.message!, context: context);
                     }
                   },
@@ -103,7 +108,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                   keyboardType: TextInputType.number,
                                   onChange: (value) => checkSubmitAvailableity(),
                                   prefixIcon: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () => valueController.increaseValue(),
                                     child: SvgPicture.asset(
                                       'assets/images/plus.svg',
                                       height: Dimens.standard6,
@@ -111,7 +116,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                     ),
                                   ),
                                   suffixIcon: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () => valueController.decreaseValue(),
                                     child: SvgPicture.asset(
                                       'assets/images/negativ.svg',
                                       height: Dimens.standard6,
@@ -126,19 +131,54 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                   onChange: (value) => checkSubmitAvailableity(),
                                 ),
                                 const SizedBox(height: Dimens.standard20),
-                                AppTextField(
-                                  enabled: false,
-                                  controller: nazdController,
-                                  title: Strings.havaleNazde,
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {},
-                                    child: SvgPicture.asset(
-                                      'assets/images/down.svg',
-                                      width: Dimens.standard6,
-                                      fit: BoxFit.fitWidth,
-                                    ),
+                                ValueListenableBuilder(
+                                  valueListenable: havalehOwnerNotifier,
+                                  builder: (context, havalehOwner, _) => Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      AppText(
+                                        Strings.havaleNazde,
+                                        textStyle: AppTextStyle.body5,
+                                        color: AppColors.nature.shade600,
+                                      ),
+                                      const SizedBox(height: Dimens.standard8),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: Dimens.standard10, horizontal: Dimens.standard12),
+                                        decoration: BoxDecoration(
+                                            color: AppColors.white,
+                                            borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
+                                            border:
+                                                Border.all(color: AppColors.nature.shade200, width: Dimens.standard1)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {
+                                                showHavalehSelectorSelectorBottomSheet(
+                                                    context: context,
+                                                    selectedKey: havalehOwner?.title,
+                                                    onChange: (key, value) {
+                                                      havalehOwnerNotifier.value = (key == null && value == null)
+                                                          ? null
+                                                          : HavalehOwnerDTO(title: key!, id: value!);
+                                                    });
+                                              },
+                                              child: SvgPicture.asset(
+                                                'assets/images/down.svg',
+                                                width: Dimens.standard24,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                            ),
+                                            AppText(
+                                              havalehOwner?.title ?? Strings.yourself,
+                                              textStyle: AppTextStyle.body4,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  onChange: (value) => checkSubmitAvailableity(),
                                 ),
                                 const SizedBox(height: Dimens.standard32),
                                 ValueListenableBuilder<bool>(
@@ -149,9 +189,9 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                     onPressed: value
                                         ? () {
                                             context.read<HavaleCubit>().storeHavale(
-                                                  value: valueController.text,
-                                                  name: nameController.text,
-                                                );
+                                                value: valueController.text,
+                                                name: nameController.text,
+                                                destination: havalehOwnerNotifier.value?.id);
                                           }
                                         : null,
                                   ),
@@ -195,7 +235,11 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                 const SizedBox(height: Dimens.standard16),
                                 if (state is HavaleLoading && state.isList && state.result.items.isEmpty) ...[
                                   const SizedBox(height: Dimens.standard4X),
-                                  const CircularProgressIndicator(),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: const Center(child: CircularProgressIndicator()),
+                                  ),
+                                  const SizedBox(height: Dimens.standard6X),
                                 ] else ...[
                                   if (state is HavaleLoaded && state.result.items.isEmpty) ...[
                                     const SizedBox(height: Dimens.standard28),
@@ -279,23 +323,24 @@ class HavalehItem extends StatelessWidget {
                         ),
                         const Spacer(),
                         AppText(
-                          "replace me",
+                          '${Strings.toName} ${havaleh.name}',
                           textStyle: AppTextStyle.body5,
                         ),
                       ],
                     ),
                     const SizedBox(height: Dimens.standard4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        AppText(
-                          "replace me",
-                          textStyle: AppTextStyle.body5,
-                          color: AppColors.nature.shade400,
-                        ),
-                      ],
-                    ),
+                    if (havaleh.destination != null)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          AppText(
+                            "${Strings.nazde} ${havaleh.destination?.title ?? ""}",
+                            textStyle: AppTextStyle.body5,
+                            color: AppColors.nature.shade400,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -343,8 +388,11 @@ class HavaleStatusBadge extends StatelessWidget {
             ),
             const SizedBox(width: Dimens.standard6),
             SvgPicture.asset(
-              status == 1?
-                'assets/images/time_clock.svg': status == 2 ? 'assets/images/checkmark_circle.svg' : 'assets/images/fill_close.svg',
+              status == 1
+                  ? 'assets/images/time_clock.svg'
+                  : status == 2
+                      ? 'assets/images/checkmark_circle.svg'
+                      : 'assets/images/fill_close.svg',
               width: Dimens.standard16,
               fit: BoxFit.fitWidth,
             ),

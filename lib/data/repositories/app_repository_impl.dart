@@ -6,6 +6,7 @@ import 'package:deniz_gold/data/dtos/balance_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
@@ -93,11 +94,13 @@ class AppRepositoryImpl extends AppRepository {
   Future<Either<Failure, HavaleDTO>> storeHavale({
     required String value,
     required String name,
+    required int? destination,
   }) async {
     try {
       return Right(await dataSource.storeHavale(
         value: value,
         name: name,
+        destination : destination,
       ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
@@ -200,6 +203,15 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
+  Future<Either<Failure, List<HavalehOwnerDTO>>> getHavalehOwnerList() async {
+    try {
+      return Right(await dataSource.getHavalehOwnerList());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData() async {
     try {
       return Right(await dataSource.getHomeData());
@@ -210,19 +222,26 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, List<TransactionDTO>>> getTransactions(
-      {String count = "10"}) async {
+      {int page = 1}) async {
     try {
-      return Right(await dataSource.getTransactions(count: count));
+      return Right(await dataSource.getTransactions(page: page));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
-      {required int page}) async {
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
     try {
-      return Right(await dataSource.getTrades(page: page));
+      return Right(await dataSource.getTrades(
+          page: page,
+          tradeType: tradeType,
+          period: period,
+      ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

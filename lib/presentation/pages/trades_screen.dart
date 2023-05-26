@@ -1,4 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/pages/trade_screen.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
 import 'package:deniz_gold/presentation/widget/filter_item.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
@@ -29,6 +30,8 @@ class TradesScreen extends StatefulWidget {
 class _TradesScreenState extends State<TradesScreen> {
   final scrollController = ScrollController();
   final cubit = sl<TradesCubit>();
+  int? selectedTradeType;
+  int? selectedPeriod;
 
   @override
   void initState() {
@@ -49,64 +52,49 @@ class _TradesScreenState extends State<TradesScreen> {
       if (cubit.state is TradesLoading) {
         return;
       }
-      cubit.getData();
+      cubit.getData(tradeType: selectedTradeType, period: selectedPeriod);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final dateFilterItems = <String,int>{
-      '۶ ماه پیش' : 6,
-      '۳ ماه پیش' : 3,
-      '۲ ماه پیش' : 3,
-      '۱ ماه پیش' : 1,
-    };
+  final dateFilterItems = <String, int>{
+    'امروز': 1,
+    '۱ هفته پیش': 2,
+    '۱ ماه پیش': 3,
+  };
 
-    final tradeTypeFilterItems = <String,int>{
-      'خرید' : 1,
-      'فروش' : 0,
-    };
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () async {
-          context.goNamed(HomeScreen.route.name!);
-          return false;
-        },
-        child: Scaffold(
-          backgroundColor: AppColors.background,
-          appBar: const TitleAppBar(title: Strings.myTrades),
-          body: BlocProvider<TradesCubit>(
-            create: (_) => cubit,
-            child: BlocConsumer<TradesCubit, TradesState>(
-              listener: (context, state) {
-                if (state is TradesFailed) {
-                  showToast(title: state.message, context: context, toastType: ToastType.error);
-                }
-              },
-              builder: (context, state) {
-                if (state is TradesLoading && state.result.items.isEmpty) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return SingleChildScrollView(
-                  controller: scrollController,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Dimens.standard2X,
-                    ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: Dimens.standard2X),
-                        if (state is TradesLoaded && state.result.items.isEmpty) ...[
-                          const SizedBox(height: Dimens.standard8X),
-                          EmptyView(
-                            text: Strings.tradesListIsEmpty,
-                            buttonText: Strings.tradeGold,
-                            // onTap: ()=> context.goNamed(TradeScreen.route.name!),//todo
-                            onTap: () {},
-                          ),
-                        ] else ...[
+  final tradeTypeFilterItems = <String, int>{
+    'خرید': 1,
+    'فروش': 0,
+  };
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+        child: WillPopScope(
+          onWillPop: () async {
+            context.goNamed(HomeScreen.route.name!);
+            return false;
+          },
+          child: Scaffold(
+            backgroundColor: AppColors.background,
+            appBar: const TitleAppBar(title: Strings.myTrades),
+            body: BlocProvider<TradesCubit>(
+              create: (_) => cubit,
+              child: BlocConsumer<TradesCubit, TradesState>(
+                listener: (context, state) {
+                  if (state is TradesFailed) {
+                    showToast(title: state.message, context: context, toastType: ToastType.error);
+                  }
+                },
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    controller: scrollController,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Dimens.standard2X,
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: Dimens.standard2X),
                           Row(
                             textDirection: TextDirection.rtl,
                             children: [
@@ -114,38 +102,59 @@ class _TradesScreenState extends State<TradesScreen> {
                                 title: Strings.selectDate,
                                 svgIcon: 'assets/images/calendar.svg',
                                 selectableItems: dateFilterItems,
-                                onChange: (selectedKey){},
+                                onChange: (selectedKey) {
+                                  selectedPeriod = tradeTypeFilterItems[selectedKey];
+                                  context
+                                      .read<TradesCubit>()
+                                      .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
+                                },
                               ),
                               const SizedBox(width: Dimens.standard8),
                               FilterItem(
                                 title: Strings.tradeType,
                                 selectableItems: tradeTypeFilterItems,
-                                onChange: (selectedKey){},
+                                onChange: (selectedKey) {
+                                  selectedTradeType = tradeTypeFilterItems[selectedKey];
+                                  context
+                                      .read<TradesCubit>()
+                                      .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
+                                },
                               ),
                             ],
                           ),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == state.result.items.length) {
-                                return const SizedBox(height: 24, width: 24, child: CircularProgressIndicator());
-                              }
-                              return TradeItem(trade: state.result.items[index]);
-                            },
-                          )
+                          const SizedBox(height: Dimens.standard2X),
+                          if (state is TradesLoading && state.result.items.isEmpty) ...[
+                            const SizedBox(height: Dimens.standard48),
+                            const CircularProgressIndicator()
+                          ] else if (state is TradesLoaded && state.result.items.isEmpty) ...[
+                            const SizedBox(height: Dimens.standard8X),
+                            EmptyView(
+                              text: Strings.tradesListIsEmpty,
+                              buttonText: Strings.tradeGold,
+                              onTap: () => context.goNamed(TradeScreen.route.name!),
+                            ),
+                          ] else ...[
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index == state.result.items.length) {
+                                  return const SizedBox(height: 24, width: 24, child: CircularProgressIndicator());
+                                }
+                                return TradeItem(trade: state.result.items[index]);
+                              },
+                            )
+                          ],
+                          const SizedBox(height: 130),
                         ],
-                        const SizedBox(height: 130),
-                      ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

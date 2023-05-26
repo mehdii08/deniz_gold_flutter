@@ -17,20 +17,8 @@ class ProfileLoading extends ProfileState {
 
 class ProfileSuccess extends ProfileState {
   final AppConfigDTO appConfig;
-  final String goldBalance;
-  final String rialBalance;
 
-  const ProfileSuccess({
-    required this.appConfig,
-    required this.goldBalance,
-    required this.rialBalance,
-  }) : super();
-
-  copy({required String goldBalance, required String rialBalance}) => ProfileSuccess(
-        appConfig: appConfig,
-        goldBalance: goldBalance,
-        rialBalance: rialBalance,
-      );
+  const ProfileSuccess({required this.appConfig}) : super();
 }
 
 class ProfileFailed extends ProfileState {

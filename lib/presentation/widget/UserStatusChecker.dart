@@ -44,8 +44,10 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
       },
       builder: (context, state) {
         if (state.appConfig == null) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state.appConfig?.user.statusCode == 0) {
           return widget.placeHolder ?? const DeActiveUserScreen();

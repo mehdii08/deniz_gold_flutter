@@ -42,7 +42,7 @@ class AppConfigDTO extends Equatable {
         logo: json['logo'],
         title: json['title'],
         phones: phones,
-        aboutText: json['about_text'],
+        aboutText: json['about_text'] ?? "",
         address: json['address'],
         botStatus: json['bot_status'],
         buyPrice: json['buy_price'],

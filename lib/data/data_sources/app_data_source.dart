@@ -1,4 +1,5 @@
 import 'package:deniz_gold/data/dtos/balance_dto.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
 import 'package:deniz_gold/core/network/api_helper.dart';
@@ -44,6 +45,7 @@ abstract class AppDataSource {
   Future<HavaleDTO> storeHavale({
     required String value,
     required String name,
+    required int? destination,
   });
 
   Future<TradeCalculateResponseDTO> tradeCalculate({
@@ -76,11 +78,17 @@ abstract class AppDataSource {
 
   Future<BalanceDTO> getBalance();
 
+  Future<List<HavalehOwnerDTO>> getHavalehOwnerList();
+
   Future<HomeScreenDataDTO> getHomeData();
 
-  Future<List<TransactionDTO>> getTransactions({String count = "10"});
+  Future<List<TransactionDTO>> getTransactions({int page = 1});
 
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({required int page});
+  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  });
 
   Future<PaginatedResultDTO<HavaleDTO>> getHavales({required int page});
 
@@ -168,6 +176,7 @@ class AppDataSourceImpl extends AppDataSource {
   Future<HavaleDTO> storeHavale({
     required String value,
     required String name,
+    required int? destination,
   }) async {
     final response = await _apiHelper.request(
       '$apiPath/panel/havaleh/store',
@@ -176,6 +185,7 @@ class AppDataSourceImpl extends AppDataSource {
         'value': value,
         'name': name,
         'device_type': 3,
+        if(destination != null) 'destination_id': destination,
       },
     );
     return HavaleDTO.fromJson(response.dataAsMap());
@@ -280,15 +290,23 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
+  Future<List<HavalehOwnerDTO>> getHavalehOwnerList() async {
+    final response = await _apiHelper.request('$apiPath/panel/havaleh/destinations');
+    return List<HavalehOwnerDTO>.from((response.data as Map<String, dynamic>)['data']
+        .map((e) => HavalehOwnerDTO.fromJson(e))
+        .toList());
+  }
+
+  @override
   Future<HomeScreenDataDTO> getHomeData() async {
     final response = await _apiHelper.request('$apiPath/panel/homepage');
     return HomeScreenDataDTO.fromJson(response.dataAsMap());
   }
 
   @override
-  Future<List<TransactionDTO>> getTransactions({String count = "10"}) async {
+  Future<List<TransactionDTO>> getTransactions({int page = 1}) async {
     final response =
-        await _apiHelper.request('$apiPath/panel/transactions?count=$count');
+        await _apiHelper.request('$apiPath/panel/transactions?page=$page');
     return List<TransactionDTO>.from(response
         .dataAsMap()['list']
         .map((e) => TransactionDTO.fromJson(e))
@@ -305,9 +323,13 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({required int page}) async {
+  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
     final response =
-        await _apiHelper.request('$apiPath/panel/trades?page=$page');
+        await _apiHelper.request('$apiPath/panel/trades?page=$page${tradeType != null ? '&trade_type=$tradeType' : ''}${period != null ? '&period=$period' : ''}');
     final items = List<TradeDTO>.from(response
         .dataAsMap()['list']['data']
         .map((e) => TradeDTO.fromJson(e))
@@ -333,13 +355,13 @@ class AppDataSourceImpl extends AppDataSource {
         .map((e) => HavaleDTO.fromJson(e))
         .toList());
     return PaginatedResultDTO<HavaleDTO>(
-      from: response.dataAsMap()['list']['from'],
-      to: response.dataAsMap()['list']['to'],
-      total: response.dataAsMap()['list']['total'],
-      count: response.dataAsMap()['list']['count'],
-      perPage: response.dataAsMap()['list']['per_page'],
-      currentPage: response.dataAsMap()['list']['current_page'],
-      lastPage: response.dataAsMap()['list']['last_page'],
+      from: response.dataAsMap()['list']['from']??0,
+      to: response.dataAsMap()['list']['to']??0,
+      total: response.dataAsMap()['list']['total']??0,
+      count: response.dataAsMap()['list']['count']??0,
+      perPage: response.dataAsMap()['list']['per_page']??0,
+      currentPage: response.dataAsMap()['list']['current_page']??0,
+      lastPage: response.dataAsMap()['list']['last_page']??false,
       items: items,
     );
   }

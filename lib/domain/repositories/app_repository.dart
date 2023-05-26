@@ -5,6 +5,7 @@ import 'package:deniz_gold/data/dtos/balance_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
@@ -42,6 +43,7 @@ abstract class AppRepository {
   Future<Either<Failure, HavaleDTO>> storeHavale({
     required String value,
     required String name,
+    required int? destination,
   });
 
   Future<Either<Failure, TradeCalculateResponseDTO>> tradeCalculate({
@@ -74,13 +76,18 @@ abstract class AppRepository {
 
   Future<Either<Failure, BalanceDTO>> getBalance();
 
+  Future<Either<Failure, List<HavalehOwnerDTO>>> getHavalehOwnerList();
+
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData();
 
   Future<Either<Failure, List<TransactionDTO>>> getTransactions(
-      {String count = "10"});
+      {int page = 1});
 
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades(
-      {required int page});
+  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+        required int page,
+        int? tradeType,
+        int? period,
+      });
 
   Future<Either<Failure, PaginatedResultDTO<HavaleDTO>>> getHavales(
       {required int page});

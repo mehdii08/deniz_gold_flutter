@@ -211,7 +211,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                                           isValidNumInput(value: value.replaceAll(",", ""));
                                                     },
                                                     prefixIcon: GestureDetector(
-                                                      onTap: () {},
+                                                      onTap: () => textController.increaseValue(),
                                                       child: SvgPicture.asset(
                                                         'assets/images/plus.svg',
                                                         width: Dimens.standard6,
@@ -219,7 +219,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                                       ),
                                                     ),
                                                     suffixIcon: GestureDetector(
-                                                      onTap: () {},
+                                                      onTap: () => textController.decreaseValue(),
                                                       child: SvgPicture.asset(
                                                         'assets/images/negativ.svg',
                                                         width: Dimens.standard6,

@@ -19,11 +19,13 @@ class HavaleCubit extends Cubit<HavaleState> {
   storeHavale({
     required String value,
     required String name,
+    required int? destination,
   }) async {
     emit(HavaleLoading(result: state.result));
     final result = await appRepository.storeHavale(
         value: value,
         name: name,
+        destination: destination,
     );
     result.fold(
             (l) => emit(HavaleFailed(result: state.result,message: l.message != null ? l.message! : "")),

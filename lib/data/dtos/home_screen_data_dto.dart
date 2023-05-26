@@ -7,8 +7,6 @@ class HomeScreenDataDTO extends Equatable {
   final String goldOns;
   final String goldGheram;
   final String goldWorld;
-  final String rialBalance;
-  final String goldBalance;
   final String todayHighPrice;
   final String todayLowPrice;
   final List<PriceDTO>? priceHistories;
@@ -20,8 +18,6 @@ class HomeScreenDataDTO extends Equatable {
     required this.goldOns,
     required this.goldGheram,
     required this.goldWorld,
-    required this.rialBalance,
-    required this.goldBalance,
     required this.todayHighPrice,
     required this.todayLowPrice,
     required this.priceHistories,
@@ -35,8 +31,6 @@ class HomeScreenDataDTO extends Equatable {
         goldOns: json['gold_ons'] == 0 ? "0" : json['gold_ons'],
         goldGheram: json['gold_gheram'] == 0 ? "0" : json['gold_gheram'],
         goldWorld: json['gold_world'] == 0 ? "0" : json['gold_world'],
-        rialBalance: json['rial_balance'] == 0 ? "0" : json['rial_balance'],
-        goldBalance: json['gold_balance'] == 0 ? "0" : json['gold_balance'],
         todayHighPrice:
             json['today_high_price'] == 0 ? "0" : json['today_high_price'],
         todayLowPrice:
@@ -58,8 +52,6 @@ class HomeScreenDataDTO extends Equatable {
         goldOns,
         goldGheram,
         goldWorld,
-        rialBalance,
-        goldBalance,
         todayHighPrice,
         todayLowPrice,
         priceHistories,
@@ -78,8 +70,6 @@ class HomeScreenDataDTO extends Equatable {
       goldOns: newData.goldOns,
       goldGheram: newData.goldGheram,
       goldWorld: newData.goldWorld,
-      rialBalance: newData.rialBalance,
-      goldBalance: newData.goldBalance,
       todayHighPrice: newData.todayHighPrice,
       todayLowPrice: newData.todayLowPrice,
       priceHistories: priceHistories,

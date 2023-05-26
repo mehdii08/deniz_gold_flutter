@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 
 extension Responseee on Response<dynamic> {
@@ -28,5 +29,26 @@ extension NumberFormat on String? {
   }
 
   String clearCommas() => this != null ? this!.replaceAll(',', '') : "";
+}
+
+extension ValueController on TextEditingController{
+  increaseValue(){
+    try {
+      int intVal = int.parse(text);
+      intVal++;
+      text = intVal.toString();
+    } catch (e) {
+      text = "0";
+    }
+  }
+  decreaseValue(){
+    try {
+      int intVal = int.parse(text);
+      intVal--;
+      text = intVal < 0 ? "0" : intVal.toString();
+    } catch (e) {
+      text = "0";
+    }
+  }
 }
 

@@ -17,35 +17,39 @@ class BottomSheetHeader extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    width: double.infinity,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: Dimens.standard20),
-        Row(
-          children: [
-            const SizedBox(width: Dimens.standard16),
-            GestureDetector(
-              onTap: () => context.pop(),
-              child: SvgPicture.asset(
-                'assets/images/close.svg',
-                width: Dimens.standard32,
-                fit: BoxFit.fitWidth,
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom),
+    child: SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: Dimens.standard20),
+          Row(
+            children: [
+              const SizedBox(width: Dimens.standard16),
+              GestureDetector(
+                onTap: () => context.pop(),
+                child: SvgPicture.asset(
+                  'assets/images/close.svg',
+                  width: Dimens.standard32,
+                  fit: BoxFit.fitWidth,
+                ),
               ),
-            ),
-            const Spacer(),
-            AppText(
-              title,
-              textStyle: AppTextStyle.subTitle3,
-            ),
-            const SizedBox(width: Dimens.standard16),
-          ],
-        ),
-        const SizedBox(height: Dimens.standard20),
-        Divider(color: AppColors.nature.shade50),
-        child
-      ],
+              const Spacer(),
+              AppText(
+                title,
+                textStyle: AppTextStyle.subTitle3,
+              ),
+              const SizedBox(width: Dimens.standard16),
+            ],
+          ),
+          const SizedBox(height: Dimens.standard20),
+          Divider(color: AppColors.nature.shade50),
+          child
+        ],
+      ),
     ),
   );
 }

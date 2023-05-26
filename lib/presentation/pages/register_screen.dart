@@ -57,8 +57,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final errors = ValueNotifier<RegisterErrors>(const RegisterErrors());
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
       appBar: const TitleAppBar(title: Strings.registerTitle),
       backgroundColor: AppColors.background,
       body: BlocProvider<RegisterCubit>(
@@ -104,13 +104,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           isLoading: state is RegisterLoading,
                           text: Strings.signUp,
                           onPressed: () => _validateThenSubmit(() => context.read<RegisterCubit>().register(
-                                token: widget.token,
-                                mobile: widget.mobile,
-                                name: nameController.text,
-                                nationalCode: nationalCodeController.text,
-                                password: passwordController.text,
-                                passwordConfirmation: passwordController.text,
-                              )),
+                            token: widget.token,
+                            mobile: widget.mobile,
+                            name: nameController.text,
+                            nationalCode: nationalCodeController.text,
+                            password: passwordController.text,
+                            passwordConfirmation: passwordController.text,
+                          )),
                         ),
                         const SizedBox(height: Dimens.standardX)
                       ],
@@ -122,8 +122,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           },
         ),
       ),
-    );
-  }
+    ),
+  );
 
   _validateThenSubmit(VoidCallback onSubmit) {
     String? name;

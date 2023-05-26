@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return false;
         },
         child: UserStatusChecker(
+          updateUser: true,
           child: Scaffold(
             appBar: const LogoAppBar(),
             backgroundColor: AppColors.background,
@@ -86,7 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Expanded(
                                         child: BalanceWidget(
                                           title: Strings.remainingRials,
-                                          balance: data.rialBalance.numberFormat(),
+                                          // balance: data.rialBalance.numberFormat(),
+                                          balance: "replace me",
                                           icon: SvgPicture.asset("assets/images/gold_price.svg",
                                               width: Dimens.standard32, fit: BoxFit.fitWidth),
                                           iconAlign: IconAlign.left,
@@ -96,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Expanded(
                                         child: BalanceWidget(
                                           title: Strings.remainingGold,
-                                          balance: data.goldBalance.numberFormat(),
+                                          // balance: data.goldBalance.numberFormat(),
+                                          balance: "replace me",
                                           icon: Image.asset("assets/images/iran_flagg.png", width: Dimens.standard32),
                                           iconAlign: IconAlign.right,
                                         ),
