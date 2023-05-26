@@ -123,7 +123,7 @@ class _TradeScreenState extends State<TradeScreen> {
                                         );
                                   },
                                   onTradeSubmitted: (data) {
-                                    Navigator.pop(context);
+                                    context.pop();
                                     _showTradeAnswerWaitingDialog(
                                       context: context,
                                       data: data,
@@ -132,14 +132,14 @@ class _TradeScreenState extends State<TradeScreen> {
                                     );
                                   });
                             } else if (state is TradeSubmited) {
-                              context.pop();
+                              // context.pop();
                               showToast(title: state.message, context: context);
-                              _showTradeAnswerWaitingDialog(
-                                context: context,
-                                data: state.data,
-                                isSell: selectedTradeType == TradeType.sell,
-                                tradeCubit: context.read<TradeCubit>(),
-                              );
+                              // _showTradeAnswerWaitingDialog(
+                              //   context: context,
+                              //   data: state.data,
+                              //   isSell: selectedTradeType == TradeType.sell,
+                              //   tradeCubit: context.read<TradeCubit>(),
+                              // );
                             }
                           },
                         ),
@@ -211,7 +211,11 @@ class _TradeScreenState extends State<TradeScreen> {
                                                           isValidNumInput(value: value.replaceAll(",", ""));
                                                     },
                                                     prefixIcon: GestureDetector(
-                                                      onTap: () => textController.increaseValue(),
+                                                      onTap: () {
+                                                        textController.increaseValue();
+                                                        canSubmitNotifier.value =
+                                                            isValidNumInput(value: textController.text.replaceAll(",", ""));
+                                                      },
                                                       child: SvgPicture.asset(
                                                         'assets/images/plus.svg',
                                                         width: Dimens.standard6,
@@ -219,7 +223,11 @@ class _TradeScreenState extends State<TradeScreen> {
                                                       ),
                                                     ),
                                                     suffixIcon: GestureDetector(
-                                                      onTap: () => textController.decreaseValue(),
+                                                      onTap: () {
+                                                        textController.decreaseValue();
+                                                        canSubmitNotifier.value =
+                                                            isValidNumInput(value: textController.text.replaceAll(",", ""));
+                                                      },
                                                       child: SvgPicture.asset(
                                                         'assets/images/negativ.svg',
                                                         width: Dimens.standard6,
@@ -408,13 +416,13 @@ _showTradeAnswerWaitingDialog({
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) {
+    builder: (builderContext) {
       return TradeAnswerWaitingDialog(
         data: data,
         isSell: isSell,
         tradeCubit: tradeCubit,
         onCounterEnded: () {
-          Navigator.of(context).pop();
+          context.pop();
           showDialog(
             context: context,
             builder: (_) => TradeAnswerDialog(

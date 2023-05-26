@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
 import 'package:deniz_gold/data/keys.dart';
 import 'package:equatable/equatable.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';//todo fix me
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:gold_flutter/data/dtos/app_config_dto.dart'; //todo remove me
@@ -51,12 +51,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   // }
 
   storeFCMToken() async {
-    //todo
-    // final fcmToken = await FirebaseMessaging.instance.getToken();
-    // sharedPreferences.setString(fcmTokenKey, fcmToken ?? "empty");
-    // FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-    //   sharedPreferences.setString(fcmTokenKey, fcmToken);
-    // }).onError((err) {/*todo*/});
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    sharedPreferences.setString(fcmTokenKey, fcmToken ?? "empty");
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      sharedPreferences.setString(fcmTokenKey, fcmToken);
+    }).onError((err) {/*todo*/});
   }
 
   AppConfigDTO? getLocalAppConfig(){//todo get this from app config cubit

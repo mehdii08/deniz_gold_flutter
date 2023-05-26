@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: AppText(
-                                        Strings.sellPrice,
+                                        Strings.buyPrice,
                                         textAlign: TextAlign.end,
                                         textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
                                       ),
@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: AppText(
-                                        Strings.sellPrice,
+                                        Strings.time,
                                         textAlign: TextAlign.start,
                                         textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
                                       ),
