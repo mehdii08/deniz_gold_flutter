@@ -17,6 +17,7 @@ class Strings {
   static const havaleNazde = "حواله نزد...؟";
   static const nazde = "نزد";
   static const all = "همه";
+  static const time = "زمان";
   static const stars = "****";
   static const enterFullName = "نام و نام خانوادگی خود را وارد کنید";
   static const latestHavales = "حواله‌های ثبت شده اخیر";
