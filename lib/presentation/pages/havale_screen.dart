@@ -84,7 +84,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                     if (state is HavaleFailed) {
                       showToast(title: state.message, context: context, toastType: ToastType.error);
                     } else if (state is HavaleLoaded && state.message != null) {
-                      valueController.clear();
+                      valueController.text = "0";
                       nameController.clear();
                       havalehOwnerNotifier.value = null;
                       canSubmitNotifier.value = false;
@@ -108,7 +108,10 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                   keyboardType: TextInputType.number,
                                   onChange: (value) => checkSubmitAvailableity(),
                                   prefixIcon: GestureDetector(
-                                    onTap: () => valueController.increaseValue(),
+                                    onTap: () {
+                                      valueController.increaseValue();
+                                      checkSubmitAvailableity();
+                                    },
                                     child: SvgPicture.asset(
                                       'assets/images/plus.svg',
                                       height: Dimens.standard6,
@@ -116,7 +119,10 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                     ),
                                   ),
                                   suffixIcon: GestureDetector(
-                                    onTap: () => valueController.decreaseValue(),
+                                    onTap: () {
+                                      valueController.decreaseValue();
+                                      checkSubmitAvailableity();
+                                    },
                                     child: SvgPicture.asset(
                                       'assets/images/negativ.svg',
                                       height: Dimens.standard6,
@@ -128,6 +134,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                 AppTextField(
                                   controller: nameController,
                                   title: Strings.havaleOwnerName,
+                                  textAlign: TextAlign.right,
                                   onChange: (value) => checkSubmitAvailableity(),
                                 ),
                                 const SizedBox(height: Dimens.standard20),
@@ -142,39 +149,39 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                         color: AppColors.nature.shade600,
                                       ),
                                       const SizedBox(height: Dimens.standard8),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: Dimens.standard10, horizontal: Dimens.standard12),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.white,
-                                            borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
-                                            border:
-                                                Border.all(color: AppColors.nature.shade200, width: Dimens.standard1)),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                showHavalehSelectorSelectorBottomSheet(
-                                                    context: context,
-                                                    selectedKey: havalehOwner?.title,
-                                                    onChange: (key, value) {
-                                                      havalehOwnerNotifier.value = (key == null && value == null)
-                                                          ? null
-                                                          : HavalehOwnerDTO(title: key!, id: value!);
-                                                    });
-                                              },
-                                              child: SvgPicture.asset(
+                                      GestureDetector(
+                                        onTap: () {
+                                          showHavalehSelectorSelectorBottomSheet(
+                                              context: context,
+                                              selectedKey: havalehOwner?.title,
+                                              onChange: (key, value) {
+                                                havalehOwnerNotifier.value = (key == null && value == null)
+                                                    ? null
+                                                    : HavalehOwnerDTO(title: key!, id: value!);
+                                              });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: Dimens.standard10, horizontal: Dimens.standard12),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
+                                              border:
+                                                  Border.all(color: AppColors.nature.shade200, width: Dimens.standard1)),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SvgPicture.asset(
                                                 'assets/images/down.svg',
                                                 width: Dimens.standard24,
                                                 fit: BoxFit.fitWidth,
                                               ),
-                                            ),
-                                            AppText(
-                                              havalehOwner?.title ?? Strings.yourself,
-                                              textStyle: AppTextStyle.body4,
-                                            )
-                                          ],
+                                              AppText(
+                                                havalehOwner?.title ?? Strings.yourself,
+                                                textStyle: AppTextStyle.body4,
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],

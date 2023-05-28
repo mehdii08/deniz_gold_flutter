@@ -19,6 +19,10 @@ class ProfileSuccess extends ProfileState {
   final AppConfigDTO appConfig;
 
   const ProfileSuccess({required this.appConfig}) : super();
+
+  @override
+  List<Object?> get props => [appConfig];
+
 }
 
 class ProfileFailed extends ProfileState {

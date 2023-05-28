@@ -22,7 +22,7 @@ class AccountInfoCubit extends Cubit<AccountInfoState> {
 
   updatePassword({required String currentPassword, required String newPassword}) async {
     emit(const AccountInfoLoading());
-    final data = await appRepository.changePassword(password: newPassword, passwordConfirmation: newPassword);
+    final data = await appRepository.changePassword(currentPassword: currentPassword, newPassword: newPassword);
     data.fold(
           (l) => emit(AccountInfoFailed(message: l.message != null ? l.message! : "")),
           (r) => emit(AccountInfoLoaded(message: r)),

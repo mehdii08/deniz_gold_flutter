@@ -1,4 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
@@ -67,6 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           listener: (context, state) {
             if (state is RegisterLoaded) {
               context.read<AuthenticationCubit>().saveToken(state.token);
+              context.read<AppConfigCubit>().getConfig();
               context.goNamed(SplashScreen.route.name!);
             } else if (state is RegisterFailed) {
               showToast(title: state.message, context: context, toastType: ToastType.error);

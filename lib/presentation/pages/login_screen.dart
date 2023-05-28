@@ -1,5 +1,6 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/pages/forget_password_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
@@ -48,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
+              context.read<AppConfigCubit>().getConfig();
               context.pushNamed(SplashScreen.route.name!);
             } else if (state is LoginFailed) {
               showToast(title: state.message,context: context,toastType: ToastType.error);

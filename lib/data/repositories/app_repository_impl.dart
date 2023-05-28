@@ -9,6 +9,7 @@ import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
+import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
@@ -77,13 +78,13 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, String>> changePassword({
-    required String password,
-    required String passwordConfirmation,
+    required String currentPassword,
+    required String newPassword,
   }) async {
     try {
       return Right(await dataSource.changePassword(
-        password: password,
-        passwordConfirmation: password,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
       ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
@@ -197,6 +198,15 @@ class AppRepositoryImpl extends AppRepository {
   Future<Either<Failure, BalanceDTO>> getBalance() async {
     try {
       return Right(await dataSource.getBalance());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PhoneDTO>>> getPhones() async {
+    try {
+      return Right(await dataSource.getPhones());
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

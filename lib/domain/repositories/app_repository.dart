@@ -8,6 +8,7 @@ import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
+import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
@@ -36,8 +37,8 @@ abstract class AppRepository {
   });
 
   Future<Either<Failure, String>> changePassword({
-    required String password,
-    required String passwordConfirmation,
+    required String currentPassword,
+    required String newPassword,
   });
 
   Future<Either<Failure, HavaleDTO>> storeHavale({
@@ -75,6 +76,8 @@ abstract class AppRepository {
   Future<Either<Failure, AppConfigDTO>> getConfig();
 
   Future<Either<Failure, BalanceDTO>> getBalance();
+
+  Future<Either<Failure, List<PhoneDTO>>> getPhones();
 
   Future<Either<Failure, List<HavalehOwnerDTO>>> getHavalehOwnerList();
 
