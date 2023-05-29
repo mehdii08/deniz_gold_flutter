@@ -44,7 +44,8 @@ class AppConfigCubit extends Cubit<AppConfigState> {
     emit(AppConfigLoading(appConfig: state.appConfig));
     final result = await appRepository.getConfig();
     result.fold(
-      (l) {},
+      (l) {
+      },
       (r) async {
         sharedPreferences.setString(appConfigKey, jsonEncode(r.toJson()));
         PackageInfo packageInfo = await PackageInfo.fromPlatform();

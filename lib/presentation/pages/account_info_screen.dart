@@ -36,43 +36,43 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
             backgroundColor: AppColors.background,
             appBar: const TitleAppBar(title: Strings.accountInfo),
             body: BlocBuilder<AppConfigCubit, AppConfigState>(
-              builder: (context, state) {
-                if (state is AppConfigLoaded) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Dimens.standard2X,
-                    ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: Dimens.standard32),
-                        AccountInfoItem(
-                          title: Strings.fullName,
-                          value: state.appConfig?.user.name ?? "",
-                          onEditClicked: () => showNameEditBottomSheet(
-                              context: context,
-                              name: state.appConfig?.user.name ?? "",
-                              onNameEdited: () {
-                                context.pop();
-                                context.read<AppConfigCubit>().getConfig();
-                              }),
-                        ),
-                        AccountInfoItem(
-                          title: Strings.nationalCode,
-                          value: state.appConfig?.user.nationalCode ?? "",
-                        ),
-                        AccountInfoItem(
-                          title: Strings.mobile,
-                          value: state.appConfig?.user.mobile ?? "",
-                        )
-                      ],
-                    ),
+                builder: (context, state) {
+                  if (state is AppConfigLoaded) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Dimens.standard2X,
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: Dimens.standard32),
+                          AccountInfoItem(
+                            title: Strings.fullName,
+                            value: state.appConfig?.user.name ?? "",
+                            onEditClicked: () => showNameEditBottomSheet(
+                                context: context,
+                                name: state.appConfig?.user.name ?? "",
+                                onNameEdited: () {
+                                  context.pop();
+                                  context.read<AppConfigCubit>().getConfig();
+                                }),
+                          ),
+                          AccountInfoItem(
+                            title: Strings.nationalCode,
+                            value: state.appConfig?.user.nationalCode ?? "",
+                          ),
+                          AccountInfoItem(
+                            title: Strings.mobile,
+                            value: state.appConfig?.user.mobile ?? "",
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
+                },
+              ),
           ),
         ),
       );

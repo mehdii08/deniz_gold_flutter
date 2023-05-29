@@ -76,6 +76,7 @@ class AppConfigDTO extends Equatable {
         botStatus,
         buyPrice,
         sellPrice,
+        appVersion
       ];
 
   AppConfigDTO update({

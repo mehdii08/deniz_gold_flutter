@@ -19,6 +19,7 @@ class AppTextField extends StatefulWidget {
   final ValueChanged<String>? onChange;
   final TextInputType? keyboardType;
   final FocusNode? focusNode;
+  final TextAlign textAlign;
 
   const AppTextField({
     Key? key,
@@ -34,6 +35,7 @@ class AppTextField extends StatefulWidget {
     this.enabled = true,
     this.obscureText = false,
     this.showClearIcon = true,
+    this.textAlign = TextAlign.center,
     this.focusNode,
   }) : super(key: key);
 
@@ -76,7 +78,7 @@ class _AppTextFieldState extends State<AppTextField> {
             height: Dimens.standard48,
             color: AppColors.white,
             child: TextField(
-              textAlign: TextAlign.center,
+              textAlign:widget.textAlign,
               focusNode: focusNode,
               onTap: () {
                 if (widget.controller.selection ==
@@ -95,7 +97,7 @@ class _AppTextFieldState extends State<AppTextField> {
               textDirection: TextDirection.rtl,
               controller: widget.controller,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
+                contentPadding: widget.textAlign == TextAlign.right ? const EdgeInsets.only(right: Dimens.standard8) : EdgeInsets.zero,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: widget.error != null ? AppColors.red : AppColors.nature.shade900, width: 1.0),

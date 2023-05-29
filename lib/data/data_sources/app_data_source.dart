@@ -1,5 +1,6 @@
 import 'package:deniz_gold/data/dtos/balance_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
+import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
 import 'package:deniz_gold/core/network/api_helper.dart';
@@ -38,8 +39,8 @@ abstract class AppDataSource {
   });
 
   Future<String> changePassword({
-    required String password,
-    required String passwordConfirmation,
+    required String currentPassword,
+    required String newPassword,
   });
 
   Future<HavaleDTO> storeHavale({
@@ -77,6 +78,8 @@ abstract class AppDataSource {
   Future<AppConfigDTO> getConfig();
 
   Future<BalanceDTO> getBalance();
+
+  Future<List<PhoneDTO>> getPhones();
 
   Future<List<HavalehOwnerDTO>> getHavalehOwnerList();
 
@@ -158,15 +161,15 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<String> changePassword({
-    required String password,
-    required String passwordConfirmation,
+    required String currentPassword,
+    required String newPassword,
   }) async {
     final response = await _apiHelper.request(
       '$apiPath/panel/profile/edit-password',
       method: Method.post,
       data: {
-        'password': password,
-        'password_confirmation': passwordConfirmation,
+        'current_password': currentPassword,
+        'password': newPassword,
       },
     );
     return response.data['message'];
@@ -287,6 +290,14 @@ class AppDataSourceImpl extends AppDataSource {
     final response = await _apiHelper.request('$apiPath/panel/get-balance');
     final result = BalanceDTO.fromJson(response.dataAsMap());
     return result;
+  }
+
+  @override
+  Future<List<PhoneDTO>> getPhones() async {
+    final response = await _apiHelper.request('$apiPath/get-support-phones');
+    return List<PhoneDTO>.from(response.dataAsMap()['phones']
+        .map((e) => PhoneDTO.fromJson(e))
+        .toList());
   }
 
   @override

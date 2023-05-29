@@ -1,7 +1,6 @@
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
-import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/havlehOwner/havaleh_owner_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/trade/trade_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
@@ -18,20 +17,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 showSupportBottomSheet({required BuildContext context}) {
-  final appConfig = context.read<AuthenticationCubit>().getLocalAppConfig();
-  if (appConfig != null) {
     showModalBottomSheet(
       context: context,
       // enableDrag: true,
       useRootNavigator: true,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
-      builder: (context) => BottomSheetHeader(
+      builder: (context) => const BottomSheetHeader(
         title: Strings.callToSupport,
-        child: SupportSheetContent(appConfig: appConfig),
+        child: SupportSheetContent(),
       ),
     );
-  }
 }
 
 showHavalehSelectorSelectorBottomSheet({

@@ -1,5 +1,6 @@
 import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/support/support_cubit.dart';
 import 'package:deniz_gold/presentation/navigation/app_router.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/service_locator.dart';
@@ -21,6 +22,9 @@ class DenizApp extends StatelessWidget {
           ),
           BlocProvider<AppConfigCubit>(
             create: (_) => sl<AppConfigCubit>()..getConfig(),
+          ),
+          BlocProvider<SupportCubit>(
+            create: (_) => sl(),
           ),
           ChangeNotifierProvider<GoRouter>(create: buildRouter),
         ],

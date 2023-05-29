@@ -53,130 +53,137 @@ class _ProfileScreenState extends State<ProfileScreen> {
               appBar: const LogoAppBar(),
               body: BlocProvider<ProfileCubit>(
                 create: (_) => sl<ProfileCubit>()..updateData(),
-                child: BlocConsumer<ProfileCubit, ProfileState>(
-                  listener: (context, state) {
-                    if (state is ProfileFailed) {
-                      showToast(title: state.message, context: context, toastType: ToastType.error);
+                child: BlocListener<AppConfigCubit,AppConfigState>(
+                  listener: (context, state){
+                    if(state is AppConfigLoaded){
+                      context.read<ProfileCubit>().updateData();
                     }
                   },
-                  builder: (context, state) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: Dimens.standard8),
-                          SvgPicture.asset(
-                            'assets/images/avatar.svg',
-                            width: Dimens.standard64,
-                            height: Dimens.standard64,
-                            fit: BoxFit.fitWidth,
-                          ),
-                          const SizedBox(height: Dimens.standard16),
-                          if (state is ProfileSuccess) ...[
-                            AppText(
-                              state.appConfig.user.name,
-                              textStyle: AppTextStyle.subTitle4,
+                  child: BlocConsumer<ProfileCubit, ProfileState>(
+                    listener: (context, state) {
+                      if (state is ProfileFailed) {
+                        showToast(title: state.message, context: context, toastType: ToastType.error);
+                      }
+                    },
+                    builder: (context, state) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: Dimens.standard8),
+                            SvgPicture.asset(
+                              'assets/images/avatar.svg',
+                              width: Dimens.standard64,
+                              height: Dimens.standard64,
+                              fit: BoxFit.fitWidth,
                             ),
-                            AppText(
-                              state.appConfig.user.mobile,
-                              textStyle: AppTextStyle.body5,
-                              color: AppColors.nature.shade600,
-                            ),
-                            const SizedBox(height: Dimens.standard4),
-                            const UserAccountingChecker(
-                              updateUser: true,
-                              placeHolder: SizedBox(),
-                              child: DualBalanceWidget(),
-                            ),
+                            const SizedBox(height: Dimens.standard16),
+                            if (state is ProfileSuccess) ...[
+                              AppText(
+                                state.appConfig.user.name,
+                                textStyle: AppTextStyle.subTitle4,
+                              ),
+                              AppText(
+                                state.appConfig.user.mobile,
+                                textStyle: AppTextStyle.body5,
+                                color: AppColors.nature.shade600,
+                              ),
+                              const SizedBox(height: Dimens.standard4),
+                              const UserAccountingChecker(
+                                updateUser: true,
+                                placeHolder: SizedBox(),
+                                child: DualBalanceWidget(),
+                              ),
+                            ],
+                            const SizedBox(height: Dimens.standard16),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(Dimens.standard16),
+                              decoration: const BoxDecoration(
+                                  color: AppColors.background,
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: AppText(
+                                      Strings.account,
+                                      textStyle: AppTextStyle.subTitle3,
+                                      color: AppColors.nature.shade600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: Dimens.standard12),
+                                  SettingsItem(
+                                    icon: "assets/images/task_list.svg",
+                                    title: Strings.storeGoldenHavale,
+                                    onTap: () => context.pushNamed(HavaleScreen.route.name!),
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  SettingsItem(
+                                    icon: "assets/images/change_trade.svg",
+                                    title: Strings.myTrades,
+                                    onTap: () => context.pushNamed(TradesScreen.route.name!),
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  SettingsItem(
+                                    icon: "assets/images/repeat_rotate.svg",
+                                    title: Strings.transactions,
+                                    onTap: () => context.pushNamed(TransactionsScreen.route.name!),
+                                  ),
+                                  const SizedBox(height: Dimens.standard24),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: AppText(
+                                      Strings.settings,
+                                      textStyle: AppTextStyle.subTitle3,
+                                      color: AppColors.nature.shade600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: Dimens.standard12),
+                                  SettingsItem(
+                                    icon: "assets/images/user_nav_liner.svg",
+                                    title: Strings.accountInfo,
+                                    onTap: () => context.pushNamed(AccountInfoScreen.route.name!),
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  SettingsItem(
+                                    icon: "assets/images/key.svg",
+                                    title: Strings.changePassword,
+                                    onTap: () => showPasswordEditBottomSheet(context: context),
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  const Divider(
+                                    endIndent: Dimens.standard54,
+                                    color: AppColors.white,
+                                    thickness: Dimens.standard2,
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  SettingsItem(
+                                    icon: "assets/images/logout.svg",
+                                    title: Strings.logout,
+                                    onTap: () {
+                                      context.read<AppConfigCubit>().reset();
+                                      context.read<AuthenticationCubit>().logOut();
+                                      context.pushNamed(SplashScreen.route.name!);
+                                    },
+                                    showArrow: false,
+                                  ),
+                                  const SizedBox(height: Dimens.standard40),
+                                  AppText(
+                                      '$versionName ($versionCode)',
+                                    textStyle: AppTextStyle.body5,
+                                    color: AppColors.nature.shade300,
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                  const SizedBox(height: Dimens.standard100),
+                                ],
+                              ),
+                            )
                           ],
-                          const SizedBox(height: Dimens.standard16),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(Dimens.standard16),
-                            decoration: const BoxDecoration(
-                                color: AppColors.background,
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
-                            child: Column(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: AppText(
-                                    Strings.account,
-                                    textStyle: AppTextStyle.subTitle3,
-                                    color: AppColors.nature.shade600,
-                                  ),
-                                ),
-                                const SizedBox(height: Dimens.standard12),
-                                SettingsItem(
-                                  icon: "assets/images/task_list.svg",
-                                  title: Strings.storeGoldenHavale,
-                                  onTap: () => context.pushNamed(HavaleScreen.route.name!),
-                                ),
-                                const SizedBox(height: Dimens.standard16),
-                                SettingsItem(
-                                  icon: "assets/images/change_trade.svg",
-                                  title: Strings.myTrades,
-                                  onTap: () => context.pushNamed(TradesScreen.route.name!),
-                                ),
-                                const SizedBox(height: Dimens.standard16),
-                                SettingsItem(
-                                  icon: "assets/images/repeat_rotate.svg",
-                                  title: Strings.transactions,
-                                  onTap: () => context.pushNamed(TransactionsScreen.route.name!),
-                                ),
-                                const SizedBox(height: Dimens.standard24),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: AppText(
-                                    Strings.settings,
-                                    textStyle: AppTextStyle.subTitle3,
-                                    color: AppColors.nature.shade600,
-                                  ),
-                                ),
-                                const SizedBox(height: Dimens.standard12),
-                                SettingsItem(
-                                  icon: "assets/images/user_nav_liner.svg",
-                                  title: Strings.accountInfo,
-                                  onTap: () => context.pushNamed(AccountInfoScreen.route.name!),
-                                ),
-                                const SizedBox(height: Dimens.standard16),
-                                SettingsItem(
-                                  icon: "assets/images/key.svg",
-                                  title: Strings.changePassword,
-                                  onTap: () => showPasswordEditBottomSheet(context: context),
-                                ),
-                                const SizedBox(height: Dimens.standard16),
-                                const Divider(
-                                  endIndent: Dimens.standard54,
-                                  color: AppColors.white,
-                                  thickness: Dimens.standard2,
-                                ),
-                                const SizedBox(height: Dimens.standard16),
-                                SettingsItem(
-                                  icon: "assets/images/logout.svg",
-                                  title: Strings.logout,
-                                  onTap: () {
-                                    context.read<AppConfigCubit>().reset();
-                                    context.read<AuthenticationCubit>().logOut();
-                                    context.pushNamed(SplashScreen.route.name!);
-                                  },
-                                  showArrow: false,
-                                ),
-                                const SizedBox(height: Dimens.standard40),
-                                AppText(
-                                    '$versionName ($versionCode)',
-                                  textStyle: AppTextStyle.body5,
-                                  color: AppColors.nature.shade300,
-                                  textDirection: TextDirection.ltr,
-                                ),
-                                const SizedBox(height: Dimens.standard100),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
