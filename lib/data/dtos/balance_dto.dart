@@ -1,27 +1,22 @@
 import 'package:equatable/equatable.dart';
 
 class BalanceDTO extends Equatable {
-  final String rialBalance;
-  final String goldBalance;
+  final int balance;
+  final String unit;
 
   const BalanceDTO({
-    required this.rialBalance,
-    required this.goldBalance,
+    required this.balance,
+    required this.unit,
   });
 
   factory BalanceDTO.fromJson(Map<String, dynamic> json) => BalanceDTO(
-        rialBalance: json['rial_balance'].toString(),
-        goldBalance: json['gold_balance'].toString(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        'rial_balance': rialBalance,
-        'gold_balance': goldBalance,
-      };
+    balance: json['balance'],
+    unit: json['unit'],
+  );
 
   @override
   List<Object?> get props => [
-        rialBalance,
-        goldBalance,
-      ];
+    balance,
+    unit,
+  ];
 }

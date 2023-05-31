@@ -1,6 +1,5 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
-import 'package:deniz_gold/core/utils/config.dart';
 import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/profile/profile_cubit.dart';
@@ -25,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -40,6 +40,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late PackageInfo packageInfo;
+
+  @override
+  void initState() {
+    packageInfo = context.read<PackageInfo>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => UserStatusChecker(
         child: SafeArea(
@@ -170,7 +178,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   const SizedBox(height: Dimens.standard40),
                                   AppText(
-                                      '$versionName ($versionCode)',
+                                      '${packageInfo.version} (${packageInfo.buildNumber})',
                                     textStyle: AppTextStyle.body5,
                                     color: AppColors.nature.shade300,
                                     textDirection: TextDirection.ltr,

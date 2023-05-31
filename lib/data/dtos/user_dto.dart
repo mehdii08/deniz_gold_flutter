@@ -19,7 +19,7 @@ class UserDTO extends Equatable {
 
   factory UserDTO.fromJson(Map<String, dynamic> json) => UserDTO(
         name: json['name'],
-        statusCode: json['status_code'],
+        statusCode: ["0", "1", "2"].contains(json['status_code']) ? int.parse(json['status_code']) : json['status_code'],
         statusText: json['status_text'],
         nationalCode: json['national_code'],
         mobile: json['mobile'],

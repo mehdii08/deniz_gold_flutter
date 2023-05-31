@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:deniz_gold/data/dtos/balance_dto.dart';
+import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
 

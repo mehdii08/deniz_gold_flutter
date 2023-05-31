@@ -1,4 +1,4 @@
-import 'package:deniz_gold/data/dtos/balance_dto.dart';
+import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
@@ -77,7 +77,7 @@ abstract class AppDataSource {
 
   Future<AppConfigDTO> getConfig();
 
-  Future<BalanceDTO> getBalance();
+  Future<BalanceResponseDTO> getBalance();
 
   Future<List<PhoneDTO>> getPhones();
 
@@ -286,9 +286,9 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<BalanceDTO> getBalance() async {
+  Future<BalanceResponseDTO> getBalance() async {
     final response = await _apiHelper.request('$apiPath/panel/get-balance');
-    final result = BalanceDTO.fromJson(response.dataAsMap());
+    final result = BalanceResponseDTO.fromJson(response.dataAsMap());
     return result;
   }
 

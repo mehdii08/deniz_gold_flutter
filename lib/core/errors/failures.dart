@@ -23,7 +23,7 @@ class Failure extends Equatable {
       return Failure._(message: exception.message);
     }
     // TODO: should change the message
-    return const Failure._(message: 'Failure');
+    return const Failure._(message: 'خطا');
   }
 
   @override

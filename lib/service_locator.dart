@@ -10,6 +10,7 @@ import 'package:deniz_gold/core/network/transformers.dart';
 import 'package:deniz_gold/core/utils/config.dart';
 import 'package:deniz_gold/service_locator.config.dart';
 import 'package:injectable/injectable.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.I;
@@ -32,6 +33,10 @@ Future<Dio> getDio() async {
     },
   );
   return Dio(options)..transformer = AsyncDataTransformer();
+}
+
+Future<PackageInfo> getPackageInfo() async {
+  return await PackageInfo.fromPlatform();
 }
 
 Future<SharedPreferences> getSharedPreferences() async {
@@ -58,6 +63,10 @@ abstract class RegisterModule {
   @singleton
   @preResolve
   Future<Dio> get resolveDio => getDio();
+
+  @singleton
+  @preResolve
+  Future<PackageInfo> get resolvePackageInfo => getPackageInfo();
 
   @singleton
   @preResolve
