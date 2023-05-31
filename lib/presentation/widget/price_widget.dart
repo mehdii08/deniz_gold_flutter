@@ -1,6 +1,7 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
+import 'package:deniz_gold/data/dtos/home_price_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
@@ -9,7 +10,7 @@ import 'package:deniz_gold/presentation/strings.dart';
 
 class PriceWidget extends StatelessWidget {
   final String title;
-  final String price;
+  final HomePriceDTO homePrice;
   final bool isSell;
   final IconAlign changeArrowAlign;
   final Color? overrideTextColor;
@@ -18,7 +19,7 @@ class PriceWidget extends StatelessWidget {
   const PriceWidget({
     Key? key,
     required this.title,
-    required this.price,
+    required this.homePrice,
     required this.isSell,
     required this.changeArrowAlign,
     this.overrideTextColor,
@@ -48,12 +49,12 @@ class PriceWidget extends StatelessWidget {
           ),
           const SizedBox(height: Dimens.standard4),
           AppText(
-            price.numberFormat(),
+            homePrice.price.numberFormat(),
             textStyle: AppTextStyle.subTitle3,
             color: AppColors.nature.shade50,
           ),
           AppText(
-            Strings.toman,
+            homePrice.unit,
             textStyle: AppTextStyle.body5,
             color: AppColors.nature.shade50,
           ),

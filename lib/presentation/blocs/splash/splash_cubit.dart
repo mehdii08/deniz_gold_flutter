@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:deniz_gold/data/dtos/app_version_dto.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:deniz_gold/domain/repositories/shared_preferences_repository.dart';
@@ -45,12 +46,14 @@ class SplashCubit extends Cubit<SplashState> {
 
         PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-        String appName = packageInfo.appName;
-        String packageName = packageInfo.packageName;
-        String version = packageInfo.version;
-        String buildNumber = packageInfo.buildNumber;
+        int versionCode = 1;
+        try{
+          versionCode = int.parse(packageInfo.buildNumber);
+        }catch(e){
+          debugPrint("versionCode parse exception");
+        }
 
-        if (r.appVersion.version != version) {
+        if (r.appVersion.versionCode > versionCode) {
           emit(SplashUpdateNeeded(appVersion: r.appVersion));
         } else {
           emit(const SplashLoaded());

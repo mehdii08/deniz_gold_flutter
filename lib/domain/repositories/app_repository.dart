@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:deniz_gold/core/errors/failures.dart';
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
-import 'package:deniz_gold/data/dtos/balance_dto.dart';
+import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
@@ -75,7 +75,7 @@ abstract class AppRepository {
 
   Future<Either<Failure, AppConfigDTO>> getConfig();
 
-  Future<Either<Failure, BalanceDTO>> getBalance();
+  Future<Either<Failure, BalanceResponseDTO>> getBalance();
 
   Future<Either<Failure, List<PhoneDTO>>> getPhones();
 

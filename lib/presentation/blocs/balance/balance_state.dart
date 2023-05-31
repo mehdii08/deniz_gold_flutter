@@ -20,7 +20,7 @@ class BalanceLoading extends BalanceState {
 }
 
 class BalanceLoaded extends BalanceState {
-  final BalanceDTO data;
+  final BalanceResponseDTO data;
   const BalanceLoaded({required this.data});
 
   @override

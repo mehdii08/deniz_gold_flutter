@@ -7,6 +7,7 @@ import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 final appKey = GlobalKey();
@@ -27,6 +28,9 @@ class DenizApp extends StatelessWidget {
             create: (_) => sl(),
           ),
           ChangeNotifierProvider<GoRouter>(create: buildRouter),
+          Provider<PackageInfo>(
+            create: (_) => sl(),
+          )
         ],
         child: MultiBlocListener(
           listeners: [

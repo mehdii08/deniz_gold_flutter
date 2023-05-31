@@ -1,14 +1,15 @@
+import 'package:deniz_gold/data/dtos/home_price_dto.dart';
 import 'package:equatable/equatable.dart';
 import 'package:deniz_gold/data/dtos/price_dto.dart';
 
 class HomeScreenDataDTO extends Equatable {
-  final String buyPrice;
-  final String sellPrice;
-  final String goldOns;
-  final String goldGheram;
-  final String goldWorld;
-  final String todayHighPrice;
-  final String todayLowPrice;
+  final HomePriceDTO buyPrice;
+  final HomePriceDTO sellPrice;
+  final HomePriceDTO goldOns;
+  final HomePriceDTO goldGheram;
+  final HomePriceDTO goldWorld;
+  final HomePriceDTO todayHighPrice;
+  final HomePriceDTO todayLowPrice;
   final List<PriceDTO>? priceHistories;
   final bool accountingStatus;
 
@@ -24,24 +25,19 @@ class HomeScreenDataDTO extends Equatable {
     required this.accountingStatus,
   });
 
-  factory HomeScreenDataDTO.fromJson(Map<String, dynamic> json) =>
-      HomeScreenDataDTO(
-        buyPrice: json['buy_price'] == 0 ? "0" : json['buy_price'],
-        sellPrice: json['sell_price'] == 0 ? "0" : json['sell_price'],
-        goldOns: json['gold_ons'] == 0 ? "0" : json['gold_ons'],
-        goldGheram: json['gold_gheram'] == 0 ? "0" : json['gold_gheram'],
-        goldWorld: json['gold_world'] == 0 ? "0" : json['gold_world'],
-        todayHighPrice:
-            json['today_high_price'] == 0 ? "0" : json['today_high_price'],
-        todayLowPrice:
-            json['today_low_price'] == 0 ? "0" : json['today_low_price'],
+  factory HomeScreenDataDTO.fromJson(Map<String, dynamic> json) => HomeScreenDataDTO(
+        buyPrice: HomePriceDTO.fromJson(json['buy_price']),
+        sellPrice: HomePriceDTO.fromJson(json['sell_price']),
+        goldOns: HomePriceDTO.fromJson(json['gold_ons']),
+        goldGheram: HomePriceDTO.fromJson(json['gold_gheram']),
+        goldWorld: HomePriceDTO.fromJson(json['gold_world']),
+        todayHighPrice: HomePriceDTO.fromJson(json['today_high_price']),
+        todayLowPrice: HomePriceDTO.fromJson(json['today_low_price']),
         priceHistories: json['price_histories'] == null
             ? null
             : json['price_histories'].length == 0
                 ? []
-                : List<PriceDTO>.from(json['price_histories']
-                    .map((e) => PriceDTO.fromJson(e))
-                    .toList()),
+                : List<PriceDTO>.from(json['price_histories'].map((e) => PriceDTO.fromJson(e)).toList()),
         accountingStatus: json['accounting_status'],
       );
 
@@ -61,8 +57,8 @@ class HomeScreenDataDTO extends Equatable {
   HomeScreenDataDTO update(HomeScreenDataDTO newData) {
     DateTime now = DateTime.now();
     priceHistories?.add(PriceDTO(
-        buyPrice: newData.buyPrice,
-        sellPrice: newData.sellPrice,
+        buyPrice: newData.buyPrice.price.toString(),
+        sellPrice: newData.sellPrice.price.toString(),
         time: '${now.hour}:${now.minute}'));
     return HomeScreenDataDTO(
       buyPrice: newData.buyPrice,

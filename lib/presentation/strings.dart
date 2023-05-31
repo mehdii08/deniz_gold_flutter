@@ -12,6 +12,7 @@ class Strings {
   static const error = "خطا";
   static const home = "خانه";
   static const edit = "ویرایش";
+  static const empty = "";
   static const yourself = "خودتان";
   static const toName = "به نام";
   static const havaleNazde = "حواله نزد...؟";
@@ -191,8 +192,10 @@ class Strings {
   static const goldGheramPrice = "نرخ هر گرم";
   static const worldGoldPrice = "طلای جهانی (مثقال)";
   static const remainingGold = "موجودی طلا (گرم)";
+  static const remainingGold_ = "موجودی طلا";
   static const remainingRials = "موجودی تومان";
   static const remainingCash = "موجودی نقدی (تومان)";
+  static const remaining = "موجودی";
   static const gheram = "گرم";
   static const weekMaxPrice = "بالاترین ترین مظنه هفته";
   static const weekMinPrice = "پایین ترین مظنه هفته";
