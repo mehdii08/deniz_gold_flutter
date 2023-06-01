@@ -20,20 +20,23 @@ import 'package:deniz_gold/presentation/widget/toast.dart';
 class VerifyMobileScreen extends StatefulWidget {
   final String mobile;
   final bool isRegister;
+  final int smsOtpCodeExpirationTime;
 
   const VerifyMobileScreen({
     Key? key,
     required this.mobile,
     required this.isRegister,
+    required this.smsOtpCodeExpirationTime,
   }) : super(key: key);
 
   static final route = GoRoute(
     name: 'VerifyMobileScreen',
     path: '/verify-mobile',
     builder: (_, state) => VerifyMobileScreen(
-        mobile: state.queryParams['mobile']!,
-        isRegister: state.queryParams['isRegister']! ==
-            "true"), //make mobile nullable and check null for web version, or you can use redirect for handling it
+        mobile: state.queryParams['mobile']!,//make mobile nullable and check null for web version, or you can use redirect for handling it
+        isRegister: state.queryParams['isRegister']! == "true",
+        smsOtpCodeExpirationTime: state.queryParams['isRegister'] != null ? int.parse(state.queryParams['smsOtpCodeExpirationTime']??"200") : 180,
+    ),
   );
 
   @override
@@ -45,10 +48,11 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   final codeIsValid = ValueNotifier<bool>(false);
 
   late Timer _timer;
-  int _time = 120;
+  int _time = 170;
 
   @override
   void initState() {
+    _time = widget.smsOtpCodeExpirationTime;
     startTimer();
     super.initState();
   }
@@ -60,7 +64,6 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
       (Timer timer) {
         if (_time == 0) {
           setState(() {
-            //todo show resend button
             timer.cancel();
           });
         } else {
@@ -92,6 +95,14 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                   queryParams: {'token': state.token, 'mobile': widget.mobile});
             } else if (state is VerifyMobileFailed) {
               showToast(title: state.message, context: context, toastType: ToastType.error);
+            }else if (state is CheckMobileLoaded) {
+              if(!state.exists){
+                _time = state.smsOtpCodeExpirationTime;
+                startTimer();
+                controller.clear();
+              }else{
+                context.pop();
+              }
             }
           },
           builder: (context, state) {
@@ -131,12 +142,19 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                         codeIsValid.value = text.length == 6;
                       }),
                   const SizedBox(height: Dimens.standard12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
-                    child: AppText(
-                      getCountDownText(),
-                      textStyle: AppTextStyle.body5,
-                      color: AppColors.nature.shade600,
+                  GestureDetector(
+                    onTap: (){
+                      if(_time == 0){
+                        context.read<VerifyMobileCubit>().checkMobileExists(widget.mobile);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8, vertical: Dimens.standard4),
+                      child: state is VerifyMobileLoading && state.isResend ? const CircularProgressIndicator() : AppText(
+                        getCountDownText(),
+                        textStyle: AppTextStyle.body5,
+                        color: AppColors.nature.shade600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: Dimens.standard24),
@@ -151,7 +169,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                                     )
                                 : null,
                             text: Strings.confirm,
-                            isLoading: state is VerifyMobileLoading,
+                            isLoading: state is VerifyMobileLoading && !state.isResend,
                           ))
                 ],
               ),
@@ -165,5 +183,5 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   String getDescription(String mobile) =>
       "کد ۴ رقمی به شماره $mobile ارسال شد. لطفا پس از دریافت، کد را در کادر پایین وارد کنید.";
 
-  String getCountDownText() => "$_time ثانیه تا ارسال مجدد";
+  String getCountDownText() => _time != 0 ? "$_time ثانیه تا ارسال مجدد" : "ارسال مجدد";
 }

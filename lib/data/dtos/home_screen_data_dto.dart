@@ -38,7 +38,7 @@ class HomeScreenDataDTO extends Equatable {
             : json['price_histories'].length == 0
                 ? []
                 : List<PriceDTO>.from(json['price_histories'].map((e) => PriceDTO.fromJson(e)).toList()),
-        accountingStatus: json['accounting_status'],
+        accountingStatus: json['accounting_status'] ?? false,
       );
 
   @override

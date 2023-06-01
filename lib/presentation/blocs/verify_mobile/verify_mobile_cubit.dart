@@ -30,4 +30,14 @@ class VerifyMobileCubit extends Cubit<VerifyMobileState> {
       },
     );
   }
+
+  checkMobileExists(String mobile) async {
+    emit(const VerifyMobileLoading(isResend: true));
+    final result = await appRepository.checkMobileExists(mobile: mobile);
+    result.fold(
+          (l) => emit(VerifyMobileFailed(message: l.message != null ? l.message! : "")),
+          (r) => emit(CheckMobileLoaded(mobile: mobile, exists: r.exists, smsOtpCodeExpirationTime: r.smsOtpCodeExpirationTime ?? 190)),
+    );
+  }
+
 }

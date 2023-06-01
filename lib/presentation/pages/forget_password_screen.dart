@@ -46,61 +46,61 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TitleAppBar(title: Strings.forgetPasswordTitle),
-      backgroundColor: AppColors.background,
-      body: BlocProvider<ForgetPasswordCubit>(
-        create: (_) => sl(),
-        child: BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(listener: (context, state) {
-          if (state is ForgetPasswordLoaded) {
-            context.pushNamed(
-                VerifyMobileScreen.route.name!,
-                queryParams: {'mobile' : state.mobile, 'isRegister' : 'false'});
-          } else if (state is ForgetPasswordFailed) {
-            showToast(title: state.message, context: context, toastType: ToastType.error);
-          }
-        }, builder: (context, state) {
-          return SafeArea(
-            child: SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: Dimens.standard16),
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: AppText(
-                          Strings.forgetPasswordDescription,
-                          textStyle: AppTextStyle.body4,
-                        )),
-                    const SizedBox(height: Dimens.standard32),
-                    AppTextField(
-                      controller: controller,
-                      title: Strings.mobile,
-                      onChange: (text){
-                        mobileIsValid.value = isMobile(text);
-                      },
-                    ),
-                    const SizedBox(height: Dimens.standard32),
-                    ValueListenableBuilder<bool>(
-                        valueListenable: mobileIsValid,
-                        builder: (context, isValid, _) {
-                          return AppButton(
-                            text: Strings.checkPhoneNumber,
-                            onPressed: isValid ? () => context.read<ForgetPasswordCubit>().sendOTPCode(controller.text) : null,
-                            isLoading: state is ForgetPasswordLoading,
-                          );
-                        }),
-                  ],
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
+        appBar: const TitleAppBar(title: Strings.forgetPasswordTitle),
+        backgroundColor: AppColors.background,
+        body: BlocProvider<ForgetPasswordCubit>(
+          create: (_) => sl(),
+          child: BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(listener: (context, state) {
+            if (state is ForgetPasswordLoaded) {
+              context.pushNamed(
+                  VerifyMobileScreen.route.name!,
+                  queryParams: {'mobile' : state.mobile, 'isRegister' : 'false'});
+            } else if (state is ForgetPasswordFailed) {
+              showToast(title: state.message, context: context, toastType: ToastType.error);
+            }
+          }, builder: (context, state) {
+            return SafeArea(
+              child: SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: Dimens.standard16),
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: AppText(
+                            Strings.forgetPasswordDescription,
+                            textStyle: AppTextStyle.body4,
+                          )),
+                      const SizedBox(height: Dimens.standard32),
+                      AppTextField(
+                        controller: controller,
+                        title: Strings.mobile,
+                        onChange: (text){
+                          mobileIsValid.value = isMobile(text);
+                        },
+                      ),
+                      const SizedBox(height: Dimens.standard32),
+                      ValueListenableBuilder<bool>(
+                          valueListenable: mobileIsValid,
+                          builder: (context, isValid, _) {
+                            return AppButton(
+                              text: Strings.checkPhoneNumber,
+                              onPressed: isValid ? () => context.read<ForgetPasswordCubit>().sendOTPCode(controller.text) : null,
+                              isLoading: state is ForgetPasswordLoading,
+                            );
+                          }),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
-    );
-  }
+  );
 }

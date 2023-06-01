@@ -64,7 +64,7 @@ class TradeCalculateDataBottomSheetContent extends StatelessWidget {
               ),
               const Spacer(),
               AppText(
-                Strings.goldGheramPrice,
+                Strings.orderMazane,
                 textStyle: AppTextStyle.body4,
                 color: AppColors.nature.shade700,
               ),

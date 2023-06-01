@@ -22,10 +22,11 @@ class CheckMobileLoading extends CheckMobileState {
 class CheckMobileLoaded extends CheckMobileState {
   final String mobile;
   final bool exists;
-  const CheckMobileLoaded({required this.mobile, required this.exists});
+  final int smsOtpCodeExpirationTime;
+  const CheckMobileLoaded({required this.mobile, required this.exists, required this.smsOtpCodeExpirationTime});
 
   @override
-  List<Object?> get props => [mobile, exists];
+  List<Object?> get props => [mobile, exists, smsOtpCodeExpirationTime];
 }
 
 class CheckMobileFailed extends CheckMobileState {
