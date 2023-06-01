@@ -13,7 +13,21 @@ class VerifyMobileInitial extends VerifyMobileState {
 }
 
 class VerifyMobileLoading extends VerifyMobileState {
-  const VerifyMobileLoading() : super();
+  final bool isResend;
+  const VerifyMobileLoading({this.isResend = false}) : super();
+
+  @override
+  List<Object?> get props => [isResend];
+}
+
+class CheckMobileLoaded extends VerifyMobileState {
+  final String mobile;
+  final bool exists;
+  final int smsOtpCodeExpirationTime;
+  const CheckMobileLoaded({required this.mobile, required this.exists, required this.smsOtpCodeExpirationTime});
+
+  @override
+  List<Object?> get props => [mobile, exists, smsOtpCodeExpirationTime];
 }
 
 class VerifyMobileSuccess extends VerifyMobileState {

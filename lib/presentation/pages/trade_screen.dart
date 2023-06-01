@@ -692,7 +692,7 @@ class TradeAnswerDialog extends StatelessWidget {
           Row(
             children: [
               AppText(
-                "${totalPrice.numberFormat()} ${Strings.toman}",
+                "${totalPrice.clearCommas().numberFormat()} ${Strings.toman}",
                 textStyle: AppTextStyle.body4,
               ),
               const Spacer(),

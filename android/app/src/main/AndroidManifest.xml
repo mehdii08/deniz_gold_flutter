@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.deniz.gold.deniz_gold">
    <application
-        android:label="deniz_gold"
+        android:label="آبشده دنیز"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -17,7 +17,7 @@ class CheckMobileCubit extends Cubit<CheckMobileState> {
     result.fold(
       (l) => emit(CheckMobileFailed(
           mobile: mobile, message: l.message != null ? l.message! : "")),
-      (r) => emit(CheckMobileLoaded(mobile: mobile, exists: r.exists)),
+      (r) => emit(CheckMobileLoaded(mobile: mobile, exists: r.exists, smsOtpCodeExpirationTime: r.smsOtpCodeExpirationTime ?? 190)),
     );
   }
 }

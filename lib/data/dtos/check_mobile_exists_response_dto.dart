@@ -9,11 +9,10 @@ class CheckMobileExistsResponseDTO extends Equatable {
     this.smsOtpCodeExpirationTime,
   });
 
-  factory CheckMobileExistsResponseDTO.fromJson(Map<String, dynamic> json) =>
-      CheckMobileExistsResponseDTO(
-        exists: json['exists'],
-        smsOtpCodeExpirationTime: json['sms_otp_code_expiration_time'],
-      );
+  factory CheckMobileExistsResponseDTO.fromJson(Map<String, dynamic> json) => CheckMobileExistsResponseDTO(
+      exists: json['exists'],
+      smsOtpCodeExpirationTime: json['sms_otp_code_expiration_time'],
+    );
 
   @override
   List<Object?> get props => [exists, smsOtpCodeExpirationTime];
