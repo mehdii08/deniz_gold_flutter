@@ -40,65 +40,65 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final errors = ValueNotifier<ResetPasswordErrors>(const ResetPasswordErrors());
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const TitleAppBar(title: Strings.resetPasswordTitle,),
-      backgroundColor: AppColors.background,
-      body: BlocProvider<ResetPasswordCubit>(
-        create: (_) => sl(),
-        child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
-          listener: (context, state) {
-            if (state is ResetPasswordLoaded) {
-              showToast(title: state.message,context: context, onClose: ()=>context.goNamed(CheckMobileScreen.route.name!));
-            } else if (state is ResetPasswordFailed) {
-              showToast(title: state.message,context: context,toastType: ToastType.error);
-            }
-          },
-          builder: (context, state) {
-            return ValueListenableBuilder<ResetPasswordErrors>(
-                valueListenable: errors,
-                builder: (context, resetPasswordErrors, _) => SafeArea(
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: Dimens.standard32),
-                            AppTextField(
-                              title: Strings.enterNewPassword,
-                              controller: passwordController,
-                              obscureText: true,
-                              error: resetPasswordErrors.passwordError,
-                              info: Strings.atLeast6Chars,
-                            ),
-                            const SizedBox(height: Dimens.standard40),
-                            AppButton(
-                              isLoading: state is ResetPasswordLoading,
-                              text: Strings.resetPassword,
-                              onPressed: () =>
-                                  _validateThenSubmit(() => context.read<ResetPasswordCubit>().resetPassword(
-                                    token: widget.token,
-                                    mobile: widget.mobile,
-                                    password: passwordController.text,
-                                    passwordConfirmation: passwordController.text,
-                                  )),
-                            ),
-                            const SizedBox(height: Dimens.standardX)
-                          ],
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
+        appBar: const TitleAppBar(title: Strings.resetPasswordTitle,),
+        backgroundColor: AppColors.background,
+        body: BlocProvider<ResetPasswordCubit>(
+          create: (_) => sl(),
+          child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
+            listener: (context, state) {
+              if (state is ResetPasswordLoaded) {
+                showToast(title: state.message,context: context, onClose: ()=>context.goNamed(CheckMobileScreen.route.name!));
+              } else if (state is ResetPasswordFailed) {
+                showToast(title: state.message,context: context,toastType: ToastType.error);
+              }
+            },
+            builder: (context, state) {
+              return ValueListenableBuilder<ResetPasswordErrors>(
+                  valueListenable: errors,
+                  builder: (context, resetPasswordErrors, _) => SafeArea(
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: Dimens.standard32),
+                              AppTextField(
+                                title: Strings.enterNewPassword,
+                                controller: passwordController,
+                                obscureText: true,
+                                error: resetPasswordErrors.passwordError,
+                                info: Strings.atLeast6Chars,
+                              ),
+                              const SizedBox(height: Dimens.standard40),
+                              AppButton(
+                                isLoading: state is ResetPasswordLoading,
+                                text: Strings.resetPassword,
+                                onPressed: () =>
+                                    _validateThenSubmit(() => context.read<ResetPasswordCubit>().resetPassword(
+                                      token: widget.token,
+                                      mobile: widget.mobile,
+                                      password: passwordController.text,
+                                      passwordConfirmation: passwordController.text,
+                                    )),
+                              ),
+                              const SizedBox(height: Dimens.standardX)
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-            );
-          },
+                  )
+              );
+            },
+          ),
         ),
       ),
-    );
-  }
+  );
 
   _validateThenSubmit(VoidCallback onSubmit) {
     String? password;

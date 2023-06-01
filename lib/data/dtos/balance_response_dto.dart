@@ -22,7 +22,7 @@ class BalanceResponseDTO extends Equatable {
 }
 
 class BalanceDTO extends Equatable {
-  final int balance;
+  final String balance;
   final String unit;
 
   const BalanceDTO({

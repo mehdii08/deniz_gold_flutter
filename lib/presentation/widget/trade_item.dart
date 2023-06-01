@@ -91,7 +91,7 @@ class TradeItem extends StatelessWidget {
           ),
           const Spacer(),
           AppText(
-            trade.weight.toString(),
+            trade.weight,
             textStyle: AppTextStyle.body4,
             color: AppColors.nature.shade700,
           ),

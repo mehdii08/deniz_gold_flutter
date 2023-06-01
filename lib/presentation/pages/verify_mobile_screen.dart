@@ -165,7 +165,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
                                 ? () => context.read<VerifyMobileCubit>().verify(
                                       mobile: widget.mobile,
                                       code: controller.text,
-                                      isRegister: true,
+                                      isRegister: widget.isRegister,
                                     )
                                 : null,
                             text: Strings.confirm,

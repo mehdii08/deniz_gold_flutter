@@ -4,6 +4,7 @@ import 'package:deniz_gold/core/utils/extensions.dart';
 import 'package:deniz_gold/presentation/blocs/balance/balance_cubit.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,14 +23,19 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
         child: Container(
           decoration: const BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.all(Radius.circular(8))),
           padding: const EdgeInsets.all(8),
-          child: BlocBuilder<BalanceCubit, BalanceState>(
+          child: BlocConsumer<BalanceCubit, BalanceState>(
+            listener: (context, balanceState) {
+              if (balanceState is BalanceFailed) {
+                showToast(title: balanceState.message, context: context, toastType: ToastType.error);
+              }
+            },
             builder: (context, balanceState) => SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Flexible(
+                  Expanded(
                     flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -40,17 +46,22 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                           color: AppColors.nature.shade600,
                         ),
                         AppText(
-                          balanceState is BalanceLoaded ? balanceState.data.gold.balance.toString().numberFormat() : Strings.stars,
+                          balanceState is BalanceLoaded
+                              ? balanceState.data.gold.balance.numberFormat()
+                              : Strings.stars,
                           textStyle: AppTextStyle.body4,
                           color: AppColors.nature.shade800,
                         ),
                       ],
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                     flex: 1,
                     child: balanceState is BalanceLoading
-                        ? const SizedBox(width: 30, height: 30, child: CircularProgressIndicator())
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [SizedBox(width: 30, height: 30, child: CircularProgressIndicator())],
+                          )
                         : GestureDetector(
                             onTap: () => balanceState is BalanceInitial
                                 ? context.read<BalanceCubit>().getData()
@@ -63,7 +74,7 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                             ),
                           ),
                   ),
-                  Flexible(
+                  Expanded(
                     flex: 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +85,9 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                           color: AppColors.nature.shade600,
                         ),
                         AppText(
-                          balanceState is BalanceLoaded ? balanceState.data.rial.balance.toString().numberFormat() : Strings.stars,
+                          balanceState is BalanceLoaded
+                              ? balanceState.data.rial.balance.numberFormat()
+                              : Strings.stars,
                           textStyle: AppTextStyle.body4,
                           color: AppColors.nature.shade800,
                         ),

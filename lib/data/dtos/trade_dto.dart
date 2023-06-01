@@ -7,7 +7,7 @@ class TradeDTO extends Equatable {
   final String typeString;
   final int mazaneh;
   final int totalPrice;
-  final int weight;
+  final String weight;
   final String faDate;
   final String faTime;
 
