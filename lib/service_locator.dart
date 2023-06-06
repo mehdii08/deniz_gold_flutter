@@ -27,10 +27,10 @@ Future initSL() async {
 Future<Dio> getDio() async {
   final options = BaseOptions(
     baseUrl: serverUrl,
-    headers: {
-      'User-Agent': await getUserAgent(),
-      // 'version': FkUserAgent.getProperty('applicationVersion'),
-    },
+    // headers: {
+    //   'User-Agent': await getUserAgent(),
+    //   // 'version': FkUserAgent.getProperty('applicationVersion'),
+    // },
   );
   return Dio(options)..transformer = AsyncDataTransformer();
 }

@@ -16,9 +16,9 @@ const String botStatusNotificationType = "logo_data";
 
 class TradeResultNotificationEvent extends AppNotificationEvent {
   final int requestId;
-  final String status;
-  final String? totalPrice;
-  final String? mazaneh;
+  final int status;
+  final int? totalPrice;
+  final int? mazaneh;
   final String? weight;
 
   TradeResultNotificationEvent({
@@ -35,7 +35,7 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
     return TradeResultNotificationEvent(
       type: json['type'],
       requestId: data['request_id'],
-      status: data['status'].toString(),
+      status: data['status'],
       totalPrice: data['total_price'],
       mazaneh: data['mazaneh'],
       weight: data['weight'].toString(),

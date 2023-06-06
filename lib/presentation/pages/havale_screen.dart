@@ -258,10 +258,12 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                       itemCount: state.result.items.length + (state is HavaleLoading ? 1 : 0),
                                       itemBuilder: (context, index) {
                                         if (index == state.result.items.length) {
-                                          return const SizedBox(
-                                              height: Dimens.standard3X,
-                                              width: Dimens.standard3X,
-                                              child: CircularProgressIndicator());
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: const [
+                                              CircularProgressIndicator()
+                                            ],
+                                          );
                                         }
                                         return HavalehItem(havaleh: state.result.items[index]);
                                       },

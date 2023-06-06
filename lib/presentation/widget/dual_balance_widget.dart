@@ -41,7 +41,7 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppText(
-                          '${Strings.remainingGold_} ${balanceState is BalanceLoaded ? '(${balanceState.data.gold.unit})' : Strings.empty}',
+                          Strings.remainingGold_,
                           textStyle: AppTextStyle.body5,
                           color: AppColors.nature.shade600,
                         ),
@@ -80,7 +80,7 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppText(
-                          '${Strings.remaining} ${balanceState is BalanceLoaded ? balanceState.data.rial.unit : Strings.empty}',
+                          Strings.remainingRials,
                           textStyle: AppTextStyle.body5,
                           color: AppColors.nature.shade600,
                         ),

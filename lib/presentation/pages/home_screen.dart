@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 const UserAccountingChecker(
                                   updateUser: true,
-                                  placeHolder: DualBalanceWidget(),
+                                  placeHolder: SizedBox(),
                                   child: DualBalanceWidget(),
                                 ),
                                 const SizedBox(height: Dimens.standard4),

@@ -14,6 +14,28 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final notificationEventSink = sl<Sink<AppNotificationEvent>>();
+  if(kIsWeb){
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
 
   if (!kIsWeb) await FirebaseMessaging.instance.subscribeToTopic("all");
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {

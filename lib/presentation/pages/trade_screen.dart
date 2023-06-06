@@ -607,6 +607,12 @@ class TradeAnswerDialog extends StatelessWidget {
             ),
             const SizedBox(height: Dimens.standard24),
             AppButton(
+              text: Strings.understand,
+              onPressed: () => context.pop(),
+              color: AppColors.nature.shade50,
+            ),
+            const SizedBox(height: Dimens.standard12),
+            AppButton(
               onPressed: () {
                 context.pop();
                 showSupportBottomSheet(context: context);

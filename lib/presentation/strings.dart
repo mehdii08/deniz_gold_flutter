@@ -175,12 +175,12 @@ class Strings {
   static const officeNumber = "دفتر";
   static const workshopNumber = "کارگاه";
   static const loginRegister = "ورود / ثبت نام";
-  static const loginTitle = "آبشده فروشی خدایی";
+  static const loginTitle = "آبشده فروشی دنیز";
   static const checkPhoneNumber = "بررسی شماره تلفن";
   static const forgetPassword = "فراموشی رمز عبور";
   static const forgetPasswordTitle = "بازیابی رمز عبور";
   static const forgetPasswordDescription = "شماره موبایلی که با آن ثبت‌نام کرده اید را وارد کنید.";
-  static const appBarTitle = "آبشده خدایی";
+  static const appBarTitle = "آبشده دنیز";
   static const toman = " تومان";
   static const sellGold = " فروش آبشده";
   static const confirmAndSubmitOrder = " تایید و ثبت سفارش";
@@ -192,8 +192,8 @@ class Strings {
   static const goldGheramPrice = "نرخ هر گرم";
   static const worldGoldPrice = "طلای جهانی (مثقال)";
   static const remainingGold = "موجودی طلا (گرم)";
-  static const remainingGold_ = "موجودی طلا";
-  static const remainingRials = "موجودی تومان";
+  static const remainingGold_ = "مانده طلایی";
+  static const remainingRials = "مانده ریالی";
   static const remainingCash = "موجودی نقدی (تومان)";
   static const remaining = "موجودی";
   static const gheram = "گرم";

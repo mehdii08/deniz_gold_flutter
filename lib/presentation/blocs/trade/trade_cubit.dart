@@ -30,9 +30,9 @@ class TradeCubit extends Cubit<TradeState> {
            && (state as TradeSubmited).data.requestId == event.requestId;
        if(condition){
          emit(TradeAnswerReached(
-             status: event.status,
-             totalPrice: event.totalPrice ?? "",
-             mazaneh: event.mazaneh ?? "",
+             status: event.status.toString(),
+             totalPrice: event.totalPrice.toString(),
+             mazaneh: event.mazaneh.toString(),
              weight: event.weight ?? "",
          ));
        }
