@@ -1,18 +1,16 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/presentation/blocs/transactions/transactions_cubit.dart';
-import 'package:deniz_gold/presentation/pages/trade_screen.dart';
+import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/home_screen.dart';
+import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/presentation/widget/transaction_item.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:deniz_gold/presentation/blocs/trades/trades_cubit.dart';
-import 'package:deniz_gold/presentation/dimens.dart';
-import 'package:deniz_gold/presentation/pages/home_screen.dart';
-import 'package:deniz_gold/presentation/strings.dart';
-import 'package:deniz_gold/presentation/widget/toast.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({Key? key}) : super(key: key);
@@ -47,7 +45,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   _onScrollControllerChanged() {
     if (scrollController.position.maxScrollExtent - scrollController.position.pixels < 100) {
-      if (cubit.state is TradesLoading) {
+      if (cubit.state is TransactionsLoading) {
         return;
       }
       cubit.getData();
@@ -87,13 +85,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: Dimens.standard2X),
-                      if (state is TradesLoaded && state.transactions.isEmpty) ...[
+                      if (state is TransactionsLoaded && state.transactions.isEmpty) ...[
                         const SizedBox(height: Dimens.standard8X),
-                        EmptyView(
-                          text: Strings.tradesListIsEmpty,
-                          buttonText: Strings.tradeGold,
-                          onTap: ()=> context.goNamed(TradeScreen.route.name!),
-                        ),
+                        const EmptyView(text: Strings.transactionsListIsEmpty),
                       ] else ...[
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),

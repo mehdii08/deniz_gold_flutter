@@ -1,6 +1,7 @@
 import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
 import 'package:deniz_gold/core/network/api_helper.dart';
@@ -14,7 +15,6 @@ import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
-import 'package:deniz_gold/data/dtos/transaction_dto.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class AppDataSource {
@@ -47,6 +47,7 @@ abstract class AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required String fcmToken,
   });
 
   Future<TradeCalculateResponseDTO> tradeCalculate({
@@ -85,7 +86,7 @@ abstract class AppDataSource {
 
   Future<HomeScreenDataDTO> getHomeData();
 
-  Future<List<TransactionDTO>> getTransactions({int page = 1});
+  Future<TransactionsResultDTO> getTransactions({int page = 1});
 
   Future<PaginatedResultDTO<TradeDTO>> getTrades({
     required int page,
@@ -180,6 +181,7 @@ class AppDataSourceImpl extends AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required String fcmToken,
   }) async {
     final response = await _apiHelper.request(
       '$apiPath/panel/havaleh/store',
@@ -188,6 +190,7 @@ class AppDataSourceImpl extends AppDataSource {
         'value': value,
         'name': name,
         'device_type': 3,
+        'fcm_token': fcmToken,
         if(destination != null) 'destination_id': destination,
       },
     );
@@ -315,13 +318,10 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<List<TransactionDTO>> getTransactions({int page = 1}) async {
+  Future<TransactionsResultDTO> getTransactions({int page = 1}) async {
     final response =
         await _apiHelper.request('$apiPath/panel/transactions?page=$page');
-    return List<TransactionDTO>.from(response
-        .dataAsMap()['list']
-        .map((e) => TransactionDTO.fromJson(e))
-        .toList());
+    return TransactionsResultDTO.fromJson(response.dataAsMap());
   }
 
   @override

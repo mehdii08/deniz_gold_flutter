@@ -12,7 +12,7 @@ import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
-import 'package:deniz_gold/data/dtos/transaction_dto.dart';
+import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 
 abstract class AppRepository {
@@ -45,6 +45,7 @@ abstract class AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required String fcmToken,
   });
 
   Future<Either<Failure, TradeCalculateResponseDTO>> tradeCalculate({
@@ -83,7 +84,7 @@ abstract class AppRepository {
 
   Future<Either<Failure, HomeScreenDataDTO>> getHomeData();
 
-  Future<Either<Failure, List<TransactionDTO>>> getTransactions(
+  Future<Either<Failure, TransactionsResultDTO>> getTransactions(
       {int page = 1});
 
   Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({

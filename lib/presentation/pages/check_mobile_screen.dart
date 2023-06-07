@@ -63,7 +63,7 @@ class _CheckMobileScreenState extends State<CheckMobileScreen> {
                       children: const [
                         Align(
                             alignment: Alignment.topLeft, child: SupportIcon()),
-                        AppLogo(),
+                        AppLogo(logoWidth: Dimens.standard120),
                       ],
                     ),
                   ),

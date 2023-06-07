@@ -1,5 +1,28 @@
 part of 'havale_cubit.dart';
 
+extension HavaleExtension on PaginatedResultDTO<HavaleDTO> {
+
+  PaginatedResultDTO<HavaleDTO> updateWithNotification({required HavaleDTO havaleDTO}) {
+    List<HavaleDTO> newItems = [];
+    for (var element in items) {
+      if (element.id == havaleDTO.id) {
+        newItems.add(havaleDTO);
+      } else {
+        newItems.add(element);
+      }
+    }
+    return PaginatedResultDTO<HavaleDTO>(
+      items: newItems,
+      from: from,
+      to: to,
+      count: count,
+      perPage: perPage,
+      currentPage: currentPage,
+      lastPage: lastPage,
+    );
+  }
+}
+
 abstract class HavaleState extends Equatable {
   final PaginatedResultDTO<HavaleDTO> result;
 

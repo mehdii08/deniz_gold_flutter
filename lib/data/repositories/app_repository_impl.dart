@@ -13,7 +13,7 @@ import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
-import 'package:deniz_gold/data/dtos/transaction_dto.dart';
+import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -96,12 +96,14 @@ class AppRepositoryImpl extends AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required String fcmToken,
   }) async {
     try {
       return Right(await dataSource.storeHavale(
         value: value,
         name: name,
         destination : destination,
+        fcmToken : fcmToken,
       ));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
@@ -231,7 +233,7 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, List<TransactionDTO>>> getTransactions(
+  Future<Either<Failure, TransactionsResultDTO>> getTransactions(
       {int page = 1}) async {
     try {
       return Right(await dataSource.getTransactions(page: page));

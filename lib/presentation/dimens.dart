@@ -35,7 +35,9 @@ class Dimens {
   static const double standard80 = 80.0;
   static const double standard84 = 84.0;
   static const double standard100 = 100.0;
+  static const double standard120 = 120.0;
   static const double standard125 = 125.0;
+  static const double standard130 = 130.0;
   static const double standard160 = 160.0;
   static const double screenHorizontalPadding = 16.0;
   static const double horizontalPadding = 36.0;

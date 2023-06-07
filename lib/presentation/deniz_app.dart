@@ -1,8 +1,10 @@
 import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/notification_listener/notification_listener_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/support/support_cubit.dart';
 import 'package:deniz_gold/presentation/navigation/app_router.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
+import 'package:deniz_gold/presentation/widget/havaleh_status_dialog.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,15 +18,21 @@ class DenizApp extends StatelessWidget {
   const DenizApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MultiBlocProvider(
+  Widget build(BuildContext context) =>
+      MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationCubit>(
             create: (_) => sl<AuthenticationCubit>(),
           ),
           BlocProvider<AppConfigCubit>(
-            create: (_) => sl<AppConfigCubit>()..getConfig(),
+            create: (_) =>
+            sl<AppConfigCubit>()
+              ..getConfig(),
           ),
           BlocProvider<SupportCubit>(
+            create: (_) => sl(),
+          ),
+          BlocProvider<NotificationListenerCubit>(
             create: (_) => sl(),
           ),
           ChangeNotifierProvider<GoRouter>(create: buildRouter),
@@ -42,9 +50,16 @@ class DenizApp extends StatelessWidget {
                 }
               },
             ),
+            BlocListener<NotificationListenerCubit, NotificationListenerState>(
+              listener: (context, state) {
+                if (state is NotificationListenerLoaded) {
+                  showDialog(context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context, builder: (context) => HavalehStatusDialog(havaleh: state.havaleh));
+                }
+              },
+            ),
             BlocListener<AuthenticationCubit, AuthenticationState?>(
               listener: (context, state) {
-                if(state is UnAuthenticated){
+                if (state is UnAuthenticated) {
                   context.read<GoRouter>().goNamed(SplashScreen.route.name!);
                 }
               },

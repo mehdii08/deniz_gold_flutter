@@ -2,6 +2,7 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:equatable/equatable.dart';
 
 class HavaleDTO extends Equatable {
+  final int id;
   final String title;
   final String name;
   final int status;
@@ -11,6 +12,7 @@ class HavaleDTO extends Equatable {
   final String time;
 
   const HavaleDTO({
+    required this.id,
     required this.title,
     required this.name,
     required this.status,
@@ -21,6 +23,7 @@ class HavaleDTO extends Equatable {
   });
 
   factory HavaleDTO.fromJson(Map<String, dynamic> json) => HavaleDTO(
+    id: json['id'] ?? 0,
         title: json['title'],
         name: json['name'],
         status: json['status'],
@@ -31,5 +34,5 @@ class HavaleDTO extends Equatable {
       );
 
   @override
-  List<Object?> get props => [title, name, status, destination, statusText, date, time];
+  List<Object?> get props => [id, title, name, status, destination, statusText, date, time];
 }

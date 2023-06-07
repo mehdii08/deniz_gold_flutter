@@ -47,6 +47,8 @@ void main() async {
       notificationEventSink.add(HomeDataNotificationEvent.fromJson(message.data));
     } else if (message.data['type'] == botStatusNotificationType) {
       notificationEventSink.add(BotStatusDataNotificationEvent.fromJson(message.data));
+    } else if (message.data['type'] == havalehStatusNotificationType) {
+      notificationEventSink.add(HavalehStatusNotificationEvent.fromJson(message.data));
     }
   });
   runApp(const DenizApp());

@@ -1,25 +1,25 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
-import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
-import 'package:deniz_gold/presentation/widget/app_text.dart';
-import 'package:deniz_gold/presentation/widget/empty_view.dart';
-import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
-import 'package:deniz_gold/presentation/widget/utils.dart';
-import 'package:deniz_gold/service_locator.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/presentation/blocs/havale/havale_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/UserStatusChecker.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
+import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
+import 'package:deniz_gold/presentation/widget/empty_view.dart';
+import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
+import 'package:deniz_gold/presentation/widget/utils.dart';
+import 'package:deniz_gold/service_locator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class HavaleScreen extends StatefulWidget {
   const HavaleScreen({Key? key}) : super(key: key);
@@ -299,8 +299,7 @@ class HavalehItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: Dimens.standard16),
@@ -365,7 +364,6 @@ class HavalehItem extends StatelessWidget {
         Divider(color: AppColors.nature.shade50),
       ],
     );
-  }
 }
 
 class HavaleStatusBadge extends StatelessWidget {

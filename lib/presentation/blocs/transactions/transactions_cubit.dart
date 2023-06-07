@@ -14,7 +14,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   TransactionsCubit(this.appRepository) : super(const TransactionsInitial(transactions: []));
 
   getData() async {
-    if(_page == 6 || state is TransactionsLoading){
+    if(!state.hasMorePage || state is TransactionsLoading){
       return;
     }
     emit(TransactionsLoading(transactions: state.transactions));
@@ -23,7 +23,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
       (l) => emit(TransactionsFailed(transactions: state.transactions, message: l.message != null ? l.message! : "")),
       (r) {
         _page++;
-        emit(TransactionsLoaded(transactions: [...state.transactions, ...r]));
+        emit(TransactionsLoaded(transactions: [...state.transactions, ...r.transactions], hasMorePage: r.hasMorePage));
       },
     );
   }

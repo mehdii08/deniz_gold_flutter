@@ -2,7 +2,11 @@ part of 'transactions_cubit.dart';
 
 abstract class TransactionsState extends Equatable {
   final List<TransactionDTO> transactions;
-  const TransactionsState({required this.transactions});
+  final bool hasMorePage;
+  const TransactionsState({
+    required this.transactions,
+    this.hasMorePage = true,
+  });
 
   @override
   List<Object?> get props => [transactions];
@@ -17,7 +21,10 @@ class TransactionsLoading extends TransactionsState {
 }
 
 class TransactionsLoaded extends TransactionsState {
-  const TransactionsLoaded({required List<TransactionDTO> transactions}) : super(transactions: transactions);
+  const TransactionsLoaded({
+    required List<TransactionDTO> transactions,
+    required bool hasMorePage,
+  }) : super(transactions: transactions, hasMorePage: hasMorePage);
 
   @override
   List<Object?> get props => [transactions];

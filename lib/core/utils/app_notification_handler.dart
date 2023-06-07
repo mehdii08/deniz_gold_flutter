@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 
 class AppNotificationEvent {
@@ -13,6 +14,7 @@ class AppNotificationEvent {
 const String tradeResultNotificationType = "trade_result";
 const String homeDataNotificationType = "home_data";
 const String botStatusNotificationType = "logo_data";
+const String havalehStatusNotificationType = "havaleh_result";
 
 class TradeResultNotificationEvent extends AppNotificationEvent {
   final int requestId;
@@ -39,6 +41,23 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
       totalPrice: data['total_price'],
       mazaneh: data['mazaneh'],
       weight: data['weight'].toString(),
+    );
+  }
+}
+
+class HavalehStatusNotificationEvent extends AppNotificationEvent {
+  final HavaleDTO havaleh;
+
+  HavalehStatusNotificationEvent({
+    required String type,
+    required this.havaleh,
+  }) : super(type: type);
+
+  factory HavalehStatusNotificationEvent.fromJson(Map<String, dynamic> json) {
+    final data = jsonDecode(json['data']);
+    return HavalehStatusNotificationEvent(
+      type: json['type'],
+      havaleh: HavaleDTO.fromJson(data),
     );
   }
 }

@@ -140,6 +140,8 @@ class Strings {
   static const orderPrice = "مبلغ سفارش";
   static const orderNotConfirmed = "سفارش تایید نشد.";
   static const orderConfirmed = "معامله با موفقیت انجام شد.";
+  static const havalehConfirmed = "حواله با موفقیت ثبت شد.";
+  static const havalehRejected = "حواله رد شد.";
   static const orderNotConfirmedDescription = "سفارش خرید شما به دلیل عدم تایید مدیر تایید نشد. در صورت نیاز میتوانید با پشتیبانی تماس بگیرید.";
   static const accountInfo = "اطلاعات حساب کاربری";
   static const tradeTotalPrice = "مبلغ کل سفارش";
@@ -153,6 +155,7 @@ class Strings {
   static const transactionsCount = "تعداد گردش حساب";
   static const transactionsCountWarning = "مابین ۱۰ تا ۴۰ گردش حساب";
   static const tradesListIsEmpty = "تاکنون معامله‌ای انجام نداده‌اید";
+  static const transactionsListIsEmpty = "تراکنش ثبت شده‌ای وجود ندارد.";
   static const listIsEmpty = "موردی جهت نمایش وجود ندارد";
   static const account = "حساب کاربری";
   static const activationWarning =
