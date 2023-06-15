@@ -49,8 +49,9 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                           balanceState is BalanceLoaded
                               ? balanceState.data.gold.balance.numberFormat()
                               : Strings.stars,
+                          textDirection: TextDirection.ltr,
                           textStyle: AppTextStyle.body4,
-                          color: AppColors.nature.shade800,
+                          color: balanceState is BalanceLoaded ? _getColor(balanceState, balanceState.data.gold.balance) :  AppColors.nature.shade800,
                         ),
                       ],
                     ),
@@ -88,8 +89,9 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
                           balanceState is BalanceLoaded
                               ? balanceState.data.rial.balance.numberFormat()
                               : Strings.stars,
+                          textDirection: TextDirection.ltr,
                           textStyle: AppTextStyle.body4,
-                          color: AppColors.nature.shade800,
+                          color: balanceState is BalanceLoaded ? _getColor(balanceState, balanceState.data.rial.balance) :  AppColors.nature.shade800,
                         ),
                       ],
                     ),
@@ -100,4 +102,6 @@ class _DualBalanceWidgetState extends State<DualBalanceWidget> {
           ),
         ),
       );
+
+  _getColor(BalanceLoaded balanceState, String balance) => !balanceState.data.balanceColorInfluens ?  AppColors.nature.shade800 : balance.contains("-") ? AppColors.red : AppColors.green;
 }

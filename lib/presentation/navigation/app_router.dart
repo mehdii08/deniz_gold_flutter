@@ -1,3 +1,4 @@
+import 'package:deniz_gold/main.dart';
 import 'package:deniz_gold/presentation/home_scaffold.dart';
 import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/check_mobile_screen.dart';
@@ -25,6 +26,7 @@ GoRouter buildRouter(BuildContext context) {
     navigatorKey: rootNavigatorKey,
     initialLocation: SplashScreen.route.path,
     redirect: (_, state) {
+      isInTradeScreen = state.location == TradeScreen.route.path;
       return null;
     },
     routes: _routes,

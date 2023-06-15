@@ -1,6 +1,10 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
+import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/splash_screen.dart';
+import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_logo.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
@@ -8,9 +12,7 @@ import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
-import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
-import 'package:deniz_gold/presentation/strings.dart';
+import 'package:go_router/go_router.dart';
 
 class UserStatusChecker extends StatefulWidget {
   final Widget child;
@@ -54,10 +56,10 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
         } else if (widget.checkTrade && state.appConfig?.botStatus == "0") {
           return widget.placeHolder ??
               Center(
-                child: Text(
+                child: AppText(
                   Strings.tradeDisabledWarning,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelLarge,
+                  textStyle: AppTextStyle.title2,
                 ),
               );
         }
@@ -111,6 +113,16 @@ class DeActiveUserScreen extends StatelessWidget {
                         text: Strings.callToSupport,
                         svgIcon: 'assets/images/support.svg',
                         onPressed: () => showSupportBottomSheet(context: context),
+                      ),
+                      const SizedBox(height: Dimens.standard24),
+                      AppButton(
+                        text: Strings.logout,
+                        color: AppColors.nature.shade100,
+                        svgIcon: 'assets/images/logout.svg',
+                        onPressed: (){
+                          context.read<AuthenticationCubit>().clearToken();
+                          context.goNamed(SplashScreen.route.name!);
+                        },
                       ),
                       const SizedBox(height: Dimens.standard160),
                     ],

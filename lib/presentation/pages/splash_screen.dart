@@ -49,11 +49,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 cancelTitle: Strings.later,
                 onConfirmClicked: () async {
                   context.pop();
-                  if (await canLaunchUrlString(state.appVersion.link)) {
                     await launchUrlString(state.appVersion.link, mode: LaunchMode.externalApplication);
-                  }
                 },
-                onCancelClicked: state.appVersion.forceUpdate ? null : () => context.goNamed(HomeScreen.route.name!),
+                onCancelClicked: state.forceUpdate ? null : () => context.goNamed(HomeScreen.route.name!),
               );
 
               showDialog(context: context, builder: (context) => dialog);

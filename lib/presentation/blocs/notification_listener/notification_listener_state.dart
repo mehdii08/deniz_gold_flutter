@@ -15,13 +15,22 @@ class NotificationListenerInitial extends NotificationListenerState {
   NotificationListenerInitial() : super(dateTime: DateTime.now());
 }
 
-class NotificationListenerLoaded extends NotificationListenerState {
+class HavaleNotificationLoaded extends NotificationListenerState {
   final HavaleDTO havaleh;
 
-  NotificationListenerLoaded({
+  HavaleNotificationLoaded({
     required this.havaleh,
   }) : super(dateTime: DateTime.now());
 
   @override
   List<Object?> get props => [dateTime, havaleh];
+}
+
+class TradeResultNotificationLoaded extends NotificationListenerState {
+  final TradeResultNotificationEvent tradeResult;
+
+  TradeResultNotificationLoaded({required this.tradeResult}) : super(dateTime: DateTime.now());
+
+  @override
+  List<Object?> get props => [dateTime, tradeResult];
 }

@@ -15,6 +15,7 @@ class Strings {
   static const empty = "";
   static const yourself = "خودتان";
   static const toName = "به نام";
+  static const grantPermission = "دادن دسترسی";
   static const havaleNazde = "حواله نزد...؟";
   static const nazde = "نزد";
   static const all = "همه";
@@ -41,6 +42,7 @@ class Strings {
   static const atLeast6Chars = "حداقل ۶ کاراکتر";
   static const appName = "آبشده فروشی دنیز";
   static const welcomeToDeniz = "به آبشده فروشی دنیز خوش آمدید.";
+  static const permissionDescription = "برنامه برای ادامه کار با قسمت خرید و فروش نیاز به گرفتن دسترسی Notification دارد. با زدن 'دادن دسترسی' بعد از نمایش دیالوگ گزینه ی Allow را انتخاب کنید.";
   static const welcomeToDenizDescription = "ثبت‌نام شما با موفقیت ثبت شد و در حال بررسی توسط مدیر است، پس از تایید حساب شما فعال خواهد شد.";
   static const enterMobile = "شماره موبایل خود را وارد کنید";
   static const close = "بستن";
@@ -127,7 +129,7 @@ class Strings {
   static const buy = "خرید";
   static const firstPage = "صفحه نخست";
   static const todayTrades = "معاملات امروز";
-  static const eachGeramPrice_ = "نرخ هر گرم:";
+  static const eachMesgalPrice_ = "نرخ هر مثقال:";
   static const todayTradesList = "لیست معاملات امروز";
   static const transactions = "گردش حساب";
   static const buyOrderConfirmation = "تایید سفارش خرید";

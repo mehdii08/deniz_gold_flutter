@@ -29,8 +29,10 @@ class SplashLoaded extends SplashState {
 }
 
 class SplashUpdateNeeded extends SplashState {
+  final bool forceUpdate;
   final AppVersionDTO appVersion;
-  const SplashUpdateNeeded({required this.appVersion});
+
+  const SplashUpdateNeeded({required this.appVersion,required this.forceUpdate});
 }
 
 class SplashFailed extends SplashState {

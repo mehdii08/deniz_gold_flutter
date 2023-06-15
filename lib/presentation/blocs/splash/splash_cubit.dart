@@ -53,8 +53,8 @@ class SplashCubit extends Cubit<SplashState> {
           debugPrint("versionCode parse exception");
         }
 
-        if (r.appVersion.versionCode > versionCode) {
-          emit(SplashUpdateNeeded(appVersion: r.appVersion));
+        if (r.appVersion.forceVersionCode > versionCode || r.appVersion.versionCode > versionCode) {
+          emit(SplashUpdateNeeded(appVersion: r.appVersion, forceUpdate: r.appVersion.forceVersionCode > versionCode));
         } else {
           emit(const SplashLoaded());
         }

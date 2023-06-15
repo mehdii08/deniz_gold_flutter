@@ -6,6 +6,7 @@ class TradeDTO extends Equatable {
   final TradeType type;
   final String typeString;
   final int mazaneh;
+  final int status;
   final int totalPrice;
   final String weight;
   final String faDate;
@@ -15,6 +16,7 @@ class TradeDTO extends Equatable {
     required this.id,
     required this.type,
     required this.typeString,
+    required this.status,
     required this.mazaneh,
     required this.totalPrice,
     required this.weight,
@@ -26,6 +28,7 @@ class TradeDTO extends Equatable {
         id: json['id'],
         type: TradeType.fromCode(json['type']),
         typeString: json['type_string'],
+        status: json['status'],
         mazaneh: json['mazaneh'],
         totalPrice: json['total_price'],
         weight: json['weight'],
@@ -38,6 +41,7 @@ class TradeDTO extends Equatable {
         id,
         type,
         typeString,
+        status,
         mazaneh,
         totalPrice,
         weight,

@@ -4,8 +4,10 @@ import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
+import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
+import 'package:deniz_gold/presentation/blocs/checkTradeStatus/check_trade_status_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/home/home_screen_cubit.dart';
 import 'package:deniz_gold/presentation/blocs/trade/trade_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
@@ -16,6 +18,7 @@ import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
+import 'package:deniz_gold/presentation/widget/permisson_checker.dart';
 import 'package:deniz_gold/presentation/widget/select_toman_or_weight.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/presentation/widget/trade_switch_button.dart';
@@ -50,6 +53,7 @@ class TradeScreen extends StatefulWidget {
 class _TradeScreenState extends State<TradeScreen> {
   final scrollController = ScrollController();
   final cubit = sl<HomeScreenCubit>()..getData();
+  final tradeCubit = sl<TradeCubit>();
   final isTomanNotifier = ValueNotifier<bool>(false);
   final canSubmitNotifier = ValueNotifier<bool>(false);
   late ValueNotifier<TradeType> tradeTypeValueNotifier;
@@ -72,231 +76,233 @@ class _TradeScreenState extends State<TradeScreen> {
   @override
   Widget build(BuildContext context) => UserStatusChecker(
         child: SafeArea(
-          child: WillPopScope(
-            onWillPop: () async {
-              context.goNamed(HomeScreen.route.name!);
-              return false;
-            },
-            child: Scaffold(
-              backgroundColor: AppColors.background,
-              appBar: const LogoAppBar(),
-              body: MultiBlocProvider(
-                  providers: [
-                    BlocProvider<HomeScreenCubit>(
-                      create: (_) => cubit,
-                    ),
-                    BlocProvider<TradeCubit>(
-                      create: (_) => sl(),
-                    ),
-                  ],
-                  child: ValueListenableBuilder<TradeType>(
-                    valueListenable: tradeTypeValueNotifier,
-                    builder: (context, selectedTradeType, _) => MultiBlocListener(
-                        listeners: [
-                          BlocListener<HomeScreenCubit, HomeScreenState>(
-                            listener: (context, state) {
-                              if (state is HomeScreenFailed) {
-                                showToast(title: state.message, context: context, toastType: ToastType.error);
-                              }
-                            },
-                          ),
-                          BlocListener<TradeCubit, TradeState>(
-                            listener: (context, state) {
-                              if (state is TradeFailed) {
-                                showToast(title: state.message, context: context, toastType: ToastType.error);
-                              } else if (state is TradeCalculateLoaded) {
-                                final value = textController.text;
-                                textController.text = "0";
-                                canSubmitNotifier.value = false;
-                                showTradeCalculateDataBottomSheet(
-                                    context: context,
-                                    data: state.data,
-                                    isSell: selectedTradeType == TradeType.sell,
-                                    tradeCubit: context.read<TradeCubit>(),
-                                    onConfirmClicked: () {
-                                      context.read<TradeCubit>().submitTrade(
-                                            tradeType:
-                                                selectedTradeType == TradeType.sell ? TradeType.sell : TradeType.buy,
-                                            calculateType:
-                                                isTomanNotifier.value ? CalculateType.toman : CalculateType.weight,
-                                            value: value.clearCommas(),
-                                          );
-                                    },
-                                    onTradeSubmitted: (data) {
-                                      context.pop();
-                                      _showTradeAnswerWaitingDialog(
-                                        context: context,
-                                        data: data,
-                                        isSell: selectedTradeType == TradeType.sell,
-                                        tradeCubit: context.read<TradeCubit>(),
-                                      );
-                                    });
-                              } else if (state is TradeSubmited) {
-                                // context.pop();
-                                showToast(title: state.message, context: context);
-                                // _showTradeAnswerWaitingDialog(
-                                //   context: context,
-                                //   data: state.data,
-                                //   isSell: selectedTradeType == TradeType.sell,
-                                //   tradeCubit: context.read<TradeCubit>(),
-                                // );
-                              }
-                            },
-                          ),
-                        ],
-                        child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
-                          builder: (context, homeState) =>
-                              BlocBuilder<TradeCubit, TradeState>(builder: (context, tradeState) {
-                            if (homeState is HomeScreenLoaded) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    color: AppColors.white,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: Dimens.standard20),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
-                                          child: TradeSwitchButton(
-                                            selectedTradeType: selectedTradeType,
-                                            onBuyPressed: () => tradeTypeValueNotifier.value = TradeType.buy,
-                                            onSellPressed: () => tradeTypeValueNotifier.value = TradeType.sell,
+          child: PermissionChecker(
+            child: WillPopScope(
+              onWillPop: () async {
+                context.goNamed(HomeScreen.route.name!);
+                return false;
+              },
+              child: Scaffold(
+                backgroundColor: AppColors.background,
+                appBar: const LogoAppBar(),
+                body: MultiBlocProvider(
+                    providers: [
+                      BlocProvider<HomeScreenCubit>(
+                        create: (_) => cubit,
+                      ),
+                      BlocProvider<TradeCubit>.value(
+                        value: tradeCubit,
+                      ),
+                    ],
+                    child: ValueListenableBuilder<TradeType>(
+                      valueListenable: tradeTypeValueNotifier,
+                      builder: (context, selectedTradeType, _) => MultiBlocListener(
+                          listeners: [
+                            BlocListener<HomeScreenCubit, HomeScreenState>(
+                              listener: (context, state) {
+                                if (state is HomeScreenFailed) {
+                                  showToast(title: state.message, context: context, toastType: ToastType.error);
+                                }
+                              },
+                            ),
+                            BlocListener<TradeCubit, TradeState>(
+                              listener: (context, state) {
+                                if (state is TradeFailed) {
+                                  showToast(title: state.message, context: context, toastType: ToastType.error);
+                                } else if (state is TradeCalculateLoaded) {
+                                  final value = textController.text;
+                                  textController.text = "0";
+                                  canSubmitNotifier.value = false;
+                                  showTradeCalculateDataBottomSheet(
+                                      context: context,
+                                      data: state.data,
+                                      isSell: selectedTradeType == TradeType.sell,
+                                      tradeCubit: context.read<TradeCubit>(),
+                                      onConfirmClicked: () {
+                                        context.read<TradeCubit>().submitTrade(
+                                              tradeType:
+                                                  selectedTradeType == TradeType.sell ? TradeType.sell : TradeType.buy,
+                                              calculateType:
+                                                  isTomanNotifier.value ? CalculateType.toman : CalculateType.weight,
+                                              value: value.clearCommas(),
+                                            );
+                                      },
+                                      onTradeSubmitted: (data) {
+                                        context.pop();
+                                        _showTradeAnswerWaitingDialog(
+                                          context: context,
+                                          data: data,
+                                          isSell: selectedTradeType == TradeType.sell,
+                                          tradeCubit: context.read<TradeCubit>(),
+                                        );
+                                      });
+                                } else if (state is TradeSubmited) {
+                                  // context.pop();
+                                  showToast(title: state.message, context: context);
+                                  // _showTradeAnswerWaitingDialog(
+                                  //   context: context,
+                                  //   data: state.data,
+                                  //   isSell: selectedTradeType == TradeType.sell,
+                                  //   tradeCubit: context.read<TradeCubit>(),
+                                  // );
+                                }
+                              },
+                            ),
+                          ],
+                          child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
+                            builder: (context, homeState) =>
+                                BlocBuilder<TradeCubit, TradeState>(builder: (context, tradeState) {
+                              if (homeState is HomeScreenLoaded) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      color: AppColors.white,
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: Dimens.standard20),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
+                                            child: TradeSwitchButton(
+                                              selectedTradeType: selectedTradeType,
+                                              onBuyPressed: () => tradeTypeValueNotifier.value = TradeType.buy,
+                                              onSellPressed: () => tradeTypeValueNotifier.value = TradeType.sell,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(height: Dimens.standard12),
-                                        ValueListenableBuilder<bool>(
-                                          valueListenable: isTomanNotifier,
-                                          builder: (context, isToman, _) => Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
-                                                child: SelectTomanOrWeight(
-                                                  selectedTradeType: selectedTradeType,
-                                                  isToman: isToman,
-                                                  onTomanPressed: () {
-                                                    isTomanNotifier.value = true;
-                                                    textController.text = "0";
-                                                    canSubmitNotifier.value = false;
-                                                  },
-                                                  onWeightPressed: () {
-                                                    isTomanNotifier.value = false;
-                                                    textController.text = "0";
-                                                    canSubmitNotifier.value = false;
-                                                  },
+                                          const SizedBox(height: Dimens.standard12),
+                                          ValueListenableBuilder<bool>(
+                                            valueListenable: isTomanNotifier,
+                                            builder: (context, isToman, _) => Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
+                                                  child: SelectTomanOrWeight(
+                                                    selectedTradeType: selectedTradeType,
+                                                    isToman: isToman,
+                                                    onTomanPressed: () {
+                                                      isTomanNotifier.value = true;
+                                                      textController.text = "0";
+                                                      canSubmitNotifier.value = false;
+                                                    },
+                                                    onWeightPressed: () {
+                                                      isTomanNotifier.value = false;
+                                                      textController.text = "0";
+                                                      canSubmitNotifier.value = false;
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
-                                                decoration: const BoxDecoration(
-                                                    color: AppColors.background,
-                                                    borderRadius:
-                                                        BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
-                                                child: Column(
-                                                  children: [
-                                                    const SizedBox(height: Dimens.standard28),
-                                                    AppTextField(
-                                                      title: isToman
-                                                          ? Strings.enterPriceByToman
-                                                          : Strings.enterWeightByGheram,
-                                                      focusNode: focusNode,
-                                                      controller: textController,
-                                                      keyboardType: TextInputType.number,
-                                                      onChange: (value) {
-                                                        value = value.clearCommas().numberFormat();
-                                                        textController.value = TextEditingValue(
-                                                          text: value,
-                                                          selection: TextSelection.collapsed(offset: value.length),
-                                                        );
-                                                        canSubmitNotifier.value =
-                                                            isValidNumInput(value: value.replaceAll(",", ""));
-                                                      },
-                                                      prefixIcon: GestureDetector(
-                                                        onTap: () {
-                                                          textController.increaseValue();
-                                                          canSubmitNotifier.value = isValidNumInput(
-                                                              value: textController.text.replaceAll(",", ""));
+                                                Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
+                                                  decoration: const BoxDecoration(
+                                                      color: AppColors.background,
+                                                      borderRadius: BorderRadius.vertical(
+                                                          top: Radius.circular(Dimens.standard16))),
+                                                  child: Column(
+                                                    children: [
+                                                      const SizedBox(height: Dimens.standard28),
+                                                      AppTextField(
+                                                        title: isToman
+                                                            ? Strings.enterPriceByToman
+                                                            : Strings.enterWeightByGheram,
+                                                        focusNode: focusNode,
+                                                        controller: textController,
+                                                        keyboardType: TextInputType.number,
+                                                        onChange: (value) {
+                                                          value = value.clearCommas().numberFormat();
+                                                          textController.value = TextEditingValue(
+                                                            text: value,
+                                                            selection: TextSelection.collapsed(offset: value.length),
+                                                          );
+                                                          canSubmitNotifier.value =
+                                                              isValidNumInput(value: value.replaceAll(",", ""));
                                                         },
-                                                        child: SvgPicture.asset(
-                                                          'assets/images/plus.svg',
-                                                          width: Dimens.standard6,
-                                                          fit: BoxFit.fitWidth,
+                                                        prefixIcon: GestureDetector(
+                                                          onTap: () {
+                                                            textController.increaseValue();
+                                                            canSubmitNotifier.value = isValidNumInput(
+                                                                value: textController.text.replaceAll(",", ""));
+                                                          },
+                                                          child: SvgPicture.asset(
+                                                            'assets/images/plus.svg',
+                                                            width: Dimens.standard6,
+                                                            fit: BoxFit.fitWidth,
+                                                          ),
+                                                        ),
+                                                        suffixIcon: GestureDetector(
+                                                          onTap: () {
+                                                            textController.decreaseValue();
+                                                            canSubmitNotifier.value = isValidNumInput(
+                                                                value: textController.text.replaceAll(",", ""));
+                                                          },
+                                                          child: SvgPicture.asset(
+                                                            'assets/images/negativ.svg',
+                                                            width: Dimens.standard6,
+                                                            fit: BoxFit.fitWidth,
+                                                          ),
                                                         ),
                                                       ),
-                                                      suffixIcon: GestureDetector(
-                                                        onTap: () {
-                                                          textController.decreaseValue();
-                                                          canSubmitNotifier.value = isValidNumInput(
-                                                              value: textController.text.replaceAll(",", ""));
-                                                        },
-                                                        child: SvgPicture.asset(
-                                                          'assets/images/negativ.svg',
-                                                          width: Dimens.standard6,
-                                                          fit: BoxFit.fitWidth,
+                                                      const SizedBox(height: Dimens.standard16),
+                                                      Row(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          AppText(
+                                                            "${selectedTradeType == TradeType.sell ? homeState.data.sellPrice.price.numberFormat() : homeState.data.buyPrice.price.numberFormat()}"
+                                                            " ${selectedTradeType == TradeType.sell ? homeState.data.sellPrice.unit : homeState.data.buyPrice.unit}",
+                                                            textStyle: AppTextStyle.body4,
+                                                            color: AppColors.nature.shade900,
+                                                          ),
+                                                          AppText(
+                                                            Strings.eachMesgalPrice_,
+                                                            textStyle: AppTextStyle.body4,
+                                                            color: AppColors.nature.shade700,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(height: Dimens.standard16),
+                                                      ValueListenableBuilder<bool>(
+                                                        valueListenable: canSubmitNotifier,
+                                                        builder: (context, canSubmit, _) => AppButton(
+                                                          isLoading:
+                                                              tradeState is TradeLoading && tradeState.calculateLoading,
+                                                          text: Strings.calculateOrder,
+                                                          textColor: AppColors.white,
+                                                          color: selectedTradeType == TradeType.buy
+                                                              ? AppColors.green
+                                                              : AppColors.red,
+                                                          onPressed: canSubmit
+                                                              ? () {
+                                                                  focusNode.unfocus();
+                                                                  context.read<TradeCubit>().getTradeCalculateData(
+                                                                        tradeType: selectedTradeType == TradeType.sell
+                                                                            ? TradeType.sell
+                                                                            : TradeType.buy,
+                                                                        calculateType: isTomanNotifier.value
+                                                                            ? CalculateType.toman
+                                                                            : CalculateType.weight,
+                                                                        value: textController.text.clearCommas(),
+                                                                      );
+                                                                }
+                                                              : null,
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(height: Dimens.standard16),
-                                                    Row(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        AppText(
-                                                          "${selectedTradeType == TradeType.sell ? homeState.data.sellPrice.price.numberFormat() : homeState.data.buyPrice.price.numberFormat()}"
-                                                          " ${selectedTradeType == TradeType.sell ? homeState.data.sellPrice.unit : homeState.data.buyPrice.unit}",
-                                                          textStyle: AppTextStyle.body4,
-                                                          color: AppColors.nature.shade900,
-                                                        ),
-                                                        AppText(
-                                                          Strings.eachGeramPrice_,
-                                                          textStyle: AppTextStyle.body4,
-                                                          color: AppColors.nature.shade700,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(height: Dimens.standard16),
-                                                    ValueListenableBuilder<bool>(
-                                                      valueListenable: canSubmitNotifier,
-                                                      builder: (context, canSubmit, _) => AppButton(
-                                                        isLoading:
-                                                            tradeState is TradeLoading && tradeState.calculateLoading,
-                                                        text: Strings.calculateOrder,
-                                                        textColor: AppColors.white,
-                                                        color: selectedTradeType == TradeType.buy
-                                                            ? AppColors.green
-                                                            : AppColors.red,
-                                                        onPressed: canSubmit
-                                                            ? () {
-                                                                focusNode.unfocus();
-                                                                context.read<TradeCubit>().getTradeCalculateData(
-                                                                      tradeType: selectedTradeType == TradeType.sell
-                                                                          ? TradeType.sell
-                                                                          : TradeType.buy,
-                                                                      calculateType: isTomanNotifier.value
-                                                                          ? CalculateType.toman
-                                                                          : CalculateType.weight,
-                                                                      value: textController.text.clearCommas(),
-                                                                    );
-                                                              }
-                                                            : null,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }),
-                        )),
-                  )),
+                            }),
+                          )),
+                    )),
+              ),
             ),
           ),
         ),
@@ -421,13 +427,16 @@ _showTradeAnswerWaitingDialog({
         data: data,
         isSell: isSell,
         tradeCubit: tradeCubit,
-        onCounterEnded: () {
+        onResultReached: (trade) {
           context.pop();
           showDialog(
             context: context,
             builder: (_) => TradeAnswerDialog(
-              isSell: isSell,
-              status: "0",
+              isSell: trade.type == TradeType.sell,
+              status: trade.status.toString(),
+              totalPrice: trade.totalPrice.toString(),
+              mazaneh: trade.mazaneh.toString(),
+              weight: trade.weight,
             ),
           );
         },
@@ -440,14 +449,14 @@ class TradeAnswerWaitingDialog extends StatefulWidget {
   final TradeSubmitResponseDTO data;
   final bool isSell;
   final TradeCubit tradeCubit;
-  final VoidCallback onCounterEnded;
+  final Function(TradeDTO) onResultReached;
 
   const TradeAnswerWaitingDialog({
     Key? key,
     required this.data,
     required this.isSell,
     required this.tradeCubit,
-    required this.onCounterEnded,
+    required this.onResultReached,
   }) : super(key: key);
 
   @override
@@ -457,14 +466,15 @@ class TradeAnswerWaitingDialog extends StatefulWidget {
 class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> with TickerProviderStateMixin {
   late Timer _timer;
   int _progress = 0;
+  late CheckTradeStatusCubit checkTradeStatusCubit;
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
-        if (_progress == 60) {
-          widget.onCounterEnded();
+        if (_progress == widget.data.timeForCancel) {
+          checkTradeStatusCubit.check(tradeId: widget.data.requestId);
           setState(() {
             timer.cancel();
           });
@@ -480,6 +490,7 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
   @override
   void initState() {
     super.initState();
+    checkTradeStatusCubit = sl();
     startTimer();
   }
 
@@ -490,71 +501,85 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<TradeCubit, TradeState>(
-      bloc: widget.tradeCubit,
-      listener: (context, state) {
-        if (state is TradeAnswerReached) {
-          Navigator.of(context).pop();
-          showDialog(
-            context: context,
-            builder: (_) => TradeAnswerDialog(
-              isSell: widget.isSell,
-              status: state.status,
-              totalPrice: state.totalPrice,
-              mazaneh: state.mazaneh,
-              weight: state.weight,
-            ),
-          );
-        }
-      },
-      builder: (context, state) => AlertDialog(
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: Dimens.standard53,
-              height: Dimens.standard53,
-              padding: const EdgeInsets.all(Dimens.standard16),
-              decoration: BoxDecoration(color: AppColors.nature, shape: BoxShape.circle),
-              child: SvgPicture.asset(
-                'assets/images/time.svg',
-                width: Dimens.standard20,
-                fit: BoxFit.fitWidth,
-                color: AppColors.white,
-              ),
-            ),
-            const SizedBox(height: Dimens.standard16),
-            AppText(
-              Strings.validatingOrder,
-              textStyle: AppTextStyle.subTitle3,
-            ),
-            AppText(
-              widget.isSell ? Strings.sellDescription : Strings.buyDescription,
-              textStyle: AppTextStyle.body4,
-              color: AppColors.nature.shade700,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: Dimens.standard40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard53),
-              child: RotatedBox(
-                quarterTurns: 2,
-                child: LinearProgressIndicator(
-                  backgroundColor: AppColors.nature.shade50,
-                  color: AppColors.yellow,
-                  value: _progress.toDouble() / 60,
-                  minHeight: 12,
-                ),
-              ),
-            ),
-            const SizedBox(height: Dimens.standard40),
-          ],
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async => _progress >= widget.data.timeForCancel,
+        child: BlocProvider<CheckTradeStatusCubit>.value(
+          value: checkTradeStatusCubit,
+          child: BlocConsumer<CheckTradeStatusCubit, CheckTradeStatusState>(
+              listener: (context, state) {
+                if (state is CheckTradeStatusLoaded) {
+                  widget.onResultReached(state.trade);
+                }
+              },
+              builder: (context, checkTradeStatusState) => BlocConsumer<TradeCubit, TradeState>(
+                    bloc: widget.tradeCubit,
+                    listener: (context, tradeState) {
+                      if (tradeState is TradeAnswerReached) {
+                        Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (_) => TradeAnswerDialog(
+                            isSell: widget.isSell,
+                            status: tradeState.status,
+                            totalPrice: tradeState.totalPrice,
+                            mazaneh: tradeState.mazaneh,
+                            weight: tradeState.weight,
+                          ),
+                        );
+                      }
+                    },
+                    builder: (context, state) => AlertDialog(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: Dimens.standard53,
+                            height: Dimens.standard53,
+                            padding: const EdgeInsets.all(Dimens.standard16),
+                            decoration: BoxDecoration(color: AppColors.nature, shape: BoxShape.circle),
+                            child: SvgPicture.asset(
+                              'assets/images/time.svg',
+                              width: Dimens.standard20,
+                              fit: BoxFit.fitWidth,
+                              color: AppColors.white,
+                            ),
+                          ),
+                          const SizedBox(height: Dimens.standard16),
+                          AppText(
+                            Strings.validatingOrder,
+                            textStyle: AppTextStyle.subTitle3,
+                          ),
+                          AppText(
+                            widget.isSell ? Strings.sellDescription : Strings.buyDescription,
+                            textStyle: AppTextStyle.body4,
+                            color: AppColors.nature.shade700,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: Dimens.standard40),
+                          if (checkTradeStatusState is CheckTradeStatusLoading)
+                            const CircularProgressIndicator()
+                          else
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard53),
+                              child: RotatedBox(
+                                quarterTurns: 2,
+                                child: LinearProgressIndicator(
+                                  backgroundColor: AppColors.nature.shade50,
+                                  color: AppColors.yellow,
+                                  value: _progress.toDouble() / widget.data.timeForCancel,
+                                  minHeight: 12,
+                                ),
+                              ),
+                            ),
+                          const SizedBox(height: Dimens.standard40),
+                        ],
+                      ),
+                    ),
+                  )),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class TradeAnswerDialog extends StatelessWidget {

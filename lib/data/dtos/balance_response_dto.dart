@@ -1,15 +1,18 @@
 import 'package:equatable/equatable.dart';
 
 class BalanceResponseDTO extends Equatable {
+  final bool balanceColorInfluens;
   final BalanceDTO rial;
   final BalanceDTO gold;
 
   const BalanceResponseDTO({
+    required this.balanceColorInfluens,
     required this.rial,
     required this.gold,
   });
 
   factory BalanceResponseDTO.fromJson(Map<String, dynamic> json) => BalanceResponseDTO(
+    balanceColorInfluens: json['balance_color_influens'],
     rial: BalanceDTO.fromJson(json['rial']),
     gold: BalanceDTO.fromJson(json['gold']),
   );

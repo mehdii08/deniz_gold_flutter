@@ -58,6 +58,15 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
+  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId}) async {
+    try {
+      return Right(await dataSource.checkTradeStatus(tradeId: tradeId));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, String>> resetPassword({
     required String token,
     required String mobile,

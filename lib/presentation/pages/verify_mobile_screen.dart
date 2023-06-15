@@ -181,7 +181,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   );
 
   String getDescription(String mobile) =>
-      "کد ۴ رقمی به شماره $mobile ارسال شد. لطفا پس از دریافت، کد را در کادر پایین وارد کنید.";
+      "کد ۶ رقمی به شماره $mobile ارسال شد. لطفا پس از دریافت، کد را در کادر پایین وارد کنید.";
 
   String getCountDownText() => _time != 0 ? "$_time ثانیه تا ارسال مجدد" : "ارسال مجدد";
 }

@@ -24,7 +24,9 @@ class NotificationListenerCubit extends Cubit<NotificationListenerState> {
   }) : super(NotificationListenerInitial()) {
     appNotificationEvents.listen((event) {
       if (event is HavalehStatusNotificationEvent) {
-        emit(NotificationListenerLoaded(havaleh: event.havaleh));
+        emit(HavaleNotificationLoaded(havaleh: event.havaleh));
+      }else if (event is TradeResultNotificationEvent) {
+        emit(TradeResultNotificationLoaded(tradeResult: event));
       }
     });
   }
