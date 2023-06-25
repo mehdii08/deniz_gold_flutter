@@ -506,78 +506,60 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
         child: BlocProvider<CheckTradeStatusCubit>.value(
           value: checkTradeStatusCubit,
           child: BlocConsumer<CheckTradeStatusCubit, CheckTradeStatusState>(
-              listener: (context, state) {
-                if (state is CheckTradeStatusLoaded) {
-                  widget.onResultReached(state.trade);
-                }
-              },
-              builder: (context, checkTradeStatusState) => BlocConsumer<TradeCubit, TradeState>(
-                    bloc: widget.tradeCubit,
-                    listener: (context, tradeState) {
-                      if (tradeState is TradeAnswerReached) {
-                        Navigator.of(context).pop();
-                        showDialog(
-                          context: context,
-                          builder: (_) => TradeAnswerDialog(
-                            isSell: widget.isSell,
-                            status: tradeState.status,
-                            totalPrice: tradeState.totalPrice,
-                            mazaneh: tradeState.mazaneh,
-                            weight: tradeState.weight,
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) => AlertDialog(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: Dimens.standard53,
-                            height: Dimens.standard53,
-                            padding: const EdgeInsets.all(Dimens.standard16),
-                            decoration: BoxDecoration(color: AppColors.nature, shape: BoxShape.circle),
-                            child: SvgPicture.asset(
-                              'assets/images/time.svg',
-                              width: Dimens.standard20,
-                              fit: BoxFit.fitWidth,
-                              color: AppColors.white,
-                            ),
-                          ),
-                          const SizedBox(height: Dimens.standard16),
-                          AppText(
-                            Strings.validatingOrder,
-                            textStyle: AppTextStyle.subTitle3,
-                          ),
-                          AppText(
-                            widget.isSell ? Strings.sellDescription : Strings.buyDescription,
-                            textStyle: AppTextStyle.body4,
-                            color: AppColors.nature.shade700,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: Dimens.standard40),
-                          if (checkTradeStatusState is CheckTradeStatusLoading)
-                            const CircularProgressIndicator()
-                          else
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard53),
-                              child: RotatedBox(
-                                quarterTurns: 2,
-                                child: LinearProgressIndicator(
-                                  backgroundColor: AppColors.nature.shade50,
-                                  color: AppColors.yellow,
-                                  value: _progress.toDouble() / widget.data.timeForCancel,
-                                  minHeight: 12,
-                                ),
-                              ),
-                            ),
-                          const SizedBox(height: Dimens.standard40),
-                        ],
+            listener: (context, state) {
+              if (state is CheckTradeStatusLoaded) {
+                widget.onResultReached(state.trade);
+              }
+            },
+            builder: (context, checkTradeStatusState) => AlertDialog(
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: Dimens.standard53,
+                    height: Dimens.standard53,
+                    padding: const EdgeInsets.all(Dimens.standard16),
+                    decoration: BoxDecoration(color: AppColors.nature, shape: BoxShape.circle),
+                    child: SvgPicture.asset(
+                      'assets/images/time.svg',
+                      width: Dimens.standard20,
+                      fit: BoxFit.fitWidth,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  const SizedBox(height: Dimens.standard16),
+                  AppText(
+                    Strings.validatingOrder,
+                    textStyle: AppTextStyle.subTitle3,
+                  ),
+                  AppText(
+                    widget.isSell ? Strings.sellDescription : Strings.buyDescription,
+                    textStyle: AppTextStyle.body4,
+                    color: AppColors.nature.shade700,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: Dimens.standard40),
+                  if (checkTradeStatusState is CheckTradeStatusLoading)
+                    const CircularProgressIndicator()
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard53),
+                      child: RotatedBox(
+                        quarterTurns: 2,
+                        child: LinearProgressIndicator(
+                          backgroundColor: AppColors.nature.shade50,
+                          color: AppColors.yellow,
+                          value: _progress.toDouble() / widget.data.timeForCancel,
+                          minHeight: 12,
+                        ),
                       ),
                     ),
-                  )),
+                  const SizedBox(height: Dimens.standard40),
+                ],
+              ),
+            ),
+          ),
         ),
       );
 }

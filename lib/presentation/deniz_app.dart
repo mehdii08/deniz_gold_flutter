@@ -21,16 +21,13 @@ class DenizApp extends StatelessWidget {
   const DenizApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      MultiBlocProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationCubit>(
             create: (_) => sl<AuthenticationCubit>(),
           ),
           BlocProvider<AppConfigCubit>(
-            create: (_) =>
-            sl<AppConfigCubit>()
-              ..getConfig(),
+            create: (_) => sl<AppConfigCubit>()..getConfig(),
           ),
           BlocProvider<SupportCubit>(
             create: (_) => sl(),
@@ -56,16 +53,23 @@ class DenizApp extends StatelessWidget {
             BlocListener<NotificationListenerCubit, NotificationListenerState>(
               listener: (context, state) {
                 if (state is HavaleNotificationLoaded) {
-                  showDialog(context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context, builder: (context) => HavalehStatusDialog(havaleh: state.havaleh));
-                }else if (state is TradeResultNotificationLoaded && !isInTradeScreen) {
-                  showDialog(context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
+                  showDialog(
+                      context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
+                      builder: (context) => HavalehStatusDialog(havaleh: state.havaleh));
+                } else if (state is TradeResultNotificationLoaded) {
+                  final currentContext = context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context;
+                  if (isInTradeScreen) {
+                    currentContext.pop();
+                  }
+                  showDialog(
+                      context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
                       builder: (context) => TradeAnswerDialog(
-                        isSell: state.tradeResult.type == TradeType.sell.value.toString(),
-                        status: state.tradeResult.status.toString(),
-                        totalPrice: state.tradeResult.totalPrice.toString(),
-                        mazaneh: state.tradeResult.mazaneh.toString(),
-                        weight: state.tradeResult.weight,
-                      ));
+                            isSell: state.tradeResult.type == TradeType.sell.value.toString(),
+                            status: state.tradeResult.status.toString(),
+                            totalPrice: state.tradeResult.totalPrice.toString(),
+                            mazaneh: state.tradeResult.mazaneh.toString(),
+                            weight: state.tradeResult.weight,
+                          ));
                 }
               },
             ),

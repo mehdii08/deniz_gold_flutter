@@ -26,7 +26,9 @@ GoRouter buildRouter(BuildContext context) {
     navigatorKey: rootNavigatorKey,
     initialLocation: SplashScreen.route.path,
     redirect: (_, state) {
-      isInTradeScreen = state.location == TradeScreen.route.path;
+      final location = state.location;
+      final firstSection = location.contains("?") ? location.split("?")[0] : location;
+      isInTradeScreen = firstSection == TradeScreen.route.path;
       return null;
     },
     routes: _routes,

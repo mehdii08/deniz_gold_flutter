@@ -8,6 +8,7 @@ import 'package:deniz_gold/presentation/widget/app_logo.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -29,6 +30,9 @@ class _PermissionCheckerState extends State<PermissionChecker> {
 
   @override
   Widget build(BuildContext context) {
+    if(kIsWeb){
+      return widget.child;
+    }
     return BlocProvider<PermissionCheckerCubit>(
       create: (_)=>sl(),
       child: BlocBuilder<PermissionCheckerCubit,PermissionCheckerState>(
