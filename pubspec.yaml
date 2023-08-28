@@ -54,8 +54,16 @@ dependencies:
   shamsi_date: ^1.0.1
   intl: ^0.18.1
   permission_handler: ^10.3.0
+  flutter_native_splash: ^2.2.18
 #  notification_permissions: ^0.6.1
 #  flutter_local_notifications: ^14.1.1
+
+flutter_native_splash:
+  web: true
+
+  color: "#EFEFEF"
+  image: "assets/images/logo.png"
+
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:deniz_gold/core/utils/app_notification_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-// import 'package:fk_user_agent/fk_user_agent.dart';
 import 'package:get_it/get_it.dart';
 import 'package:deniz_gold/core/network/interceptor.dart';
 import 'package:deniz_gold/core/network/transformers.dart';
@@ -27,6 +26,8 @@ Future initSL() async {
 Future<Dio> getDio() async {
   final options = BaseOptions(
     baseUrl: serverUrl,
+    connectTimeout: const Duration(seconds: 20),
+    receiveTimeout: const Duration(seconds: 20),
     // headers: {
     //   'User-Agent': await getUserAgent(),
     //   // 'version': FkUserAgent.getProperty('applicationVersion'),

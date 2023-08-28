@@ -61,7 +61,7 @@ abstract class AppRepository {
     required String fcmToken,
   });
 
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId});
+  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel});
 
   Future<Either<Failure, String>> updateName({required String name});
 

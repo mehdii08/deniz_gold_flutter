@@ -24,6 +24,7 @@ import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/presentation/widget/trade_switch_button.dart';
 import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:deniz_gold/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -464,15 +465,31 @@ class TradeAnswerWaitingDialog extends StatefulWidget {
 }
 
 class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> with TickerProviderStateMixin {
-  late Timer _timer;
+  Timer? _timer;
   int _progress = 0;
   late CheckTradeStatusCubit checkTradeStatusCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    checkTradeStatusCubit = sl();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   void startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
+        if (kIsWeb && _progress != 0 && _progress % 5 == 0) {
+          checkTradeStatusCubit.check(tradeId: widget.data.requestId, silent: true);
+        }
         if (_progress == widget.data.timeForCancel) {
           checkTradeStatusCubit.check(tradeId: widget.data.requestId);
           setState(() {
@@ -488,19 +505,6 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
   }
 
   @override
-  void initState() {
-    super.initState();
-    checkTradeStatusCubit = sl();
-    startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async => _progress >= widget.data.timeForCancel,
         child: BlocProvider<CheckTradeStatusCubit>.value(
@@ -508,6 +512,7 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
           child: BlocConsumer<CheckTradeStatusCubit, CheckTradeStatusState>(
             listener: (context, state) {
               if (state is CheckTradeStatusLoaded) {
+                _timer?.cancel();
                 widget.onResultReached(state.trade);
               }
             },

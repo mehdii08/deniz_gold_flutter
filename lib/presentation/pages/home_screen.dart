@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
@@ -15,6 +17,7 @@ import 'package:deniz_gold/presentation/widget/permisson_checker.dart';
 import 'package:deniz_gold/presentation/widget/prices_list.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/service_locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +37,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _timer;
+  late HomeScreenCubit homeScreenCubit;
+
+  @override
+  void initState() {
+    homeScreenCubit = sl<HomeScreenCubit>()..getData();
+    if (kIsWeb) {
+      startTimer();
+    }
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    const period = Duration(seconds: 10);
+    _timer = Timer.periodic(
+      period,
+      (Timer timer) {
+        homeScreenCubit.getData(silent: true);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) => SafeArea(
         child: PermissionChecker(
@@ -60,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Scaffold(
                   appBar: const LogoAppBar(),
                   backgroundColor: AppColors.background,
-                  body: BlocProvider<HomeScreenCubit>(
-                    create: (_) => sl<HomeScreenCubit>()..getData(),
+                  body: BlocProvider<HomeScreenCubit>.value(
+                    value: homeScreenCubit,
                     child: BlocConsumer<HomeScreenCubit, HomeScreenState>(listener: (context, state) {
                       if (state is HomeScreenFailed) {
                         showToast(title: state.message, context: context, toastType: ToastType.error);
@@ -117,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       const SizedBox(height: Dimens.standard8),
                                       KeyValueWidget(
                                         title: Strings.worldGoldPrice,
-                                        value: "${data.goldWorld.price.toString().numberFormat()} ${data.goldWorld.unit}",
+                                        value:
+                                            "${data.goldWorld.price.toString().numberFormat()} ${data.goldWorld.unit}",
                                       ),
                                       const SizedBox(height: Dimens.standard8),
                                       KeyValueWidget(

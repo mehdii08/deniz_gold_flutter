@@ -38,7 +38,7 @@ abstract class AppDataSource {
     required String passwordConfirmation,
   });
 
-  Future<TradeDTO> checkTradeStatus({required int tradeId});
+  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel});
 
   Future<String> changePassword({
     required String currentPassword,
@@ -370,11 +370,14 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<TradeDTO> checkTradeStatus({required int tradeId}) async {
+  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel}) async {
     final response = await _apiHelper.request(
       method: Method.post,
       '$apiPath/panel/trade/cancel-request',
-      data: {'id': tradeId},
+      data: {
+        'id': tradeId,
+        'need_cancel': needCancel,
+      },
     );
     return TradeDTO.fromJson(response.dataAsMap());
   }

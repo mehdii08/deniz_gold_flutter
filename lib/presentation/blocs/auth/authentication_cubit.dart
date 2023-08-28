@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
 import 'package:deniz_gold/data/keys.dart';
+import 'package:deniz_gold/domain/repositories/shared_preferences_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:gold_flutter/data/dtos/app_config_dto.dart'; //todo remove me
-import 'package:deniz_gold/domain/repositories/shared_preferences_repository.dart';
 import 'package:injectable/injectable.dart';
 
 part 'authentication_state.dart';
@@ -19,11 +18,9 @@ const String fcmTokenKey = 'fcmTokenKey';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final SharedPreferencesRepository sharedPreferences;
 
-  AuthenticationCubit({required this.sharedPreferences})
-      : super(const AuthenticationInitial());
+  AuthenticationCubit({required this.sharedPreferences}) : super(const AuthenticationInitial());
 
-  bool get isAuthenticated =>
-      token != null && token?.isNotEmpty != null ? token!.isNotEmpty : false;
+  bool get isAuthenticated => token != null && token?.isNotEmpty != null ? token!.isNotEmpty : false;
 
   String? get token => state.token;
 
@@ -41,29 +38,21 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(Authenticated(token));
   }
 
-  // String getUserName() {//todo get this from app config cubit
-  //   final String appConfigString = sharedPreferences.getString(appConfigKey);
-  //   if (appConfigString.isNotEmpty) {
-  //     final appConfig = AppConfigDTO.fromJson(jsonDecode(appConfigString));
-  //     return appConfig.user.name;
-  //   }
-  //   return "";
-  // }
-
   storeFCMToken() async {
     final fcmToken = await FirebaseMessaging.instance.getToken();
     sharedPreferences.setString(fcmTokenKey, fcmToken ?? "empty");
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
       sharedPreferences.setString(fcmTokenKey, fcmToken);
-    }).onError((err) {/*todo*/});
+    }).onError((err) {
+      /*todo*/
+    });
   }
 
-  AppConfigDTO? getLocalAppConfig(){//todo get this from app config cubit
+  AppConfigDTO? getLocalAppConfig() {
     final String appConfigString = sharedPreferences.getString(appConfigKey);
-    if(appConfigString.isNotEmpty){
+    if (appConfigString.isNotEmpty) {
       return AppConfigDTO.fromJson(jsonDecode(appConfigString));
     }
     return null;
   }
-
 }

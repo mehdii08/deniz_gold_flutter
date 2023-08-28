@@ -58,9 +58,9 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId}) async {
+  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel}) async {
     try {
-      return Right(await dataSource.checkTradeStatus(tradeId: tradeId));
+      return Right(await dataSource.checkTradeStatus(tradeId: tradeId, needCancel: needCancel));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
