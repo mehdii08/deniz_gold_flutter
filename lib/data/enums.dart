@@ -1,12 +1,23 @@
-enum TradeType {
+enum BuyAndSellType {
   sell(0),
   buy(1);
 
-  const TradeType(this.value);
+  const BuyAndSellType(this.value);
 
   final int value;
 
-  static TradeType fromCode(int code) => code == 0 ? TradeType.sell : TradeType.buy;
+  static BuyAndSellType fromCode(int code) => code == 0 ? BuyAndSellType.sell : BuyAndSellType.buy;
+}
+
+enum CoinAndGoldType {
+  gold(1),
+  coin(2);
+
+  const CoinAndGoldType(this.value);
+
+  final int value;
+
+  static CoinAndGoldType fromCode(int code) => code == 1 ? CoinAndGoldType.gold : CoinAndGoldType.coin;
 }
 
 enum CalculateType {

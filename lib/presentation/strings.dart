@@ -10,9 +10,15 @@ class Strings {
   static const passwordError = "کلمه عبور را درست وارد کنید";
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
+  static const priceTotalRial2 = "مبلغ کل";
+  static const priceTotalRialCoin = "مبلغ کل معامله";
   static const home = "خانه";
   static const edit = "ویرایش";
+  static const selectCoin = 'تعدادی از سکه انتخاب کنید';
   static const empty = "";
+  static const transactionDetails = "جزئیات معامله";
+  static const submitBuyOrder = "ثبت سفارش خرید";
+  static const submitSellOrder = "ثبت سفارش فروش";
   static const yourself = "خودتان";
   static const toName = "به نام";
   static const grantPermission = "دادن دسترسی";
@@ -38,6 +44,7 @@ class Strings {
   static const logout = "خروج از حساب";
   static const priceChangesTitle = "لیست تغییرات نرخ امروز";
   static const myAccount = "حساب من";
+  static const coinShop = "فروشگاه سکه";
   static const registerTitle = "ثبت اطلاعات شخصی";
   static const atLeast6Chars = "حداقل ۶ کاراکتر";
   static const appName = "آبشده فروشی دنیز";
@@ -127,6 +134,8 @@ class Strings {
   static const buyPriceMesgal = "مظنه خرید (مثقال)";
   static const buyPrice = "مظنه خرید";
   static const buy = "خرید";
+  static const buyCoin = "خرید سکه";
+  static const sellCoin = "فروش سکه";
   static const firstPage = "صفحه نخست";
   static const todayTrades = "معاملات امروز";
   static const eachMesgalPrice_ = "نرخ هر مثقال:";
@@ -150,6 +159,7 @@ class Strings {
   static const selectDate = "انتخاب تاریخ";
   static const buyDescription = "سفارش خرید شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
   static const sellDescription = "سفارش فروش شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
+  static const orderDescription = "سفارش شما با موفقیت ثبت شد، لطفا تا زمان تایید توسط مدیر، صبور باشید.";
   static const successful = "موفقیت آمیز";
   static const failed = "رد شده";
   static const noAnyHavale = "حواله ثبت شده‌ای وجود ندارد.";
@@ -205,4 +215,11 @@ class Strings {
   static const weekMaxPrice = "بالاترین ترین مظنه هفته";
   static const weekMinPrice = "پایین ترین مظنه هفته";
   static const updateInfo = "بروز رسانی اطلاعات";
+  static const tomanInParanteses = '(تومان)';
+  static const count = 'عدد';
+  static const count_ = 'تعداد ';
+  static const coinTrade = 'معاملات سکه';
+  static const goldTrade = 'معاملات آبشده';
+  static const details = 'جزئیات';
+  static const seeAll = 'مشاهده همه';
 }

@@ -33,9 +33,9 @@ class TradeItem extends StatelessWidget {
                     ),
                     const Spacer(),
                     AppText(
-                      trade.typeString,
+                      trade.buyAndSellTypeString,
                       textStyle: AppTextStyle.subTitle4,
-                      color: trade.type == TradeType.sell ? AppColors.red : AppColors.green,
+                      color: trade.buyAndSellType == BuyAndSellType.sell ? AppColors.red : AppColors.green,
                     ),
                   ],
                 ),
@@ -61,7 +61,7 @@ class TradeItem extends StatelessWidget {
           Container(
             width: Dimens.standard4,
             height: Dimens.standard56,
-            color: trade.type == TradeType.sell ? AppColors.red : AppColors.green,
+            color: trade.buyAndSellType == BuyAndSellType.sell ? AppColors.red : AppColors.green,
           )
         ],
       ),
@@ -91,7 +91,7 @@ class TradeItem extends StatelessWidget {
           ),
           const Spacer(),
           AppText(
-            trade.weight,
+            trade.weight ?? '',
             textStyle: AppTextStyle.body4,
             color: AppColors.nature.shade700,
           ),

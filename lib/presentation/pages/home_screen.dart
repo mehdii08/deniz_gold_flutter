@@ -5,6 +5,7 @@ import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
 import 'package:deniz_gold/presentation/blocs/home/home_screen_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
+import 'package:deniz_gold/presentation/pages/coin_shop_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/UserAccountingChecker.dart';
 import 'package:deniz_gold/presentation/widget/UserStatusChecker.dart';
@@ -21,6 +22,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -116,6 +118,64 @@ class _HomeScreenState extends State<HomeScreen> {
                                   BuyAndSellPrices(
                                     buyPrice: data.buyPrice,
                                     sellPrice: data.sellPrice,
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(vertical: Dimens.standard24),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(Dimens.standard12),
+                                      color: AppColors.background,
+                                      border: Border.all(
+                                        width: 2,
+                                        color: AppColors.nature.shade100,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () => context.goNamed(CoinShopScreen.route.name ?? ''),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/images/arrow_left.svg',
+                                                width: Dimens.standard20,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                              const SizedBox(
+                                                width: Dimens.standard8,
+                                              ),
+                                              AppText(
+                                                Strings.seeAll,
+                                                textStyle: AppTextStyle.body5,
+                                                color: AppColors.nature.shade700,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Image.asset(
+                                          'assets/images/coin.png',
+                                          width: Dimens.standard48,
+                                          fit: BoxFit.fitWidth,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            AppText(
+                                              state.data.coin?.name ?? '',
+                                              textStyle: AppTextStyle.body5,
+                                              color: AppColors.nature.shade700,
+                                            ),
+                                            AppText(
+                                              state.data.coin?.price.numberFormat() ?? '0',
+                                              textStyle: AppTextStyle.subTitle3,
+                                              color: AppColors.nature.shade900,
+                                              textDirection: TextDirection.ltr,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(height: Dimens.standard16),
                                 ],
