@@ -104,6 +104,30 @@ class _HomeScreenState extends State<HomeScreen> {
                         final data = state.data;
                         return Column(
                           children: [
+                            if (state.data.message != null && state.data.message?.isNotEmpty == true)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: Dimens.standard16, horizontal: Dimens.standard16),
+                                decoration: BoxDecoration(
+                                  color: AppColors.nature.shade50,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: AppText(
+                                        state.data.message ?? '',
+                                        textStyle: AppTextStyle.body5,
+                                        color: AppColors.nature.shade700,
+                                      ),
+                                    ),
+                                    const SizedBox(width: Dimens.standard8),
+                                    SvgPicture.asset(
+                                      'assets/images/info_fill.svg',
+                                      fit: BoxFit.none,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             Container(
                               color: AppColors.white,
                               padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),

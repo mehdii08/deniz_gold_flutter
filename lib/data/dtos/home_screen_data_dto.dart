@@ -15,6 +15,7 @@ class HomeScreenDataDTO extends Equatable {
   final List<PriceDTO>? priceHistories;
   final bool accountingStatus;
   final BriefCoinDTO? coin;
+  final String? message;
 
   const HomeScreenDataDTO({
     required this.buyPrice,
@@ -27,6 +28,7 @@ class HomeScreenDataDTO extends Equatable {
     required this.priceHistories,
     required this.accountingStatus,
     required this.coin,
+    required this.message,
   });
 
   factory HomeScreenDataDTO.fromJson(Map<String, dynamic> json) => HomeScreenDataDTO(
@@ -44,6 +46,7 @@ class HomeScreenDataDTO extends Equatable {
                 : List<PriceDTO>.from(json['price_histories'].map((e) => PriceDTO.fromJson(e)).toList()),
         accountingStatus: json['accounting_status'] ?? false,
         coin: json['coin'] != null ? BriefCoinDTO.fromJson(json['coin']) : null,
+        message: json['message'],
       );
 
   @override
@@ -57,7 +60,8 @@ class HomeScreenDataDTO extends Equatable {
         todayLowPrice,
         priceHistories,
         accountingStatus,
-    coin,
+        coin,
+        message,
       ];
 
   HomeScreenDataDTO update(HomeScreenDataDTO newData) {
@@ -77,6 +81,7 @@ class HomeScreenDataDTO extends Equatable {
       priceHistories: priceHistories,
       accountingStatus: newData.accountingStatus,
       coin: coin,
+      message: message,
     );
   }
 }
