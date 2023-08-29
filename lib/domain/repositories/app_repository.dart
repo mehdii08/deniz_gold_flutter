@@ -4,6 +4,9 @@ import 'package:deniz_gold/data/dtos/app_config_dto.dart';
 import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_calculate_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
@@ -14,6 +17,9 @@ import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
+
+import '../../data/dtos/coin_trade_dto.dart';
+import '../../data/dtos/coint_trades_detail_dto.dart';
 
 abstract class AppRepository {
   Future<Either<Failure, CheckMobileExistsResponseDTO>> checkMobileExists({
@@ -27,6 +33,16 @@ abstract class AppRepository {
     required String nationalCode,
     required String password,
     required String passwordConfirmation,
+  });
+
+  Future<Either<Failure, CoinTradeDetailDTO>> getCoinTradesDetail({
+    required int id,
+  });
+
+  Future<Either<Failure, PaginatedResultDTO<CoinTradeDTO>>> getCoinTrades({
+    required int page,
+    int? tradeType,
+    int? period,
   });
 
   Future<Either<Failure, String>> resetPassword({
@@ -49,19 +65,29 @@ abstract class AppRepository {
   });
 
   Future<Either<Failure, TradeCalculateResponseDTO>> tradeCalculate({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   });
 
   Future<Either<Failure, TradeSubmitResponseDTO>> submitTrade({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
     required String fcmToken,
   });
 
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId});
+  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel});
+
+  Future<Either<Failure, List<CoinDTO>>> getCoins();
+
+  Future<Either<Failure, CoinTradeCalculateResponseDTO>> coinTradeCalculate({
+    required Map<String,dynamic> body,
+  });
+
+  Future<Either<Failure, CoinTradeSubmitResponseDTO>> coinTradeSubmit({
+    required Map<String,dynamic> body,
+  });
 
   Future<Either<Failure, String>> updateName({required String name});
 
@@ -101,5 +127,5 @@ abstract class AppRepository {
   Future<Either<Failure, String>> sendOTPCode({required String mobile});
 
   Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade(
-      {required TradeType tradeType});
+      {required BuyAndSellType tradeType});
 }

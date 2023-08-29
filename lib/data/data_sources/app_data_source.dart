@@ -1,21 +1,27 @@
-import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
-import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
-import 'package:deniz_gold/data/dtos/phone_dto.dart';
-import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
-import 'package:deniz_gold/data/enums.dart';
-import 'package:dio/dio.dart';
 import 'package:deniz_gold/core/network/api_helper.dart';
 import 'package:deniz_gold/core/utils/config.dart';
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
+import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_calculate_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
+import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
+import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
+import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
+import 'package:deniz_gold/data/enums.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+
+import '../dtos/coin_trade_dto.dart';
+import '../dtos/coint_trades_detail_dto.dart';
 
 abstract class AppDataSource {
   Future<CheckMobileExistsResponseDTO> checkMobileExists({
@@ -38,7 +44,17 @@ abstract class AppDataSource {
     required String passwordConfirmation,
   });
 
-  Future<TradeDTO> checkTradeStatus({required int tradeId});
+  Future<CoinTradeDetailDTO> getCoinTradesDetail({
+    required int id,
+  });
+
+  Future<PaginatedResultDTO<CoinTradeDTO>> getCoinTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  });
+
+  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel});
 
   Future<String> changePassword({
     required String currentPassword,
@@ -52,14 +68,24 @@ abstract class AppDataSource {
     required String fcmToken,
   });
 
+  Future<List<CoinDTO>> getCoins();
+
+  Future<CoinTradeCalculateResponseDTO> coinTradeCalculate({
+    required Map<String, dynamic> body,
+  });
+
+  Future<CoinTradeSubmitResponseDTO> coinTradeSubmit({
+    required Map<String, dynamic> body,
+  });
+
   Future<TradeCalculateResponseDTO> tradeCalculate({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   });
 
   Future<TradeSubmitResponseDTO> submitTrade({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
     required String fcmToken,
@@ -100,7 +126,7 @@ abstract class AppDataSource {
 
   Future<String> sendOTPCode({required String mobile});
 
-  Future<CheckActiveTradeDTO> checkHasActiveTrade({required TradeType tradeType});
+  Future<CheckActiveTradeDTO> checkHasActiveTrade({required BuyAndSellType tradeType});
 }
 
 @LazySingleton(as: AppDataSource)
@@ -177,6 +203,36 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
+  Future<List<CoinDTO>> getCoins() async {
+    final response = await _apiHelper.request('$apiPath/panel/coins/list');
+    return List<CoinDTO>.from(response.dataAsMap()['coins'].map((e) => CoinDTO.fromJson(e)).toList());
+  }
+
+  @override
+  Future<CoinTradeCalculateResponseDTO> coinTradeCalculate({
+    required Map<String, dynamic> body,
+  }) async {
+    final response = await _apiHelper.request(
+      '$apiPath/panel/coins/trade/calculate',
+      method: Method.post,
+      data: body,
+    );
+    return CoinTradeCalculateResponseDTO.fromJson(response.dataAsMap());
+  }
+
+  @override
+  Future<CoinTradeSubmitResponseDTO> coinTradeSubmit({
+    required Map<String, dynamic> body,
+  }) async {
+    final response = await _apiHelper.request(
+      '$apiPath/panel/coins/trade/submit',
+      method: Method.post,
+      data: body,
+    );
+    return CoinTradeSubmitResponseDTO.fromJson(response.dataAsMap());
+  }
+
+  @override
   Future<HavaleDTO> storeHavale({
     required String value,
     required String name,
@@ -199,7 +255,7 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<TradeCalculateResponseDTO> tradeCalculate({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   }) async {
@@ -217,7 +273,7 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<TradeSubmitResponseDTO> submitTrade({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
     required String fcmToken,
@@ -233,7 +289,10 @@ class AppDataSourceImpl extends AppDataSource {
         'fcm_token': fcmToken,
       },
     );
-    return TradeSubmitResponseDTO(message: response.data['message'], requestId: response.dataAsMap()['request_id'], timeForCancel: response.dataAsMap()['time_for_cancel']);
+    return TradeSubmitResponseDTO(
+        message: response.data['message'],
+        requestId: response.dataAsMap()['request_id'],
+        timeForCancel: response.dataAsMap()['time_for_cancel']);
   }
 
   @override
@@ -363,18 +422,55 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<CheckActiveTradeDTO> checkHasActiveTrade({required TradeType tradeType}) async {
+  Future<CheckActiveTradeDTO> checkHasActiveTrade({required BuyAndSellType tradeType}) async {
     final response =
         await _apiHelper.request('$apiPath/panel/trade/check-has-active-trade?trade_type=${tradeType.value}');
     return CheckActiveTradeDTO.fromJson(response.dataAsMap());
   }
 
   @override
-  Future<TradeDTO> checkTradeStatus({required int tradeId}) async {
+  Future<CoinTradeDetailDTO> getCoinTradesDetail({
+    required int id,
+  }) async {
+    final response = await _apiHelper.request('$apiPath/panel/coins/trade-detail?trade_id=$id');
+    return CoinTradeDetailDTO.fromJson(response.dataAsMap());
+  }
+
+  @override
+  Future<PaginatedResultDTO<CoinTradeDTO>> getCoinTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
+    final params = {
+      'page': page,
+      if (tradeType != null) 'trade_type': tradeType,
+      if (period != null) 'period': period,
+    };
+    final response = await _apiHelper.request('$apiPath/panel/coins/trades-list', queryParameters: params);
+    final items =
+        List<CoinTradeDTO>.from(response.dataAsMap()['list']['data'].map((e) => CoinTradeDTO.fromJson(e)).toList());
+    return PaginatedResultDTO<CoinTradeDTO>(
+      from: response.dataAsMap()['list']['from'] ?? 0,
+      to: response.dataAsMap()['list']['to'] ?? 0,
+      total: response.dataAsMap()['list']['total'],
+      count: response.dataAsMap()['list']['count'],
+      perPage: response.dataAsMap()['list']['per_page'],
+      currentPage: response.dataAsMap()['list']['current_page'],
+      lastPage: response.dataAsMap()['list']['last_page'],
+      items: items,
+    );
+  }
+
+  @override
+  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel}) async {
     final response = await _apiHelper.request(
       method: Method.post,
       '$apiPath/panel/trade/cancel-request',
-      data: {'id': tradeId},
+      data: {
+        'id': tradeId,
+        'need_cancel': needCancel,
+      },
     );
     return TradeDTO.fromJson(response.dataAsMap());
   }

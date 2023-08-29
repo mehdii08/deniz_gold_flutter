@@ -16,7 +16,7 @@ class TradeCubit extends Cubit<TradeState> {
   final AppRepository appRepository;
   final Stream<AppNotificationEvent> appNotificationEvents;
   final SharedPreferencesRepository sharedPreferences;
-  TradeType tradeType = TradeType.buy;
+  BuyAndSellType tradeType = BuyAndSellType.buy;
 
   TradeCubit({
     required this.appRepository,
@@ -40,12 +40,12 @@ class TradeCubit extends Cubit<TradeState> {
    });
   }
 
-  changeTradeType(TradeType newTradeType){
+  changeTradeType(BuyAndSellType newTradeType){
     tradeType = newTradeType;
     _checkHasActiveTrade(tradeType : newTradeType);
   }
 
-  _checkHasActiveTrade({required TradeType tradeType}) async {
+  _checkHasActiveTrade({required BuyAndSellType tradeType}) async {
     final result = await appRepository.checkHasActiveTrade(tradeType: tradeType);
     result.fold((l) {
 
@@ -57,7 +57,7 @@ class TradeCubit extends Cubit<TradeState> {
   }
 
   getTradeCalculateData({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   }) async {
@@ -74,7 +74,7 @@ class TradeCubit extends Cubit<TradeState> {
   }
 
   submitTrade({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   }) async {

@@ -15,21 +15,25 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   HomeScreenCubit({
     required this.appRepository,
     required this.appNotificationEvents,
-  }) : super(const HomeScreenInitial()){
+  }) : super(const HomeScreenInitial()) {
     appNotificationEvents.listen((event) {
-      if(event is HomeDataNotificationEvent){
-        if(state is HomeScreenLoaded){
+      if (event is HomeDataNotificationEvent) {
+        if (state is HomeScreenLoaded) {
           emit((state as HomeScreenLoaded).update(event.data));
         }
       }
     });
   }
 
-  getData() async {
-    emit(const HomeScreenLoading());
+  getData({bool silent = false}) async {
+    if (!silent) {
+      emit(const HomeScreenLoading());
+    }
     final result = await appRepository.getHomeData();
     result.fold(
-      (l) => emit(HomeScreenFailed(message: l.message != null ? l.message! : "")),
+      (l) => {
+        if (!silent) {emit(HomeScreenFailed(message: l.message != null ? l.message! : ""))}
+      },
       (r) => emit(HomeScreenLoaded(data: r)),
     );
   }

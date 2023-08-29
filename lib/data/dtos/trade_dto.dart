@@ -3,19 +3,25 @@ import 'package:equatable/equatable.dart';
 
 class TradeDTO extends Equatable {
   final int id;
-  final TradeType type;
-  final String typeString;
-  final int mazaneh;
+  final BuyAndSellType buyAndSellType;
+  final String buyAndSellTypeString;
+  final CoinAndGoldType coinAndGoldType;
+  final String coinAndGoldTypeString;
   final int status;
+  final String statusString;
+  final int? mazaneh;
   final int totalPrice;
-  final String weight;
+  final String? weight;
   final String faDate;
   final String faTime;
 
   const TradeDTO({
     required this.id,
-    required this.type,
-    required this.typeString,
+    required this.buyAndSellType,
+    required this.buyAndSellTypeString,
+    required this.coinAndGoldType,
+    required this.coinAndGoldTypeString,
+    required this.statusString,
     required this.status,
     required this.mazaneh,
     required this.totalPrice,
@@ -25,27 +31,32 @@ class TradeDTO extends Equatable {
   });
 
   factory TradeDTO.fromJson(Map<String, dynamic> json) => TradeDTO(
-        id: json['id'],
-        type: TradeType.fromCode(json['type']),
-        typeString: json['type_string'],
-        status: json['status'],
-        mazaneh: json['mazaneh'],
-        totalPrice: json['total_price'],
-        weight: json['weight'],
-        faDate: json['FaDate'],
-        faTime: json['FaTime'],
-      );
+    id: json['id'],
+    buyAndSellType: BuyAndSellType.fromCode(json['type']),
+    buyAndSellTypeString: json['type_string'],
+    coinAndGoldType: CoinAndGoldType.fromCode(json['trade_type']),
+    coinAndGoldTypeString: json['trade_type_string'],
+    status: json['status'],
+    statusString: json['status_text'] ?? '',
+    mazaneh: json['mazaneh'],
+    totalPrice: json['total_price'],
+    weight: json['weight'],
+    faDate: json['FaDate'],
+    faTime: json['FaTime'],
+  );
 
   @override
   List<Object?> get props => [
-        id,
-        type,
-        typeString,
-        status,
-        mazaneh,
-        totalPrice,
-        weight,
-        faDate,
-        faTime,
-      ];
+    id,
+    buyAndSellType,
+    buyAndSellTypeString,
+    coinAndGoldType,
+    coinAndGoldTypeString,
+    statusString,
+    status,
+    mazaneh,
+    totalPrice,
+    weight,
+    faDate,
+  ];
 }

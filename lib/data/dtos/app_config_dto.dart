@@ -40,10 +40,10 @@ class AppConfigDTO extends Equatable {
     return AppConfigDTO(
         user: UserDTO.fromJson(json['user']),
         logo: json['logo'],
-        title: json['title'],
+        title: json['title'] ?? '',
         phones: phones,
         aboutText: json['about_text'] ?? "",
-        address: json['address'],
+        address: json['address'] ?? '',
         botStatus: json['bot_status'],
         buyPrice: json['buy_price'],
         sellPrice: json['sell_price'],

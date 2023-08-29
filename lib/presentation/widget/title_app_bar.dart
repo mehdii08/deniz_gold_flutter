@@ -18,31 +18,33 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Container(
-        color: AppColors.white,
-        padding: const EdgeInsets.all(Dimens.standard16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SupportIcon(),
-            Expanded(
-                child: AppText(
-              title,
-              textStyle: AppTextStyle.subTitle3,
-              textAlign: TextAlign.right,
-            )),
-            const SizedBox(width: Dimens.standard20),
-            GestureDetector(
-              onTap: () => context.pop(),
-              child: SvgPicture.asset(
-                'assets/images/arrow_right.svg',
-                fit: BoxFit.none,
-                color: AppColors.nature.shade900,
+  Widget build(BuildContext context) => SafeArea(
+    child: Container(
+          color: AppColors.white,
+          padding: const EdgeInsets.all(Dimens.standard16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SupportIcon(),
+              Expanded(
+                  child: AppText(
+                title,
+                textStyle: AppTextStyle.subTitle3,
+                textAlign: TextAlign.right,
+              )),
+              const SizedBox(width: Dimens.standard20),
+              GestureDetector(
+                onTap: () => context.pop(),
+                child: SvgPicture.asset(
+                  'assets/images/arrow_right.svg',
+                  fit: BoxFit.none,
+                  color: AppColors.nature.shade900,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      );
+  );
 
   @override
   Size get preferredSize => const Size.fromHeight(toolbarHeight);

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
+import 'package:deniz_gold/data/enums.dart';
 
 class AppNotificationEvent {
   final String type;
@@ -22,11 +23,15 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
   final int? totalPrice;
   final int? mazaneh;
   final String? weight;
+  final BuyAndSellType buyAndSellType;
+  final CoinAndGoldType coinAndGoldType;
 
   TradeResultNotificationEvent({
     required String type,
     required this.requestId,
     required this.status,
+    required this.buyAndSellType,
+    required this.coinAndGoldType,
     this.totalPrice,
     this.mazaneh,
     this.weight,
@@ -38,6 +43,8 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
       type: json['type'],
       requestId: data['request_id'],
       status: data['status'],
+      buyAndSellType: BuyAndSellType.fromCode(data['type']),
+      coinAndGoldType: CoinAndGoldType.fromCode(data['trade_type']),
       totalPrice: data['total_price'],
       mazaneh: data['mazaneh'],
       weight: data['weight'].toString(),

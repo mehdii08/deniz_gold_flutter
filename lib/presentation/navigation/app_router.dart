@@ -2,6 +2,7 @@ import 'package:deniz_gold/main.dart';
 import 'package:deniz_gold/presentation/home_scaffold.dart';
 import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/check_mobile_screen.dart';
+import 'package:deniz_gold/presentation/pages/coin_shop_screen.dart';
 import 'package:deniz_gold/presentation/pages/forget_password_screen.dart';
 import 'package:deniz_gold/presentation/pages/havale_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
@@ -28,7 +29,7 @@ GoRouter buildRouter(BuildContext context) {
     redirect: (_, state) {
       final location = state.location;
       final firstSection = location.contains("?") ? location.split("?")[0] : location;
-      isInTradeScreen = firstSection == TradeScreen.route.path;
+      tradeWaitingDialogIsOnTop = firstSection == TradeScreen.route.path;
       return null;
     },
     routes: _routes,
@@ -61,8 +62,7 @@ final _authenticationGuardedRoutes = [
       TradesScreen.route,
       ProfileScreen.route,
       AccountInfoScreen.route,
-      // ChangePasswordScreen.route,
-      // UpdateProfileScreen.route,
+      CoinShopScreen.route,
       HavaleScreen.route,
       TradeScreen.route,
     ],

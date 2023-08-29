@@ -14,12 +14,20 @@ class CheckTradeStatusCubit extends Cubit<CheckTradeStatusState> {
     required this.appRepository,
   }) : super(const CheckTradeStatusInitial());
 
-  check({required int tradeId}) async {
-    emit(const CheckTradeStatusLoading());
-    final result = await appRepository.checkTradeStatus(tradeId: tradeId);
+  check({required int tradeId, bool silent = false}) async {
+    if (!silent) {
+      emit(const CheckTradeStatusLoading());
+    }
+    final result = await appRepository.checkTradeStatus(tradeId: tradeId, needCancel: silent ? 0 : 1);
     result.fold(
-      (l) => emit(CheckTradeStatusFailed(message: l.message != null ? l.message! : "")),
-      (r) => emit(CheckTradeStatusLoaded(trade: r)),
+      (l) => {
+        if (!silent) {emit(CheckTradeStatusFailed(message: l.message != null ? l.message! : ""))}
+      },
+      (r) => {
+        if(r.status != 0 || !silent){
+          emit(CheckTradeStatusLoaded(trade: r))
+        }
+      },
     );
   }
 }

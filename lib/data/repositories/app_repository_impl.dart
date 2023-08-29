@@ -5,6 +5,9 @@ import 'package:deniz_gold/data/dtos/app_config_dto.dart';
 import 'package:deniz_gold/data/dtos/balance_response_dto.dart';
 import 'package:deniz_gold/data/dtos/check_active_trade_dto.dart';
 import 'package:deniz_gold/data/dtos/check_mobile_exists_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_calculate_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
@@ -17,6 +20,9 @@ import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
+
+import '../dtos/coin_trade_dto.dart';
+import '../dtos/coint_trades_detail_dto.dart';
 
 @LazySingleton(as: AppRepository)
 class AppRepositoryImpl extends AppRepository {
@@ -58,9 +64,39 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId}) async {
+  Future<Either<Failure, CoinTradeDetailDTO>> getCoinTradesDetail({
+    required int id,
+  }) async {
     try {
-      return Right(await dataSource.checkTradeStatus(tradeId: tradeId));
+      return Right(await dataSource.getCoinTradesDetail(
+        id: id,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaginatedResultDTO<CoinTradeDTO>>> getCoinTrades({
+    required int page,
+    int? tradeType,
+    int? period,
+  }) async {
+    try {
+      return Right(await dataSource.getCoinTrades(
+        page: page,
+        tradeType: tradeType,
+        period: period,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel}) async {
+    try {
+      return Right(await dataSource.checkTradeStatus(tradeId: tradeId, needCancel: needCancel));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
@@ -120,8 +156,43 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
+  Future<Either<Failure, List<CoinDTO>>> getCoins() async {
+    try {
+      return Right(await dataSource.getCoins());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CoinTradeCalculateResponseDTO>> coinTradeCalculate({
+    required Map<String,dynamic> body,
+  }) async {
+    try {
+      return Right(await dataSource.coinTradeCalculate(
+        body: body,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CoinTradeSubmitResponseDTO>> coinTradeSubmit({
+    required Map<String,dynamic> body,
+  }) async {
+    try {
+      return Right(await dataSource.coinTradeSubmit(
+        body: body,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
   Future<Either<Failure, TradeCalculateResponseDTO>> tradeCalculate({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
   }) async {
@@ -138,7 +209,7 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, TradeSubmitResponseDTO>> submitTrade({
-    required TradeType tradeType,
+    required BuyAndSellType tradeType,
     required CalculateType calculateType,
     required String value,
     required String fcmToken,
@@ -289,7 +360,7 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, CheckActiveTradeDTO>> checkHasActiveTrade(
-      {required TradeType tradeType}) async {
+      {required BuyAndSellType tradeType}) async {
     try {
       return Right(await dataSource.checkHasActiveTrade(tradeType: tradeType));
     } on Exception catch (e) {

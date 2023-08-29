@@ -40,11 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordValidator = ValueNotifier<bool>(false);
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-    child: Scaffold(
-      appBar: const TitleAppBar(title: Strings.loginTitle),
-      backgroundColor: AppColors.background,
-      body: BlocProvider<LoginCubit>(
+  Widget build(BuildContext context) => Scaffold(
+    appBar: const TitleAppBar(title: Strings.loginTitle),
+    backgroundColor: AppColors.background,
+    body: SafeArea(
+      child: BlocProvider<LoginCubit>(
         create: (_) => sl(),
         child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
