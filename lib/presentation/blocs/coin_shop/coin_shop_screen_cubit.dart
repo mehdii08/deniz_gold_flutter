@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:deniz_gold/core/utils/app_notification_handler.dart';
 import 'package:deniz_gold/data/dtos/coin_dto.dart';
 import 'package:deniz_gold/data/dtos/coin_trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/coin_trade_submit_response_dto.dart';
@@ -11,6 +12,7 @@ import 'package:deniz_gold/main.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+
 import '../app_config/app_config_cubit.dart';
 
 part 'coin_shop_screen_state.dart';
@@ -19,6 +21,7 @@ part 'coin_shop_screen_state.dart';
 class CoinTabCubit extends Cubit<CoinTabState> {
   final AppRepository appRepository;
   final SharedPreferencesRepository sharedPreferences;
+  final Stream<AppNotificationEvent> appNotificationEvents;
   final _eventStreamController = StreamController<CoinTabEvent>();
   final _errorStreamController = StreamController<String>();
 
@@ -29,11 +32,15 @@ class CoinTabCubit extends Cubit<CoinTabState> {
   CoinTabCubit({
     required this.appRepository,
     required this.sharedPreferences,
-  }) : super(const CoinTabState()){
+    required this.appNotificationEvents,
+  }) : super(const CoinTabState()) {
     tradeWaitingDialogIsOnTop = true;
+    appNotificationEvents.listen((event) {
+      if (event is CoinsPriceNotificationEvent) {
+        emit(state.copyWith(coins: event.coins));
+      }
+    });
   }
-
-
 
   getData() async {
     emit(state.copyWith(isLoading: true));

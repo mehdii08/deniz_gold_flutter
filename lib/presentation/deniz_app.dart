@@ -68,6 +68,7 @@ class DenizApp extends StatelessWidget {
                     totalPrice: state.tradeResult.totalPrice.toString(),
                     mazaneh: state.tradeResult.mazaneh.toString(),
                     weight: state.tradeResult.weight ?? '',
+                    coins: state.tradeResult.coins,
                   );
                 }
               },

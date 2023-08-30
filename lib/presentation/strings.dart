@@ -212,7 +212,7 @@ class Strings {
   static const remainingCash = "موجودی نقدی (تومان)";
   static const remaining = "موجودی";
   static const gheram = "گرم";
-  static const weekMaxPrice = "بالاترین ترین مظنه هفته";
+  static const weekMaxPrice = "بالا ترین مظنه هفته";
   static const weekMinPrice = "پایین ترین مظنه هفته";
   static const updateInfo = "بروز رسانی اطلاعات";
   static const tomanInParanteses = '(تومان)';
@@ -222,4 +222,5 @@ class Strings {
   static const goldTrade = 'معاملات آبشده';
   static const details = 'جزئیات';
   static const seeAll = 'مشاهده همه';
+  static const tradeIsBlocked = 'معامله غیر فعال می باشد';
 }

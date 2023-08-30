@@ -11,6 +11,7 @@ class AppConfigDTO extends Equatable {
   final String aboutText;
   final String address;
   final String botStatus;
+  final String coinStatus;
   final String buyPrice;
   final String sellPrice;
   final AppVersionDTO appVersion;
@@ -23,6 +24,7 @@ class AppConfigDTO extends Equatable {
     required this.aboutText,
     required this.address,
     required this.botStatus,
+    required this.coinStatus,
     required this.buyPrice,
     required this.sellPrice,
     required this.appVersion,
@@ -45,6 +47,7 @@ class AppConfigDTO extends Equatable {
         aboutText: json['about_text'] ?? "",
         address: json['address'] ?? '',
         botStatus: json['bot_status'],
+        coinStatus: json['coin_status'] != null ? json['coin_status'] : '0',
         buyPrice: json['buy_price'],
         sellPrice: json['sell_price'],
         appVersion: AppVersionDTO.fromJson(
@@ -60,6 +63,7 @@ class AppConfigDTO extends Equatable {
         'about_text': aboutText,
         'address': address,
         'bot_status': botStatus,
+        'coin_status': coinStatus,
         'buy_price': buyPrice,
         'sell_price': sellPrice,
         'app_version': appVersion.toJson(),
@@ -74,6 +78,7 @@ class AppConfigDTO extends Equatable {
         aboutText,
         address,
         botStatus,
+        coinStatus,
         buyPrice,
         sellPrice,
         appVersion
@@ -84,6 +89,7 @@ class AppConfigDTO extends Equatable {
     String? newNationalCode,
     String? newLogo,
     String? newBotStatus,
+    String? newCoinStatus,
   }) =>
       AppConfigDTO(
         user: user.update(newName: newName, newNationalCode: newNationalCode),
@@ -93,6 +99,7 @@ class AppConfigDTO extends Equatable {
         aboutText: aboutText,
         address: address,
         botStatus: newBotStatus ?? botStatus,
+        coinStatus: newCoinStatus ?? coinStatus,
         buyPrice: buyPrice,
         sellPrice: sellPrice,
         appVersion: appVersion,

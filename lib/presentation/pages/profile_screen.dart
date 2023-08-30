@@ -14,6 +14,7 @@ import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/UserAccountingChecker.dart';
 import 'package:deniz_gold/presentation/widget/UserStatusChecker.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/confirm_dialog.dart';
 import 'package:deniz_gold/presentation/widget/dual_balance_widget.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/settings_item.dart';
@@ -61,9 +62,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               appBar: const LogoAppBar(),
               body: BlocProvider<ProfileCubit>(
                 create: (_) => sl<ProfileCubit>()..updateData(),
-                child: BlocListener<AppConfigCubit,AppConfigState>(
-                  listener: (context, state){
-                    if(state is AppConfigLoaded){
+                child: BlocListener<AppConfigCubit, AppConfigState>(
+                  listener: (context, state) {
+                    if (state is AppConfigLoaded) {
                       context.read<ProfileCubit>().updateData();
                     }
                   },
@@ -170,15 +171,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     icon: "assets/images/logout.svg",
                                     title: Strings.logout,
                                     onTap: () {
-                                      context.read<AppConfigCubit>().reset();
-                                      context.read<AuthenticationCubit>().logOut();
-                                      context.pushNamed(SplashScreen.route.name!);
+                                      final dialog = ConfirmDialog(
+                                        question: Strings.exitQuestion,
+                                        confirmTitle: Strings.exit,
+                                        cancelTitle: Strings.cancel,
+                                        onConfirmClicked: () async {
+                                          context.read<AppConfigCubit>().reset();
+                                          context.read<AuthenticationCubit>().logOut();
+                                          context.pushNamed(SplashScreen.route.name!);
+                                        },
+                                        onCancelClicked: context.pop,
+                                      );
+
+                                      showDialog(context: context, builder: (context) => dialog);
                                     },
                                     showArrow: false,
                                   ),
                                   const SizedBox(height: Dimens.standard40),
                                   AppText(
-                                      '${packageInfo.version} (${packageInfo.buildNumber})',
+                                    '${packageInfo.version} (${packageInfo.buildNumber})',
                                     textStyle: AppTextStyle.body5,
                                     color: AppColors.nature.shade300,
                                     textDirection: TextDirection.ltr,

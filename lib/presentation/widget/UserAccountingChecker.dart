@@ -1,9 +1,9 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
+import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:deniz_gold/presentation/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
-import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
-import 'package:deniz_gold/presentation/strings.dart';
 
 class UserAccountingChecker extends StatefulWidget {
   final Widget child;

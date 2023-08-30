@@ -1,11 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/presentation/blocs/coin_shop/coin_shop_screen_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
+import 'package:deniz_gold/presentation/widget/UserStatusChecker.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
+import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/coin_item.dart';
 import 'package:deniz_gold/presentation/widget/logo_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
@@ -81,55 +84,64 @@ class _CoinShopScreenState extends State<CoinShopScreen> {
               return ValueListenableBuilder<BuyAndSellType>(
                   valueListenable: selectedTradeTypeNotifier,
                   builder: (context, selectedTradeType, _) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: Dimens.standard20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                          child: AppSwitchButton(
-                            rightTitle: Strings.buyCoin,
-                            leftTitle: Strings.sellCoin,
-                            selectedSide: selectedTradeType == BuyAndSellType.buy ? SwitchSide.right : SwitchSide.left,
-                            onRightPressed: () => selectedTradeTypeNotifier.value = BuyAndSellType.buy,
-                            onLeftPressed: () => selectedTradeTypeNotifier.value = BuyAndSellType.sell,
-                          ),
+                    return UserStatusChecker(
+                      checkCoinTrade: true,
+                      placeHolder: Center(
+                        child: AppText(
+                          Strings.tradeIsBlocked,
+                          textStyle: AppTextStyle.subTitle3
                         ),
-                        const SizedBox(height: Dimens.standard12),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: Dimens.standard16),
-                                  ...coins
-                                      .map((e) => CoinItem(
-                                    coin: e,
-                                    isSell: selectedTradeType == BuyAndSellType.sell,
-                                    count: state.selectedCoins
-                                        .firstWhereOrNull((element) => e.id == element.id)
-                                        ?.count ??
-                                        0,
-                                  ))
-                                      .toList(),
-                                  const SizedBox(height: Dimens.standard32),
-                                ],
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: Dimens.standard20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                            child: AppSwitchButton(
+                              rightTitle: Strings.buyCoin,
+                              leftTitle: Strings.sellCoin,
+                              selectedSide: selectedTradeType == BuyAndSellType.buy ? SwitchSide.right : SwitchSide.left,
+                              onRightPressed: () => selectedTradeTypeNotifier.value = BuyAndSellType.buy,
+                              onLeftPressed: () => selectedTradeTypeNotifier.value = BuyAndSellType.sell,
+                            ),
+                          ),
+                          const SizedBox(height: Dimens.standard12),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: Dimens.standard16),
+                                    ...coins
+                                        .map((e) => CoinItem(
+                                      coin: e,
+                                      isSell: selectedTradeType == BuyAndSellType.sell,
+                                      count: state.selectedCoins
+                                          .firstWhereOrNull((element) => e.id == element.id)
+                                          ?.count ??
+                                          0,
+                                    ))
+                                        .toList(),
+                                    const SizedBox(height: Dimens.standard32),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
-                          child: AppButton(
-                            onPressed: coinTabCubit.cartIsEmpty() ? null : () => coinTabCubit.calculate(type: selectedTradeType),
-                            isLoading: state.buttonIsLoading,
-                            text: '${selectedTradeType == BuyAndSellType.buy ? Strings.submitBuyOrder : Strings.submitSellOrder} (${coinTabCubit.cartCount()} ${Strings.count})',
-                            color: selectedTradeType == BuyAndSellType.buy ? AppColors.green : AppColors.red,
-                            textColor: AppColors.white,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard20),
+                            child: AppButton(
+                              onPressed: coinTabCubit.cartIsEmpty() ? null : () => coinTabCubit.calculate(type: selectedTradeType),
+                              isLoading: state.buttonIsLoading,
+                              text: '${selectedTradeType == BuyAndSellType.buy ? Strings.submitBuyOrder : Strings.submitSellOrder} (${coinTabCubit.cartCount()} ${Strings.count})',
+                              color: selectedTradeType == BuyAndSellType.buy ? AppColors.green : AppColors.red,
+                              textColor: AppColors.white,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: Dimens.standard80),
-                      ],
+                          const SizedBox(height: Dimens.standard80),
+                        ],
+                      ),
                     );
                   });
             }),

@@ -105,7 +105,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                 AppTextField(
                                   title: Strings.enterWeightByGheram,
                                   controller: valueController,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                                   onChange: (value) => checkSubmitAvailableity(),
                                   prefixIcon: GestureDetector(
                                     onTap: () {

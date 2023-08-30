@@ -1,10 +1,9 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
-import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
 import 'package:deniz_gold/presentation/blocs/coin_trades_detail/coint_trades_detail_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
-import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/key_value.dart';
 import 'package:deniz_gold/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,12 +41,12 @@ class _CoinDetailContentState extends State<CoinDetailContent> {
                           return Column(
                             children: [
                               const SizedBox(height: Dimens.standard20),
-                              keyValue(title: Strings.tradeType, value: state.result.type),
+                              KeyValue(title: Strings.tradeType, value: state.result.type),
                               const SizedBox(height: Dimens.standard12),
                               ...?state.result.coins
                                   ?.map((e) => Padding(
                                         padding: const EdgeInsets.only(bottom: Dimens.standard8),
-                                        child: keyValue(title: e.title, value: '${e.count} عدد'),
+                                        child: KeyValue(title: e.title, value: '${e.count} عدد'),
                                       ))
                                   .toList(),
                               const SizedBox(
@@ -59,7 +58,7 @@ class _CoinDetailContentState extends State<CoinDetailContent> {
                               const SizedBox(
                                 height: Dimens.standard12,
                               ),
-                              keyValue(
+                              KeyValue(
                                   title: Strings.priceTotalRialCoin,
                                   value: '${state.result.total_price.numberFormat()} ${Strings.toman}'),
                               const SizedBox(
@@ -83,22 +82,4 @@ class _CoinDetailContentState extends State<CoinDetailContent> {
           ],
         ),
       );
-
-  keyValue({required String title, required String value}) {
-    return Row(
-      children: [
-        AppText(
-          value,
-          textStyle: AppTextStyle.body4,
-          color: AppColors.nature.shade900,
-        ),
-        const Spacer(),
-        AppText(
-          title,
-          textStyle: AppTextStyle.body4,
-          color: AppColors.nature.shade700,
-        ),
-      ],
-    );
-  }
 }

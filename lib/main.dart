@@ -24,6 +24,8 @@ void main() async {
 
       if (message.data['type'] == tradeResultNotificationType) {
         notificationEventSink.add(TradeResultNotificationEvent.fromJson(message.data));
+      } else if (message.data['type'] == coinsPriceNotificationType) {
+        notificationEventSink.add(CoinsPriceNotificationEvent.fromJson(message.data));
       } else if (message.data['type'] == homeDataNotificationType) {
         notificationEventSink.add(HomeDataNotificationEvent.fromJson(message.data));
       } else if (message.data['type'] == botStatusNotificationType) {

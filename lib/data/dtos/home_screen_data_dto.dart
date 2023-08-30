@@ -80,7 +80,7 @@ class HomeScreenDataDTO extends Equatable {
       todayLowPrice: newData.todayLowPrice,
       priceHistories: priceHistories,
       accountingStatus: newData.accountingStatus,
-      coin: coin,
+      coin: newData.coin,
       message: message,
     );
   }

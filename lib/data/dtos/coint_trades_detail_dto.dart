@@ -7,7 +7,6 @@ class CoinTradeDetailDTO extends Equatable {
   final String total_price;
   final List<CoinTradesDTO>? coins;
 
-
   const CoinTradeDetailDTO({
     required this.type,
     required this.total_price,
@@ -15,16 +14,15 @@ class CoinTradeDetailDTO extends Equatable {
   });
 
   const CoinTradeDetailDTO.fake({
-     this.type="",
-     this.total_price="",
-     this.coins=const [],
+    this.type = "",
+    this.total_price = "",
+    this.coins = const [],
   });
 
-
   factory CoinTradeDetailDTO.fromJson(Map<String, dynamic> json) => CoinTradeDetailDTO(
-    type: json['type'],
-    total_price: json['total_price'],
-    coins: List<CoinTradesDTO>.from(json['coins'].map((e) => CoinTradesDTO.fromJson(e)).toList()),
+        type: json['type'],
+        total_price: json['total_price'],
+        coins: List<CoinTradesDTO>.from(json['coins'].map((e) => CoinTradesDTO.fromJson(e)).toList()),
       );
 
   @override

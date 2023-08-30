@@ -18,6 +18,7 @@ class UserStatusChecker extends StatefulWidget {
   final Widget child;
   final bool updateUser;
   final bool checkTrade;
+  final bool checkCoinTrade;
   final Widget? placeHolder;
 
   const UserStatusChecker({
@@ -25,6 +26,7 @@ class UserStatusChecker extends StatefulWidget {
     required this.child,
     this.updateUser = false,
     this.checkTrade = false,
+    this.checkCoinTrade = false,
     this.placeHolder,
   }) : super(key: key);
 
@@ -53,15 +55,17 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
           );
         } else if (state.appConfig?.user.statusCode == 0) {
           return widget.placeHolder ?? const DeActiveUserScreen();
-        } else if (widget.checkTrade && state.appConfig?.botStatus == "0") {
-          return widget.placeHolder ??
-              Center(
-                child: AppText(
-                  Strings.tradeDisabledWarning,
-                  textAlign: TextAlign.center,
-                  textStyle: AppTextStyle.title2,
-                ),
-              );
+        } else if ((widget.checkTrade && state.appConfig?.botStatus == "0") ||
+            (widget.checkCoinTrade && state.appConfig?.coinStatus == "0")) {
+          return IgnorePointer(
+            ignoring: true,
+            child: Stack(
+              children: [
+                Opacity(opacity: 0.4, child: widget.child),
+                widget.placeHolder ?? const SizedBox(),
+              ],
+            ),
+          );
         }
         return widget.child;
       },
@@ -119,7 +123,7 @@ class DeActiveUserScreen extends StatelessWidget {
                         text: Strings.logout,
                         color: AppColors.nature.shade100,
                         svgIcon: 'assets/images/logout.svg',
-                        onPressed: (){
+                        onPressed: () {
                           context.read<AuthenticationCubit>().clearToken();
                           context.goNamed(SplashScreen.route.name!);
                         },

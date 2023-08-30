@@ -31,6 +31,41 @@ extension NumberFormat on String? {
   String clearCommas() => this != null ? this!.replaceAll(',', '') : "";
 }
 
+extension StringExtension on String{
+
+  String removeExtraDecimals() {
+    if (!contains('.')) return this;
+    final sections = split('.');
+    final intPart = sections[0];
+    String decimalPart = sections[1];
+    if (decimalPart.length > 3) {
+      decimalPart = decimalPart.substring(0, 3);
+    }
+    return '$intPart.$decimalPart';
+  }
+
+  String removeDecimals() {
+    if (contains('.')) return substring(0, indexOf('.'));
+    return this;
+  }
+
+  String replacePersianNumbers() {
+    String temp = this;
+    if (temp.contains('۰')) temp = replaceAll('۰', '0');
+    if (temp.contains('۱')) temp = temp.replaceAll('۱', '1');
+    if (temp.contains('۲')) temp = temp.replaceAll('۲', '2');
+    if (temp.contains('۳')) temp = temp.replaceAll('۳', '3');
+    if (temp.contains('۴')) temp = temp.replaceAll('۴', '4');
+    if (temp.contains('۵')) temp = temp.replaceAll('۵', '5');
+    if (temp.contains('۶')) temp = temp.replaceAll('۶', '6');
+    if (temp.contains('۷')) temp = temp.replaceAll('۷', '7');
+    if (temp.contains('۸')) temp = temp.replaceAll('۸', '8');
+    if (temp.contains('۹')) temp = temp.replaceAll('۹', '9');
+    return temp;
+  }
+
+}
+
 extension ValueController on TextEditingController{
   increaseValue(){
     try {

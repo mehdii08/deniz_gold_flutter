@@ -1,11 +1,13 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
+import 'package:deniz_gold/data/dtos/coin_trades_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
+import 'package:deniz_gold/presentation/widget/key_value.dart';
 import 'package:deniz_gold/presentation/widget/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,6 +20,7 @@ class TradeAnswerDialog extends StatelessWidget {
   final String? totalPrice;
   final String? mazaneh;
   final String? weight;
+  final List<CoinTradesDTO>? coins;
 
   const TradeAnswerDialog({
     Key? key,
@@ -27,6 +30,7 @@ class TradeAnswerDialog extends StatelessWidget {
     this.totalPrice,
     this.mazaneh,
     this.weight,
+    this.coins,
   }) : super(key: key);
 
   @override
@@ -118,6 +122,14 @@ class TradeAnswerDialog extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: Dimens.standard8),
+          if (coins != null)
+            ...?coins
+                ?.map((e) => Padding(
+                      padding: const EdgeInsets.only(bottom: Dimens.standard8),
+                      child: KeyValue(title: e.title, value: '${e.count} عدد'),
+                    ))
+                .toList(),
           if (mazaneh != null && mazaneh?.isNotEmpty == true && mazaneh != 'null') ...[
             const SizedBox(height: Dimens.standard8),
             Row(
@@ -129,7 +141,7 @@ class TradeAnswerDialog extends StatelessWidget {
                   ),
                 const Spacer(),
                 AppText(
-                  Strings.goldGheramPrice,
+                  Strings.mazane,
                   textStyle: AppTextStyle.body4,
                   color: AppColors.nature.shade700,
                 ),
@@ -153,7 +165,6 @@ class TradeAnswerDialog extends StatelessWidget {
               ],
             ),
           ],
-          const SizedBox(height: Dimens.standard20),
           const Divider(),
           const SizedBox(height: Dimens.standard12),
           Row(
@@ -182,10 +193,10 @@ class TradeAnswerDialog extends StatelessWidget {
     );
   }
 
-  String getTypeString(){
-    if(buyAndSellType == BuyAndSellType.buy){
-     return coinAndGoldType == CoinAndGoldType.gold ? Strings.buyGold : Strings.buyCoin;
-    }else {
+  String getTypeString() {
+    if (buyAndSellType == BuyAndSellType.buy) {
+      return coinAndGoldType == CoinAndGoldType.gold ? Strings.buyGold : Strings.buyCoin;
+    } else {
       return coinAndGoldType == CoinAndGoldType.gold ? Strings.sellGold : Strings.sellCoin;
     }
   }

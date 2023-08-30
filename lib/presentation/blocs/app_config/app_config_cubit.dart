@@ -28,7 +28,7 @@ class AppConfigCubit extends Cubit<AppConfigState> {
   }) : super(AppConfigInitial()) {
     appNotificationEvents.listen((event) {
       if (event is BotStatusDataNotificationEvent && state.appConfig != null) {
-        final newConfig = state.appConfig!.update(newLogo: event.logo, newBotStatus: event.botStatus);
+        final newConfig = state.appConfig!.update(newLogo: event.logo, newBotStatus: event.botStatus, newCoinStatus: event.coinStatus);
         emit(AppConfigLoaded(appConfig: newConfig));
       }
     });

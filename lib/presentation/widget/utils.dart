@@ -1,6 +1,7 @@
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/data/dtos/coin_trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/coin_trade_submit_response_dto.dart';
+import 'package:deniz_gold/data/dtos/coin_trades_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
@@ -264,6 +265,7 @@ showTradeAnswerWaitingDialog({
             totalPrice: trade.totalPrice.toString(),
             mazaneh: trade.mazaneh.toString(),
             weight: trade.weight,
+            coins: trade.coins,
           );
         },
       );
@@ -279,6 +281,7 @@ showTradeAnswerDialog({
   required String? totalPrice,
   required String? mazaneh,
   required String? weight,
+  required List<CoinTradesDTO>? coins,
 }){
   showDialog(
     context: context,
@@ -289,6 +292,7 @@ showTradeAnswerDialog({
       totalPrice: totalPrice.toString(),
       mazaneh: mazaneh,
       weight: weight,
+      coins: coins,
     ),
   );
 }
@@ -313,6 +317,7 @@ showCoinTradeAnswerWaitingDialog({
             totalPrice: trade.totalPrice.toString(),
             mazaneh: trade.mazaneh.toString(),
             weight: trade.weight,
+            coins: trade.coins,
           );
         },
       );

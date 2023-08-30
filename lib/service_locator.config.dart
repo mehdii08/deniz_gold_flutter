@@ -107,6 +107,7 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<_i19.CoinTabCubit>(() => _i19.CoinTabCubit(
         appRepository: get<_i14.AppRepository>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
+        appNotificationEvents: get<_i10.Stream<_i9.AppNotificationEvent>>(),
       ));
   gh.factory<_i20.CoinTradesCubit>(
       () => _i20.CoinTradesCubit(get<_i14.AppRepository>()));
