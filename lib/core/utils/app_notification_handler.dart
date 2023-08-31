@@ -126,7 +126,7 @@ class BotStatusDataNotificationEvent extends AppNotificationEvent {
       type: json['type'],
       logo: data['logo'],
       botStatus: data['bot_status'],
-      coinStatus: data['coin_status'],
+      coinStatus: data['coin_status'] ?? '1',
     );
   }
 }

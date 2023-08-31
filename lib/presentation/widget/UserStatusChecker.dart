@@ -53,7 +53,7 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
               child: CircularProgressIndicator(),
             ),
           );
-        } else if (state.appConfig?.user.statusCode == 0) {
+        } else if (state.appConfig?.user.statusCode != 0) {
           return widget.placeHolder ?? const DeActiveUserScreen();
         } else if ((widget.checkTrade && state.appConfig?.botStatus == "0") ||
             (widget.checkCoinTrade && state.appConfig?.coinStatus == "0")) {

@@ -69,7 +69,7 @@ class CoinTabCubit extends Cubit<CoinTabState> {
   }
 
   bool cartIsEmpty() {
-    return state.selectedCoins.isEmpty;
+    return state.selectedCoins.fold(0, (sum, item) => sum + item.count) == 0;
   }
 
   int cartCount() {

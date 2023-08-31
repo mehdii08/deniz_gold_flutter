@@ -56,7 +56,7 @@ class CoinTabState extends Equatable {
       final index = tempList.indexOf(coin);
       if (index != -1) {
         tempList.removeAt(index);
-        if (coin.count > 0) {
+        if (coin.count > 1) {
           tempList.insert(index, coin.decrease());
         }
       }
