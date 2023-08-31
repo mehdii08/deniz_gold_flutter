@@ -6,6 +6,7 @@ class BriefCoinDTO extends Equatable {
   final String price;
   final String discount;
   final String unit;
+  final bool isNew;
 
   const BriefCoinDTO({
     required this.id,
@@ -13,6 +14,7 @@ class BriefCoinDTO extends Equatable {
     required this.price,
     required this.discount,
     required this.unit,
+    required this.isNew,
   });
 
   factory BriefCoinDTO.fromJson(Map<String, dynamic> json) => BriefCoinDTO(
@@ -21,10 +23,18 @@ class BriefCoinDTO extends Equatable {
         price: json['price'],
         discount: json['change'],
         unit: json['unit'],
+        isNew: json['is_new'],
       );
 
-  BriefCoinDTO updatePrice({required String buyPrice}) => BriefCoinDTO(id: id, name: name, price: buyPrice, discount: discount, unit: unit);
+  BriefCoinDTO updatePrice({required String buyPrice}) => BriefCoinDTO(
+        id: id,
+        name: name,
+        price: buyPrice,
+        discount: discount,
+        unit: unit,
+        isNew: isNew,
+      );
 
   @override
-  List<Object?> get props => [id, discount, price, discount, unit];
+  List<Object?> get props => [id, discount, price, discount, unit, isNew];
 }

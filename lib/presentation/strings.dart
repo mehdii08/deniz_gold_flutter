@@ -224,4 +224,5 @@ class Strings {
   static const details = 'جزئیات';
   static const seeAll = 'مشاهده همه';
   static const tradeIsBlocked = 'معامله غیر فعال می باشد';
+  static const neww = 'جدید';
 }

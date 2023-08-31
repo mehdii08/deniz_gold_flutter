@@ -164,59 +164,76 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       child: GestureDetector(
                                         onTap: () => context.goNamed(CoinShopScreen.route.name ?? ''),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(vertical: Dimens.standard24),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(Dimens.standard12),
-                                            color: AppColors.background,
-                                            border: Border.all(
-                                              width: 2,
-                                              color: AppColors.nature.shade100,
-                                            ),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Row(
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(vertical: Dimens.standard24),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(Dimens.standard12),
+                                                color: AppColors.background,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: AppColors.nature.shade100,
+                                                ),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                 children: [
-                                                  SvgPicture.asset(
-                                                    'assets/images/arrow_left.svg',
-                                                    width: Dimens.standard20,
+                                                  Row(
+                                                    children: [
+                                                      SvgPicture.asset(
+                                                        'assets/images/arrow_left.svg',
+                                                        width: Dimens.standard20,
+                                                        fit: BoxFit.fitWidth,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: Dimens.standard8,
+                                                      ),
+                                                      AppText(
+                                                        Strings.seeAll,
+                                                        textStyle: AppTextStyle.body5,
+                                                        color: AppColors.nature.shade700,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Image.asset(
+                                                    'assets/images/coin.png',
+                                                    width: Dimens.standard48,
                                                     fit: BoxFit.fitWidth,
                                                   ),
-                                                  const SizedBox(
-                                                    width: Dimens.standard8,
-                                                  ),
-                                                  AppText(
-                                                    Strings.seeAll,
-                                                    textStyle: AppTextStyle.body5,
-                                                    color: AppColors.nature.shade700,
-                                                  ),
-                                                ],
-                                              ),
-                                              Image.asset(
-                                                'assets/images/coin.png',
-                                                width: Dimens.standard48,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  AppText(
-                                                    '${state.data.coin?.name ?? ''} (${state.data.coin?.unit ?? ''})',
-                                                    textStyle: AppTextStyle.body5,
-                                                    color: AppColors.nature.shade700,
-                                                  ),
-                                                  AppText(
-                                                    state.data.coin?.price.numberFormat() ?? '0',
-                                                    textStyle: AppTextStyle.subTitle3,
-                                                    color: AppColors.nature.shade900,
-                                                    textDirection: TextDirection.ltr,
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: [
+                                                      AppText(
+                                                        '${state.data.coin?.name ?? ''} (${state.data.coin?.unit ?? ''})',
+                                                        textStyle: AppTextStyle.body5,
+                                                        color: AppColors.nature.shade700,
+                                                      ),
+                                                      AppText(
+                                                        state.data.coin?.price.numberFormat() ?? '0',
+                                                        textStyle: AppTextStyle.subTitle3,
+                                                        color: AppColors.nature.shade900,
+                                                        textDirection: TextDirection.ltr,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            if (state.data.coin?.isNew == true)
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard10),
+                                                decoration: BoxDecoration(
+                                                    color: AppColors.yellow,
+                                                    borderRadius: const BorderRadius.only(
+                                                        topLeft: Radius.circular(Dimens.standard12),
+                                                        bottomRight: Radius.circular(Dimens.standard12))),
+                                                child: AppText(
+                                                  Strings.neww,
+                                                  textStyle: AppTextStyle.body6,
+                                                ),
+                                              )
+                                          ],
                                         ),
                                       ),
                                     ),
