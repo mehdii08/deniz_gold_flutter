@@ -1,3 +1,4 @@
+import 'package:deniz_gold/data/dtos/coin_dto.dart';
 import 'package:deniz_gold/data/dtos/home_price_dto.dart';
 import 'package:deniz_gold/data/dtos/price_dto.dart';
 import 'package:equatable/equatable.dart';
@@ -81,6 +82,22 @@ class HomeScreenDataDTO extends Equatable {
       priceHistories: priceHistories,
       accountingStatus: newData.accountingStatus,
       coin: newData.coin,
+      message: message,
+    );
+  }
+
+  HomeScreenDataDTO updateCoin(CoinDTO coin) {
+    return HomeScreenDataDTO(
+      buyPrice: buyPrice,
+      sellPrice: sellPrice,
+      goldOns: goldOns,
+      goldGheram: goldGheram,
+      goldWorld: goldWorld,
+      todayHighPrice: todayHighPrice,
+      todayLowPrice: todayLowPrice,
+      priceHistories: priceHistories,
+      accountingStatus: accountingStatus,
+      coin: this.coin?.updatePrice(buyPrice: coin.buyPrice),
       message: message,
     );
   }

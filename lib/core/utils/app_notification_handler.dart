@@ -53,9 +53,9 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
       totalPrice: data['total_price'],
       mazaneh: data['mazaneh'],
       weight: data['weight'].toString(),
-      coins: json['coins'] == null
+      coins: data['coins'] == null
           ? null
-          : List<CoinTradesDTO>.from(json['coins'].map((e) => CoinTradesDTO.fromJson(e)).toList()),
+          : List<CoinTradesDTO>.from(data['coins'].map((e) => CoinTradesDTO.fromJson(e)).toList()),
     );
   }
 }

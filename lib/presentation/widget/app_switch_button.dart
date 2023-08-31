@@ -16,8 +16,8 @@ class AppSwitchButton extends StatelessWidget {
     required this.selectedSide,
     required this.onRightPressed,
     required this.onLeftPressed,
-    this.leftTitle = Strings.sell,
-    this.rightTitle = Strings.buy,
+    this.leftTitle = Strings.sellGold,
+    this.rightTitle = Strings.buyGold,
   }) : super(key: key);
 
   @override

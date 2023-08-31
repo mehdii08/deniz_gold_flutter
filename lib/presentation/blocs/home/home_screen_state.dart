@@ -29,6 +29,10 @@ class HomeScreenLoaded extends HomeScreenState {
   HomeScreenState update(HomeScreenDataDTO newData) => HomeScreenLoaded(
     data : data.update(newData)
   );
+
+  HomeScreenState updateCoin(CoinDTO coin) => HomeScreenLoaded(
+    data : data.updateCoin(coin)
+  );
 }
 
 class HomeScreenFailed extends HomeScreenState {

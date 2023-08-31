@@ -1,3 +1,4 @@
+import 'package:blur/blur.dart';
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/blocs/app_config/app_config_cubit.dart';
@@ -53,7 +54,7 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
               child: CircularProgressIndicator(),
             ),
           );
-        } else if (state.appConfig?.user.statusCode != 0) {
+        } else if (state.appConfig?.user.statusCode != 1) {
           return widget.placeHolder ?? const DeActiveUserScreen();
         } else if ((widget.checkTrade && state.appConfig?.botStatus == "0") ||
             (widget.checkCoinTrade && state.appConfig?.coinStatus == "0")) {
@@ -61,7 +62,7 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
             ignoring: true,
             child: Stack(
               children: [
-                Opacity(opacity: 0.4, child: widget.child),
+                Blur(blur: 4, child: widget.child),
                 widget.placeHolder ?? const SizedBox(),
               ],
             ),

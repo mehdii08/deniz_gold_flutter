@@ -83,7 +83,7 @@ class AppBottomBar extends StatelessWidget {
                   ),
                   BottomBarItem(
                     isSelected: currentRoute == TradeScreen.route.path,
-                    title: Strings.trade,
+                    title: Strings.goldShop,
                     icon: SvgPicture.asset(
                       'assets/images/change_trade.svg',
                       fit: BoxFit.fitWidth,

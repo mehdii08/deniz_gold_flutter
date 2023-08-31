@@ -55,6 +55,7 @@ dependencies:
   intl: ^0.18.1
   permission_handler: ^10.3.0
   flutter_native_splash: ^2.2.18
+  blur: ^3.1.0
 #  notification_permissions: ^0.6.1
 #  flutter_local_notifications: ^14.1.1
 

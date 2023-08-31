@@ -41,6 +41,7 @@ class Strings {
   static const tradeType = "نوع معامله";
   static const tradeType_ = "نوع سفارش";
   static const trade = "خرید و فروش";
+  static const goldShop = "فروشگاه آبشده";
   static const logout = "خروج از حساب";
   static const priceChangesTitle = "لیست تغییرات نرخ امروز";
   static const myAccount = "حساب من";

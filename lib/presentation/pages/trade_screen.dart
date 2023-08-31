@@ -314,7 +314,7 @@ class _TradeScreenState extends State<TradeScreen> {
 
   bool isValidNumInput({required String value}) {
     try {
-      final intVal = int.parse(value);
+      final intVal = double.parse(value);
       return intVal != 0;
     } on Exception catch (_, __) {
       return false;
