@@ -67,7 +67,7 @@ class HomeScreenDataDTO extends Equatable {
 
   HomeScreenDataDTO update(HomeScreenDataDTO newData) {
     DateTime now = DateTime.now();
-    priceHistories?.add(PriceDTO(
+    priceHistories?.insert(0,PriceDTO(
         buyPrice: newData.buyPrice.price.toString(),
         sellPrice: newData.sellPrice.price.toString(),
         time: '${now.hour}:${now.minute}'));

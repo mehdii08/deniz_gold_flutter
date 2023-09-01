@@ -4,7 +4,7 @@ class BriefCoinDTO extends Equatable {
   final int id;
   final String name;
   final String price;
-  final String discount;
+  final String change;
   final String unit;
   final bool isNew;
 
@@ -12,7 +12,7 @@ class BriefCoinDTO extends Equatable {
     required this.id,
     required this.name,
     required this.price,
-    required this.discount,
+    required this.change,
     required this.unit,
     required this.isNew,
   });
@@ -21,7 +21,7 @@ class BriefCoinDTO extends Equatable {
         id: json['id'] ?? 0,
         name: json['title'],
         price: json['price'],
-        discount: json['change'],
+        change: json['change'],
         unit: json['unit'],
         isNew: json['is_new'],
       );
@@ -30,11 +30,11 @@ class BriefCoinDTO extends Equatable {
         id: id,
         name: name,
         price: buyPrice,
-        discount: discount,
+        change: change,
         unit: unit,
         isNew: isNew,
       );
 
   @override
-  List<Object?> get props => [id, discount, price, discount, unit, isNew];
+  List<Object?> get props => [id, change, price, unit, isNew];
 }
