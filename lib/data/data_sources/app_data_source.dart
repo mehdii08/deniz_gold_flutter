@@ -12,12 +12,15 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../dtos/coin_trade_dto.dart';
@@ -67,6 +70,17 @@ abstract class AppDataSource {
     required int? destination,
     required String fcmToken,
   });
+
+
+  Future<String> sendFish({
+    required String name,
+    required String trackingCode,
+    required String price,
+    required String fcmToken,
+    required XFile file,
+  });
+
+  Future<List<ReceiptDTO>> getReceipt();
 
   Future<List<CoinDTO>> getCoins();
 
@@ -141,6 +155,35 @@ class AppDataSourceImpl extends AppDataSource {
         await _apiHelper.request('$apiPath/check-mobile-exists', method: Method.post, data: {'mobile': mobile});
     return CheckMobileExistsResponseDTO.fromJson(response.dataAsMap());
   }
+
+  @override
+  Future<List<ReceiptDTO>> getReceipt() async {
+    final response = await _apiHelper.request('$apiPath/panel/receipts/list?type=2');
+    return List<ReceiptDTO>.from(response.dataAsMap()['receipts'].map((e) => ReceiptDTO.fromJson(e)).toList());
+  }
+
+  @override
+  Future<String> sendFish({
+    required String name,
+    required String trackingCode,
+    required String price,
+    required String fcmToken,
+    required XFile file,
+  }) async {
+    final response = await _apiHelper.uploadImage(
+        '$apiPath/panel/receipts/store',
+        FormData.fromMap({
+          "image": await MultipartFile.fromFile(file.path, filename: file.name),
+          'fcm_token': fcmToken,
+          'price': price,
+          'owner_name': name,
+          'type': "2",
+          'device_type': kIsWeb ? "2" : "1",
+          'tracking_code': trackingCode,
+        }));
+    return response.data["message"];
+  }
+
 
   @override
   Future<String> register({

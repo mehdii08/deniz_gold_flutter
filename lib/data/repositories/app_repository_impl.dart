@@ -13,12 +13,14 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../dtos/coin_trade_dto.dart';
@@ -62,7 +64,35 @@ class AppRepositoryImpl extends AppRepository {
       return Left(Failure.fromException(e));
     }
   }
+  @override
+  Future<Either<Failure, List<ReceiptDTO>>> getReceipt() async {
+    try {
+      return Right(await dataSource.getReceipt());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
 
+  @override
+  Future<Either<Failure, String>> setFish({
+    required String name,
+    required String trackingCode,
+    required String price,
+    required String fcmToken,
+    required XFile file,
+  }) async {
+    try {
+      return Right(await dataSource.sendFish(
+        name: name,
+        trackingCode: trackingCode,
+        price: price,
+        fcmToken: fcmToken,
+        file: file,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
   @override
   Future<Either<Failure, CoinTradeDetailDTO>> getCoinTradesDetail({
     required int id,

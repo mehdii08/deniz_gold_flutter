@@ -12,11 +12,13 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../data/dtos/coin_trade_dto.dart';
 import '../../data/dtos/coint_trades_detail_dto.dart';
@@ -44,6 +46,16 @@ abstract class AppRepository {
     int? tradeType,
     int? period,
   });
+
+  Future<Either<Failure, String>> setFish({
+    required String name,
+    required String trackingCode,
+    required String price,
+    required String fcmToken,
+    required XFile file,
+  });
+
+  Future<Either<Failure, List<ReceiptDTO>>> getReceipt();
 
   Future<Either<Failure, String>> resetPassword({
     required String token,
