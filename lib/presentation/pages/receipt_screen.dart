@@ -43,21 +43,16 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
   final imagePicker = ImagePicker();
 
   _validateThenSubmit(VoidCallback onSubmit) {
-    String? name;
-    String? price;
+
     String? file;
 
-    if (nameController.text.length < 3) name = Strings.nameError;
-    if (priceController.text.isEmpty) price = Strings.priceError;
     if (selectedFileNotifier.value == null) file = Strings.fileCodeError;
 
     errors.value = ReceiptNumberError(
-        nameError: name,
         trackingCode: null,
-        priceError: price,
         fileError: file);
 
-    if (name == null && price == null && file == null) {
+    if ( file == null) {
       onSubmit();
     }
   }
@@ -136,54 +131,6 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                             ),
                                             const SizedBox(
                                               height: Dimens.standard24,
-                                            ),
-                                            AppTextField(
-                                                textAlign: TextAlign.right,
-                                                controller: priceController,
-                                                onChange: (value) {
-                                                  value = value
-                                                      .replacePersianNumbers()
-                                                      .removeDecimals()
-                                                      .clearCommas()
-                                                      .numberFormat();
-                                                  priceController.value =
-                                                      TextEditingValue(
-                                                    text: value,
-                                                    selection:
-                                                        TextSelection.collapsed(
-                                                            offset:
-                                                                value.length),
-                                                  );
-                                                },
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                title: Strings.receiptPrice,
-                                                error: inputErrors.priceError),
-                                            const SizedBox(
-                                              height: Dimens.standard16,
-                                            ),
-                                            AppTextField(
-                                                textAlign: TextAlign.right,
-                                                controller: nameController,
-                                                keyboardType:
-                                                    TextInputType.name,
-                                                title: Strings.receiptName,
-                                                error: inputErrors.nameError),
-                                            const SizedBox(
-                                              height: Dimens.standard16,
-                                            ),
-                                            AppTextField(
-                                                textAlign: TextAlign.right,
-                                                controller:
-                                                    trackingCodeController,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                title:
-                                                    Strings.receiptTrackingCode,
-                                                error:
-                                                    inputErrors.trackingCode),
-                                            const SizedBox(
-                                              height: Dimens.standard16,
                                             ),
                                             ValueListenableBuilder(
                                               valueListenable:
