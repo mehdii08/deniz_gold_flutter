@@ -61,7 +61,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: const TitleAppBar(title: Strings.transactions),
+        appBar:  TitleAppBar(title: Strings.transactions ,onClick: (){},),
         body: BlocProvider<TransactionsCubit>(
           create: (_) => cubit,
           child: BlocConsumer<TransactionsCubit, TransactionsState>(

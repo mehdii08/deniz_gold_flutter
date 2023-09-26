@@ -13,7 +13,6 @@ import 'package:deniz_gold/presentation/pages/home_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
-import 'package:deniz_gold/presentation/widget/app_text_field.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
 import 'package:deniz_gold/presentation/widget/recpeit_item.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
@@ -84,7 +83,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: const TitleAppBar(title: Strings.receipt),
+            appBar:  TitleAppBar(title: Strings.receipt),
             body: BlocProvider<ReceiptScreenCubit>(
               create: (_) => cubit,
               child: BlocConsumer<ReceiptScreenCubit, ReceiptScreenState>(

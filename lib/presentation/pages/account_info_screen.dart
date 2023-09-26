@@ -34,7 +34,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: const TitleAppBar(title: Strings.accountInfo),
+            appBar:  TitleAppBar(title: Strings.accountInfo),
             body: BlocBuilder<AppConfigCubit, AppConfigState>(
                 builder: (context, state) {
                   if (state is AppConfigLoaded) {

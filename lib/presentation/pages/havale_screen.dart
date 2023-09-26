@@ -74,7 +74,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: const TitleAppBar(title: Strings.storeGoldenHavale),
+            appBar:   TitleAppBar(title: Strings.storeGoldenHavale),
             body: UserStatusChecker(
               updateUser: true,
               child: BlocProvider<HavaleCubit>(

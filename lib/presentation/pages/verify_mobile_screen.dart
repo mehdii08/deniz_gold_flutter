@@ -84,7 +84,7 @@ class _VerifyMobileScreenState extends State<VerifyMobileScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
-      appBar: const TitleAppBar(title: Strings.verifyMobileTitle),
+      appBar:  TitleAppBar(title: Strings.verifyMobileTitle),
       backgroundColor: AppColors.background,
       body: BlocProvider<VerifyMobileCubit>(
         create: (_) => sl(),
