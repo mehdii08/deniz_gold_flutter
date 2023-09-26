@@ -21,8 +21,8 @@ import 'data/repositories/app_repository_impl.dart' as _i15;
 import 'data/repositories/shared_preferences_repository_impl.dart' as _i8;
 import 'domain/repositories/app_repository.dart' as _i14;
 import 'domain/repositories/shared_preferences_repository.dart' as _i7;
-import 'presentation/blocs/account_info/account_info_cubit.dart' as _i38;
-import 'presentation/blocs/app_config/app_config_cubit.dart' as _i39;
+import 'presentation/blocs/account_info/account_info_cubit.dart' as _i39;
+import 'presentation/blocs/app_config/app_config_cubit.dart' as _i40;
 import 'presentation/blocs/auth/authentication_cubit.dart' as _i11;
 import 'presentation/blocs/balance/balance_cubit.dart' as _i16;
 import 'presentation/blocs/check_mobile/check_mobile_cubit.dart' as _i17;
@@ -42,15 +42,16 @@ import 'presentation/blocs/notification_listener/notification_listener_cubit.dar
 import 'presentation/blocs/permission_checker/permission_checker_cubit.dart'
     as _i28;
 import 'presentation/blocs/profile/profile_cubit.dart' as _i29;
-import 'presentation/blocs/register/register_cubit.dart' as _i30;
-import 'presentation/blocs/reset_password/reset_password_cubit.dart' as _i31;
-import 'presentation/blocs/splash/splash_cubit.dart' as _i32;
-import 'presentation/blocs/support/support_cubit.dart' as _i33;
-import 'presentation/blocs/trade/trade_cubit.dart' as _i34;
-import 'presentation/blocs/trades/trades_cubit.dart' as _i35;
-import 'presentation/blocs/transactions/transactions_cubit.dart' as _i36;
-import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i37;
-import 'service_locator.dart' as _i40; // ignore_for_file: unnecessary_lambdas
+import 'presentation/blocs/receipt/receipt_screen_cubit.dart' as _i30;
+import 'presentation/blocs/register/register_cubit.dart' as _i31;
+import 'presentation/blocs/reset_password/reset_password_cubit.dart' as _i32;
+import 'presentation/blocs/splash/splash_cubit.dart' as _i33;
+import 'presentation/blocs/support/support_cubit.dart' as _i34;
+import 'presentation/blocs/trade/trade_cubit.dart' as _i35;
+import 'presentation/blocs/trades/trades_cubit.dart' as _i36;
+import 'presentation/blocs/transactions/transactions_cubit.dart' as _i37;
+import 'presentation/blocs/verify_mobile/verify_mobile_cubit.dart' as _i38;
+import 'service_locator.dart' as _i41; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -142,32 +143,36 @@ Future<_i1.GetIt> $initGetIt(
         appRepository: get<_i14.AppRepository>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i30.RegisterCubit>(
-      () => _i30.RegisterCubit(get<_i14.AppRepository>()));
-  gh.factory<_i31.ResetPasswordCubit>(
-      () => _i31.ResetPasswordCubit(get<_i14.AppRepository>()));
-  gh.factory<_i32.SplashCubit>(() => _i32.SplashCubit(
+  gh.factory<_i30.ReceiptScreenCubit>(() => _i30.ReceiptScreenCubit(
+        get<_i14.AppRepository>(),
+        get<_i7.SharedPreferencesRepository>(),
+      ));
+  gh.factory<_i31.RegisterCubit>(
+      () => _i31.RegisterCubit(get<_i14.AppRepository>()));
+  gh.factory<_i32.ResetPasswordCubit>(
+      () => _i32.ResetPasswordCubit(get<_i14.AppRepository>()));
+  gh.factory<_i33.SplashCubit>(() => _i33.SplashCubit(
         appRepository: get<_i14.AppRepository>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i33.SupportCubit>(
-      () => _i33.SupportCubit(appRepository: get<_i14.AppRepository>()));
-  gh.factory<_i34.TradeCubit>(() => _i34.TradeCubit(
+  gh.factory<_i34.SupportCubit>(
+      () => _i34.SupportCubit(appRepository: get<_i14.AppRepository>()));
+  gh.factory<_i35.TradeCubit>(() => _i35.TradeCubit(
         appRepository: get<_i14.AppRepository>(),
         appNotificationEvents: get<_i10.Stream<_i9.AppNotificationEvent>>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i35.TradesCubit>(
-      () => _i35.TradesCubit(get<_i14.AppRepository>()));
-  gh.factory<_i36.TransactionsCubit>(
-      () => _i36.TransactionsCubit(get<_i14.AppRepository>()));
-  gh.factory<_i37.VerifyMobileCubit>(() => _i37.VerifyMobileCubit(
+  gh.factory<_i36.TradesCubit>(
+      () => _i36.TradesCubit(get<_i14.AppRepository>()));
+  gh.factory<_i37.TransactionsCubit>(
+      () => _i37.TransactionsCubit(get<_i14.AppRepository>()));
+  gh.factory<_i38.VerifyMobileCubit>(() => _i38.VerifyMobileCubit(
         appRepository: get<_i14.AppRepository>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
       ));
-  gh.factory<_i38.AccountInfoCubit>(
-      () => _i38.AccountInfoCubit(get<_i14.AppRepository>()));
-  gh.lazySingleton<_i39.AppConfigCubit>(() => _i39.AppConfigCubit(
+  gh.factory<_i39.AccountInfoCubit>(
+      () => _i39.AccountInfoCubit(get<_i14.AppRepository>()));
+  gh.lazySingleton<_i40.AppConfigCubit>(() => _i40.AppConfigCubit(
         appRepository: get<_i14.AppRepository>(),
         sharedPreferences: get<_i7.SharedPreferencesRepository>(),
         appNotificationEvents: get<_i10.Stream<_i9.AppNotificationEvent>>(),
@@ -175,4 +180,4 @@ Future<_i1.GetIt> $initGetIt(
   return get;
 }
 
-class _$RegisterModule extends _i40.RegisterModule {}
+class _$RegisterModule extends _i41.RegisterModule {}
