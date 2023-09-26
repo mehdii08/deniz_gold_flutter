@@ -12,6 +12,7 @@ class Strings {
   static const receiptResendly = "فیش‌های ارسالی ۳ روز اخیر";
   static const receiptName = "فیش بنام چه کسی است؟";
   static const priceError = "مبلغ را وارد کنید";
+  static const  remainingRialsWithColon = "مانده ریالی : ";
   static const receiptPrice = "مبلغ واریز شده به تومان";
   static const fileCodeError = "تصویر فیش واریزی را انتخاب کنید";
   static const passwordError = "کلمه عبور را درست وارد کنید";
@@ -19,6 +20,7 @@ class Strings {
   static const error = "خطا";
   static const receiptTrackingCode = "کد پیگیری";
   static const sendFish = "ارسال فیش واریزی";
+  static const  remainingGoldWithColon = "مانده وزنی : ";
   static const priceTotalRial2 = "مبلغ کل";
   static const emptyList = "موردی وجود ندارد.";
   static const confirmReceiptDiscreption = "لطفا اطلاعات مربوط به فیش را در فرم زیر وارد کنید.";
