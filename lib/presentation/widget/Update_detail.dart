@@ -19,7 +19,7 @@ class UpdateDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    contentPadding: EdgeInsets.all(Dimens.standard16),
+    contentPadding: const EdgeInsets.all(Dimens.standard16),
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -33,8 +33,8 @@ class UpdateDetailsDialog extends StatelessWidget {
           children: [
             Container(
               width: double.maxFinite,
-              child: AppText(e,textStyle: AppTextStyle.body4,color: AppColors.nature.shade700,),
               alignment: Alignment.centerRight,
+              child: AppText(e,textStyle: AppTextStyle.body4,color: AppColors.nature.shade700,),
             ),
             const SizedBox(height: Dimens.standard8),
           ],
@@ -47,8 +47,6 @@ class UpdateDetailsDialog extends StatelessWidget {
                fullWidth: false,
             ),
         const SizedBox(height: Dimens.standard2X),
-
-
       ],
     ),
   );

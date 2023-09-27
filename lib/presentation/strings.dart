@@ -243,4 +243,6 @@ class Strings {
   static const tradeIsBlocked = 'معامله غیر فعال می باشد';
   static const neww = 'جدید';
   static String titleUpdateDetails ="تغییرات ورژن جدید";
+  static var havaleGold = "حواله طلا";
+  static var havalerial = "حواله تومانی";
 }

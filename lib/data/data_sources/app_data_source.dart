@@ -68,6 +68,7 @@ abstract class AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   });
 
@@ -280,6 +281,7 @@ class AppDataSourceImpl extends AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   }) async {
     final response = await _apiHelper.request(
@@ -288,6 +290,7 @@ class AppDataSourceImpl extends AppDataSource {
       data: {
         'value': value,
         'name': name,
+        'type': type,
         'device_type': 3,
         'fcm_token': fcmToken,
         if (destination != null) 'destination_id': destination,

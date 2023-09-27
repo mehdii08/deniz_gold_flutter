@@ -171,6 +171,7 @@ class AppRepositoryImpl extends AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   }) async {
     try {
@@ -178,6 +179,7 @@ class AppRepositoryImpl extends AppRepository {
         value: value,
         name: name,
         destination : destination,
+        type: type,
         fcmToken : fcmToken,
       ));
     } on Exception catch (e) {

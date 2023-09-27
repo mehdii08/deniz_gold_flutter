@@ -12,6 +12,7 @@ import 'package:deniz_gold/presentation/widget/app_button.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
 import 'package:deniz_gold/presentation/widget/empty_view.dart';
+import 'package:deniz_gold/presentation/widget/select_left_or_right.dart';
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
 import 'package:deniz_gold/presentation/widget/utils.dart';
@@ -41,6 +42,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
   final cubit = sl<HavaleCubit>()..getData();
   final canSubmitNotifier = ValueNotifier<bool>(false);
   final havalehOwnerNotifier = ValueNotifier<HavalehOwnerDTO?>(null);
+  final isGoldNotifier = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -57,7 +59,9 @@ class _HavaleScreenState extends State<HavaleScreen> {
   }
 
   _onScrollControllerChanged() {
-    if (scrollController.position.maxScrollExtent - scrollController.position.pixels < 100) {
+    if (scrollController.position.maxScrollExtent -
+            scrollController.position.pixels <
+        100) {
       if (cubit.state is HavaleLoading) {
         return;
       }
@@ -74,7 +78,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar:   TitleAppBar(title: Strings.storeGoldenHavale),
+            appBar: TitleAppBar(title: Strings.storeGoldenHavale),
             body: UserStatusChecker(
               updateUser: true,
               child: BlocProvider<HavaleCubit>(
@@ -82,7 +86,10 @@ class _HavaleScreenState extends State<HavaleScreen> {
                 child: BlocConsumer<HavaleCubit, HavaleState>(
                   listener: (context, state) {
                     if (state is HavaleFailed) {
-                      showToast(title: state.message, context: context, toastType: ToastType.error);
+                      showToast(
+                          title: state.message,
+                          context: context,
+                          toastType: ToastType.error);
                     } else if (state is HavaleLoaded && state.message != null) {
                       valueController.text = "0";
                       nameController.clear();
@@ -96,46 +103,75 @@ class _HavaleScreenState extends State<HavaleScreen> {
                       controller: scrollController,
                       child: Column(
                         children: [
-                          const SizedBox(height: Dimens.standard20),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimens.standard16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                AppTextField(
-                                  title: Strings.enterWeightByGheram,
-                                  controller: valueController,
-                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                                  onChange: (value) => checkSubmitAvailableity(),
-                                  prefixIcon: GestureDetector(
-                                    onTap: () {
-                                      valueController.increaseValue();
-                                      checkSubmitAvailableity();
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/images/plus.svg',
-                                      height: Dimens.standard6,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                  suffixIcon: GestureDetector(
-                                    onTap: () {
-                                      valueController.decreaseValue();
-                                      checkSubmitAvailableity();
-                                    },
-                                    child: SvgPicture.asset(
-                                      'assets/images/negativ.svg',
-                                      height: Dimens.standard6,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                ),
+                                ValueListenableBuilder<bool>(
+                                    valueListenable: isGoldNotifier,
+                                    builder: (context, isGold, _) => Column(
+                                          children: [
+                                            SelectLeftOrRight(
+                                              isLeftSelected: isGold,
+                                              leftTitle:  Strings.havaleGold ,
+                                              rightTitle:Strings.havalerial,
+                                              onLeftPressed: () {
+                                                isGoldNotifier.value = true;
+                                                valueController.text = "0";
+                                                canSubmitNotifier.value = false;
+                                              },
+                                              onRightPressed: () {
+                                                isGoldNotifier.value = false;
+                                                valueController.text = "0";
+                                                canSubmitNotifier.value = false;
+                                              },
+                                            ),
+                                            const SizedBox(height: Dimens.standard20),
+                                            AppTextField(
+                                              title:
+                                              isGold?Strings.enterWeightByGheram:Strings.enterPriceByToman,
+                                              controller: valueController,
+                                              keyboardType: const TextInputType
+                                                      .numberWithOptions(
+                                                  decimal: true),
+                                              onChange: (value) =>
+                                                  checkSubmitAvailableity(),
+                                              prefixIcon: GestureDetector(
+                                                onTap: () {
+                                                  valueController
+                                                      .increaseValue();
+                                                  checkSubmitAvailableity();
+                                                },
+                                                child: SvgPicture.asset(
+                                                  'assets/images/plus.svg',
+                                                  height: Dimens.standard6,
+                                                  fit: BoxFit.fitHeight,
+                                                ),
+                                              ),
+                                              suffixIcon: GestureDetector(
+                                                onTap: () {
+                                                  valueController
+                                                      .decreaseValue();
+                                                  checkSubmitAvailableity();
+                                                },
+                                                child: SvgPicture.asset(
+                                                  'assets/images/negativ.svg',
+                                                  height: Dimens.standard6,
+                                                  fit: BoxFit.fitHeight,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )),
                                 const SizedBox(height: Dimens.standard20),
                                 AppTextField(
                                   controller: nameController,
                                   title: Strings.havaleOwnerName,
                                   textAlign: TextAlign.right,
-                                  onChange: (value) => checkSubmitAvailableity(),
+                                  onChange: (value) =>
+                                      checkSubmitAvailableity(),
                                 ),
                                 const SizedBox(height: Dimens.standard20),
                                 ValueListenableBuilder(
@@ -155,21 +191,32 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                               context: context,
                                               selectedKey: havalehOwner?.title,
                                               onChange: (key, value) {
-                                                havalehOwnerNotifier.value = (key == null && value == null)
-                                                    ? null
-                                                    : HavalehOwnerDTO(title: key!, id: value!);
+                                                havalehOwnerNotifier.value =
+                                                    (key == null &&
+                                                            value == null)
+                                                        ? null
+                                                        : HavalehOwnerDTO(
+                                                            title: key!,
+                                                            id: value!);
                                               });
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
-                                              vertical: Dimens.standard10, horizontal: Dimens.standard12),
+                                              vertical: Dimens.standard10,
+                                              horizontal: Dimens.standard12),
                                           decoration: BoxDecoration(
                                               color: AppColors.white,
-                                              borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard8)),
-                                              border:
-                                                  Border.all(color: AppColors.nature.shade200, width: Dimens.standard1)),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(
+                                                          Dimens.standard8)),
+                                              border: Border.all(
+                                                  color:
+                                                      AppColors.nature.shade200,
+                                                  width: Dimens.standard1)),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               SvgPicture.asset(
                                                 'assets/images/down.svg',
@@ -177,7 +224,8 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                                 fit: BoxFit.fitWidth,
                                               ),
                                               AppText(
-                                                havalehOwner?.title ?? Strings.yourself,
+                                                havalehOwner?.title ??
+                                                    Strings.yourself,
                                                 textStyle: AppTextStyle.body4,
                                               )
                                             ],
@@ -191,14 +239,20 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                 ValueListenableBuilder<bool>(
                                   valueListenable: canSubmitNotifier,
                                   builder: (context, value, _) => AppButton(
-                                    isLoading: state is HavaleLoading && !state.isList,
+                                    isLoading:
+                                        state is HavaleLoading && !state.isList,
                                     text: Strings.storeHavaleRequest,
                                     onPressed: value
                                         ? () {
-                                            context.read<HavaleCubit>().storeHavale(
-                                                value: valueController.text,
-                                                name: nameController.text,
-                                                destination: havalehOwnerNotifier.value?.id);
+                                            context
+                                                .read<HavaleCubit>()
+                                                .storeHavale(
+                                                    value: valueController.text,
+                                                    name: nameController.text,
+                                                    type: isGoldNotifier.value?1:2,
+                                                    destination:
+                                                        havalehOwnerNotifier
+                                                            .value?.id);
                                           }
                                         : null,
                                   ),
@@ -209,15 +263,19 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(right: Dimens.standard8),
+                                        padding: const EdgeInsets.only(
+                                            right: Dimens.standard8),
                                         child: AppText(
                                           Strings.havalehDescription,
                                           textStyle: AppTextStyle.body5,
                                         ),
                                       ),
                                     ),
-                                    SvgPicture.asset('assets/images/warning_fill.svg',
-                                        width: Dimens.standard24, height: Dimens.standard24, fit: BoxFit.fitHeight)
+                                    SvgPicture.asset(
+                                        'assets/images/warning_fill.svg',
+                                        width: Dimens.standard24,
+                                        height: Dimens.standard24,
+                                        fit: BoxFit.fitHeight)
                                   ],
                                 ),
                               ],
@@ -226,9 +284,11 @@ class _HavaleScreenState extends State<HavaleScreen> {
                           const SizedBox(height: Dimens.standard20),
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Dimens.standard16),
                             decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(Dimens.standard16)),
                                 color: AppColors.white),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -240,32 +300,41 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                   color: AppColors.nature.shade600,
                                 ),
                                 const SizedBox(height: Dimens.standard16),
-                                if (state is HavaleLoading && state.isList && state.result.items.isEmpty) ...[
+                                if (state is HavaleLoading &&
+                                    state.isList &&
+                                    state.result.items.isEmpty) ...[
                                   const SizedBox(height: Dimens.standard4X),
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width,
-                                    child: const Center(child: CircularProgressIndicator()),
+                                    child: const Center(
+                                        child: CircularProgressIndicator()),
                                   ),
                                   const SizedBox(height: Dimens.standard6X),
                                 ] else ...[
-                                  if (state is HavaleLoaded && state.result.items.isEmpty) ...[
+                                  if (state is HavaleLoaded &&
+                                      state.result.items.isEmpty) ...[
                                     const SizedBox(height: Dimens.standard28),
                                     const EmptyView(text: Strings.noAnyHavale),
                                   ] else
                                     ListView.builder(
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: state.result.items.length + (state is HavaleLoading ? 1 : 0),
+                                      itemCount: state.result.items.length +
+                                          (state is HavaleLoading ? 1 : 0),
                                       itemBuilder: (context, index) {
-                                        if (index == state.result.items.length) {
+                                        if (index ==
+                                            state.result.items.length) {
                                           return Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: const [
                                               CircularProgressIndicator()
                                             ],
                                           );
                                         }
-                                        return HavalehItem(havaleh: state.result.items[index]);
+                                        return HavalehItem(
+                                            havaleh: state.result.items[index]);
                                       },
                                     ),
                                   const SizedBox(height: 130),
@@ -285,8 +354,9 @@ class _HavaleScreenState extends State<HavaleScreen> {
       );
 
   checkSubmitAvailableity() {
-    canSubmitNotifier.value =
-        valueController.text.isNotEmpty && valueController.text != "0" && nameController.text.isNotEmpty;
+    canSubmitNotifier.value = valueController.text.isNotEmpty &&
+        valueController.text != "0" &&
+        nameController.text.isNotEmpty;
   }
 }
 
@@ -300,70 +370,70 @@ class HavalehItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: Dimens.standard16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        HavaleStatusBadge(
-                          status: havaleh.status,
-                          statusText: havaleh.statusText,
-                        ),
-                        const Spacer(),
-                        AppText(
-                          havaleh.title,
-                          textStyle: AppTextStyle.subTitle4,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Dimens.standard4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        AppText(
-                          "${havaleh.date} - ${havaleh.time}",
-                          textStyle: AppTextStyle.body6,
-                        ),
-                        const Spacer(),
-                        AppText(
-                          '${Strings.toName} ${havaleh.name}',
-                          textStyle: AppTextStyle.body5,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Dimens.standard4),
-                    if (havaleh.destination != null)
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: Dimens.standard16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          HavaleStatusBadge(
+                            status: havaleh.status,
+                            statusText: havaleh.statusText,
+                          ),
                           const Spacer(),
                           AppText(
-                            "${Strings.nazde} ${havaleh.destination?.title ?? ""}",
-                            textStyle: AppTextStyle.body5,
-                            color: AppColors.nature.shade400,
+                            havaleh.title,
+                            textStyle: AppTextStyle.subTitle4,
                           ),
                         ],
                       ),
-                  ],
+                      const SizedBox(height: Dimens.standard4),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AppText(
+                            "${havaleh.date} - ${havaleh.time}",
+                            textStyle: AppTextStyle.body6,
+                          ),
+                          const Spacer(),
+                          AppText(
+                            '${Strings.toName} ${havaleh.name}',
+                            textStyle: AppTextStyle.body5,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: Dimens.standard4),
+                      if (havaleh.destination != null)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Spacer(),
+                            AppText(
+                              "${Strings.nazde} ${havaleh.destination?.title ?? ""}",
+                              textStyle: AppTextStyle.body5,
+                              color: AppColors.nature.shade400,
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: Dimens.standard16),
-              Container(
-                width: Dimens.standard4,
-                height: Dimens.standard84,
-                color: AppColors.nature.shade100,
-              )
-            ],
+                const SizedBox(width: Dimens.standard16),
+                Container(
+                  width: Dimens.standard4,
+                  height: Dimens.standard84,
+                  color: AppColors.nature.shade100,
+                )
+              ],
+            ),
           ),
-        ),
-        Divider(color: AppColors.nature.shade50),
-      ],
-    );
+          Divider(color: AppColors.nature.shade50),
+        ],
+      );
 }
 
 class HavaleStatusBadge extends StatelessWidget {
@@ -380,7 +450,8 @@ class HavaleStatusBadge extends StatelessWidget {
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.all(Dimens.standard6),
         decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(Dimens.standard16)),
+            borderRadius:
+                const BorderRadius.all(Radius.circular(Dimens.standard16)),
             color: status == 1
                 ? AppColors.nature.shade50
                 : status == 2

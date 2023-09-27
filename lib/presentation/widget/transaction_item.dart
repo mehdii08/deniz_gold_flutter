@@ -66,7 +66,7 @@ class TransactionItem extends StatelessWidget {
       const SizedBox(height: Dimens.standard12),
       if(transaction.balance != null)
         ...[
-           Divider(color: AppColors.nature.shade900),
+           Divider(color: AppColors.nature.shade50),
           Row(
             children: [
               Text(
@@ -104,7 +104,7 @@ class TransactionItem extends StatelessWidget {
 
         ],
       Divider(
-        color: AppColors.nature.shade50,
+        color: AppColors.nature.shade700,
       )
     ],
   );

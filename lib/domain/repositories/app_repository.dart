@@ -73,6 +73,7 @@ abstract class AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   });
 
