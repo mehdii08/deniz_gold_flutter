@@ -38,25 +38,23 @@ class SplashCubit extends Cubit<SplashState> {
 
   getConfig() async {
     emit(const SplashLoading());
-    final result = await appRepository.getConfig();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    int versionCode = 1;
+    try{
+      versionCode = int.parse(packageInfo.buildNumber);
+    }catch(e){
+      debugPrint("versionCode parse exception");
+    }
+    final result = await appRepository.getConfig(currentVersion: versionCode );
     result.fold(
           (l) => emit(SplashFailed(message: l.message != null ? l.message! : "")),
           (r) async {
         sharedPreferences.setString(appConfigKey, jsonEncode(r.toJson()));
-
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-        int versionCode = 1;
-        try{
-          versionCode = int.parse(packageInfo.buildNumber);
-        }catch(e){
-          debugPrint("versionCode parse exception");
-        }
-
         if (r.appVersion.forceVersionCode > versionCode || r.appVersion.versionCode > versionCode) {
           emit(SplashUpdateNeeded(appVersion: r.appVersion, forceUpdate: r.appVersion.forceVersionCode > versionCode));
         } else {
-          emit(const SplashLoaded());
+          emit( SplashLoaded( showUpdateDetailes: r.appVersion.shooUpdateDetailes,description: r.appVersion.Description));
         }
       },
     );

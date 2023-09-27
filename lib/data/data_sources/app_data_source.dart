@@ -118,7 +118,7 @@ abstract class AppDataSource {
     required bool isRegister,
   });
 
-  Future<AppConfigDTO> getConfig();
+  Future<AppConfigDTO> getConfig({required int currentVersion});
 
   Future<BalanceResponseDTO> getBalance();
 
@@ -382,8 +382,11 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<AppConfigDTO> getConfig() async {
-    final response = await _apiHelper.request('$apiPath/panel/get-config');
+  Future<AppConfigDTO> getConfig({required int currentVersion}) async {
+    final params = {
+      'current_version': 4,
+    };
+    final response = await _apiHelper.request('$apiPath/panel/get-config',queryParameters: params);
     final result = AppConfigDTO.fromJson(response.dataAsMap());
     return result;
   }

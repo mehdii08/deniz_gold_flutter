@@ -162,6 +162,7 @@ class Strings {
   static const orderMazane = "مظنه سفارش";
   static const validatingOrder = "در حال بررسی سفارش";
   static const mazane = "مظنه";
+  static const ok = "باشه";
   static const submitOrderWarning =
       "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
   static const requestedWeight = "وزن درخواستی";
@@ -241,4 +242,5 @@ class Strings {
   static const seeAll = 'مشاهده همه';
   static const tradeIsBlocked = 'معامله غیر فعال می باشد';
   static const neww = 'جدید';
+  static String titleUpdateDetails ="تغییرات ورژن جدید";
 }

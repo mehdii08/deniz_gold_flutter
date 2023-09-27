@@ -114,7 +114,7 @@ abstract class AppRepository {
     required bool isRegister,
   });
 
-  Future<Either<Failure, AppConfigDTO>> getConfig();
+  Future<Either<Failure, AppConfigDTO>> getConfig({required int currentVersion});
 
   Future<Either<Failure, BalanceResponseDTO>> getBalance();
 
