@@ -125,6 +125,8 @@ abstract class AppRepository {
 
   Future<Either<Failure, TransactionsResultDTO>> getTransactions(
       {int page = 1});
+  Future<Either<Failure, String>> getPdf();
+
 
   Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
         required int page,

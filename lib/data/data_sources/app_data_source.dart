@@ -129,6 +129,8 @@ abstract class AppDataSource {
 
   Future<TransactionsResultDTO> getTransactions({int page = 1});
 
+  Future<String> getPdf();
+
   Future<PaginatedResultDTO<TradeDTO>> getTrades({
     required int page,
     int? tradeType,
@@ -423,6 +425,13 @@ class AppDataSourceImpl extends AppDataSource {
   Future<TransactionsResultDTO> getTransactions({int page = 1}) async {
     final response = await _apiHelper.request('$apiPath/panel/transactions?page=$page');
     return TransactionsResultDTO.fromJson(response.dataAsMap());
+  }
+
+
+  @override
+  Future<String> getPdf() async {
+    final response = await _apiHelper.request('$apiPath/panel/transactions-download');
+    return response.dataAsMap()["file_url"];
   }
 
   @override

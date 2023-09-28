@@ -349,6 +349,18 @@ class AppRepositoryImpl extends AppRepository {
     }
   }
 
+
+  @override
+  Future<Either<Failure, String>> getPdf(
+      {int page = 1}) async {
+    try {
+      return Right(await dataSource.getPdf());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+
   @override
   Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
     required int page,

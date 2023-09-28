@@ -39,6 +39,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Container(
                         width: Dimens.standard40,
                         height: Dimens.standard40,
+                        padding: const EdgeInsets.all(Dimens.standard8),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(
                                 Dimens.standard100),
@@ -47,7 +48,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 color: AppColors.nature.shade100)),
                         child: SvgPicture.asset(
                           'assets/images/pdf.svg',
-                          fit: BoxFit.none,
+                          fit: BoxFit.cover,
                         )),
                 )
               ],
