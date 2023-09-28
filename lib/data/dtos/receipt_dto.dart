@@ -1,28 +1,28 @@
 import 'package:equatable/equatable.dart';
 
 class ReceiptDTO extends Equatable {
-  final String price;
-  final String name;
-  final String unit;
-  final String? trackingCode;
+  final String imageUrl;
   final String date;
+  final String time;
+  final int status;
+  final String statusString;
 
   const ReceiptDTO({
-    required this.price,
-    required this.name,
-    required this.trackingCode,
+    required this.imageUrl,
     required this.date,
-    required this.unit,
+    required this.time,
+    required this.status,
+    required this.statusString,
   });
 
   factory ReceiptDTO.fromJson(Map<String, dynamic> json) => ReceiptDTO(
-        price: json['price'],
-        name: json['owner_name'],
-        trackingCode: json['tracking_code'],
+        imageUrl: json['image'],
         date: json['date'],
-        unit: json['unit'],
+        time: json['time'],
+        status: json['approved'],
+        statusString: json['approved_string'],
       );
 
   @override
-  List<Object?> get props => [price, name, trackingCode, date];
+  List<Object?> get props => [imageUrl, date, time, status, statusString];
 }

@@ -46,4 +46,5 @@ class Dimens {
   static const double textFieldHeight = 36.0;
   static const int passwordLength = 6;
   static const double bottomBarHeight = 65;
+  static const double standard200 =200.0;
 }

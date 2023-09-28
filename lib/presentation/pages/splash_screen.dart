@@ -48,7 +48,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     },
                   );
                   showDialog(context: context, builder: (context) => dialog);
-                } else {}
+                } else {
+                  context.goNamed(HomeScreen.route.name!);
+                }
               } else if (state is SplashFailed) {
                 showToast(
                     title: state.message,

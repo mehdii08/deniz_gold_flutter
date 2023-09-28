@@ -40,6 +40,16 @@ class PaginatedResultDTO<T> {
         lastPage: lastPage,
         items: [item, ...items],
       );
+  addFirst({required T item}) => PaginatedResultDTO<T>(
+    from: from,
+    to: to,
+    total: total,
+    count: count,
+    perPage: perPage,
+    currentPage: currentPage,
+    lastPage: lastPage,
+    items: [ ...items,item],
+  );
 
   String toooo() {
     return "$from $to $total $count $perPage $currentPage $lastPage";

@@ -13,6 +13,7 @@ import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/receipt_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_stor_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
@@ -47,15 +48,12 @@ abstract class AppRepository {
     int? period,
   });
 
-  Future<Either<Failure, String>> setFish({
-    required String name,
-    required String trackingCode,
-    required String price,
+  Future<Either<Failure, ReceiptStoreDTO>> setFish({
     required String fcmToken,
     required XFile file,
   });
 
-  Future<Either<Failure, List<ReceiptDTO>>> getReceipt();
+  Future<Either<Failure, PaginatedResultDTO<ReceiptDTO>>> getReceipt({required int page});
 
   Future<Either<Failure, String>> resetPassword({
     required String token,

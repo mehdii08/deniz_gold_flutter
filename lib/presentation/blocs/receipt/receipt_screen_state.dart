@@ -1,30 +1,31 @@
 part of 'receipt_screen_cubit.dart';
 
 class ReceiptScreenState extends Equatable {
-  final List<ReceiptDTO> receipts;
   final bool listIsLoading;
   final bool buttonIsLoading;
+  final PaginatedResultDTO<ReceiptDTO> result;
+
 
   const ReceiptScreenState({
-    this.receipts = const [],
+    required this.result ,
     this.listIsLoading = false,
     this.buttonIsLoading = false,
   });
 
   @override
   List<Object?> get props => [
-        receipts,
+    result,
         listIsLoading,
         buttonIsLoading,
       ];
 
   ReceiptScreenState copyWith({
-    List<ReceiptDTO>? receipts,
+     PaginatedResultDTO<ReceiptDTO>? result,
     bool? listIsLoading,
     bool? buttonIsLoading,
   }) =>
       ReceiptScreenState(
-        receipts: receipts ?? this.receipts,
+        result: result?? this.result,
         listIsLoading: listIsLoading ?? this.listIsLoading,
         buttonIsLoading: buttonIsLoading ?? this.buttonIsLoading,
       );

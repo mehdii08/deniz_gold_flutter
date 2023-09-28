@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
-import 'package:deniz_gold/core/utils/extensions.dart';
 import 'package:deniz_gold/presentation/blocs/receipt/receipt_screen_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
@@ -40,38 +39,50 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
   final errors = ValueNotifier<ReceiptNumberError>(ReceiptNumberError());
   final selectedFileNotifier = ValueNotifier<XFile?>(null);
   final imagePicker = ImagePicker();
+  final scrollController = ScrollController();
 
   _validateThenSubmit(VoidCallback onSubmit) {
-
     String? file;
 
     if (selectedFileNotifier.value == null) file = Strings.fileCodeError;
 
-    errors.value = ReceiptNumberError(
-        trackingCode: null,
-        fileError: file);
+    errors.value = ReceiptNumberError(trackingCode: null, fileError: file);
 
-    if ( file == null) {
+    if (file == null) {
       onSubmit();
     }
+  }
+
+  _onScrollControllerChanged() {
+    if (scrollController.position.maxScrollExtent -
+            scrollController.position.pixels <
+        100) {
+      if (cubit.state.listIsLoading) {
+        return;
+      }
+      cubit.getData();
+    }
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(_onScrollControllerChanged);
+    cubit.eventListener.close();
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   void initState() {
     cubit.eventListener.stream.listen((event) {
       showToast(title: event.message, context: context, toastType: event.type);
-      priceController.clear();
-      nameController.clear();
-      trackingCodeController.clear();
+      if(event.type==ToastType.success){
+        selectedFileNotifier.value=null;
+      }
     });
     cubit.getData();
+    scrollController.addListener(_onScrollControllerChanged);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    cubit.eventListener.close();
-    super.dispose();
   }
 
   @override
@@ -83,7 +94,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar:  TitleAppBar(title: Strings.receipt),
+            appBar: TitleAppBar(title: Strings.receipt),
             body: BlocProvider<ReceiptScreenCubit>(
               create: (_) => cubit,
               child: BlocConsumer<ReceiptScreenCubit, ReceiptScreenState>(
@@ -102,6 +113,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                             child: SizedBox(
                               width: double.maxFinite,
                               child: SingleChildScrollView(
+                                controller: scrollController,
                                 child:
                                     ValueListenableBuilder<ReceiptNumberError>(
                                   valueListenable: errors,
@@ -113,7 +125,8 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: Dimens.standard16),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
                                             const SizedBox(
                                                 height: Dimens.standard24),
@@ -288,19 +301,9 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                                       .read<
                                                           ReceiptScreenCubit>()
                                                       .sendFish(
-                                                        name:
-                                                            nameController.text,
-                                                        trackingCode:
-                                                            trackingCodeController
-                                                                .text,
-                                                        price: priceController
-                                                            .text
-                                                            .clearCommas(),
                                                         file:
                                                             selectedFileNotifier
                                                                 .value!,
-                                                        deviceType:
-                                                            kIsWeb ? "2" : "1",
                                                       );
                                                 });
                                               },
@@ -314,14 +317,16 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                         ),
                                       ),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: Dimens.standard16),
                                         decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(
                                                     Dimens.standard16)),
                                             color: AppColors.white),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
                                           children: [
                                             const SizedBox(
                                               height: Dimens.standard32,
@@ -342,7 +347,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                               const SizedBox(
                                                   height: Dimens.standard48),
                                             ] else if (state
-                                                .receipts.isEmpty) ...[
+                                                .result.items.isEmpty) ...[
                                               const SizedBox(
                                                 height: Dimens.standard48,
                                               ),
@@ -364,11 +369,26 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                                     const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount:
-                                                    state.receipts.length,
+                                                    state.result.items.length +
+                                                        (state.listIsLoading
+                                                            ? 1
+                                                            : 0),
                                                 itemBuilder: (context, index) {
+                                                  if (index ==
+                                                      state.result.items
+                                                          .length) {
+                                                    return Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: const [
+                                                        CircularProgressIndicator()
+                                                      ],
+                                                    );
+                                                  }
                                                   return ReceiptItem(
                                                       receiptDTO: state
-                                                          .receipts[index]);
+                                                          .result.items[index]);
                                                 },
                                               ),
                                               const SizedBox(

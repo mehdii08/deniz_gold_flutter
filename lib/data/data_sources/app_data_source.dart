@@ -13,6 +13,7 @@ import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
 import 'package:deniz_gold/data/dtos/receipt_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_stor_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
@@ -73,15 +74,12 @@ abstract class AppDataSource {
   });
 
 
-  Future<String> sendFish({
-    required String name,
-    required String trackingCode,
-    required String price,
+  Future<ReceiptStoreDTO> sendFish({
     required String fcmToken,
     required XFile file,
   });
 
-  Future<List<ReceiptDTO>> getReceipt();
+  Future<PaginatedResultDTO<ReceiptDTO>> getReceipt({required int page});
 
   Future<List<CoinDTO>> getCoins();
 
@@ -158,16 +156,23 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<List<ReceiptDTO>> getReceipt() async {
-    final response = await _apiHelper.request('$apiPath/panel/receipts/list?type=2');
-    return List<ReceiptDTO>.from(response.dataAsMap()['receipts'].map((e) => ReceiptDTO.fromJson(e)).toList());
+  Future<PaginatedResultDTO<ReceiptDTO>> getReceipt({required int page}) async {
+    final response = await _apiHelper.request('$apiPath/panel/receipts?page=$page');
+    final items = List<ReceiptDTO>.from(response.dataAsMap()['list']['data'].map((e) => ReceiptDTO.fromJson(e)).toList());
+    return PaginatedResultDTO<ReceiptDTO>(
+      from: response.dataAsMap()['list']['from'] ?? 0,
+      to: response.dataAsMap()['list']['to'] ?? 0,
+      total: response.dataAsMap()['list']['total'] ?? 0,
+      count: response.dataAsMap()['list']['count'] ?? 0,
+      perPage: response.dataAsMap()['list']['per_page'] ?? 0,
+      currentPage: response.dataAsMap()['list']['current_page'] ?? 0,
+      lastPage: response.dataAsMap()['list']['last_page'] ?? false,
+      items: items,
+    );
   }
 
   @override
-  Future<String> sendFish({
-    required String name,
-    required String trackingCode,
-    required String price,
+  Future<ReceiptStoreDTO> sendFish({
     required String fcmToken,
     required XFile file,
   }) async {
@@ -175,14 +180,8 @@ class AppDataSourceImpl extends AppDataSource {
         '$apiPath/panel/receipts/store',
         FormData.fromMap({
           "image": await MultipartFile.fromFile(file.path, filename: file.name),
-          'fcm_token': fcmToken,
-          'price': price,
-          'owner_name': name,
-          'type': "2",
-          'device_type': kIsWeb ? "2" : "1",
-          'tracking_code': trackingCode,
         }));
-    return response.data["message"];
+    return ReceiptStoreDTO.fromJson(response.data);
   }
 
 

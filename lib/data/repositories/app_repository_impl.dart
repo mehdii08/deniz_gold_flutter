@@ -25,6 +25,7 @@ import 'package:injectable/injectable.dart';
 
 import '../dtos/coin_trade_dto.dart';
 import '../dtos/coint_trades_detail_dto.dart';
+import '../dtos/receipt_stor_dto.dart';
 
 @LazySingleton(as: AppRepository)
 class AppRepositoryImpl extends AppRepository {
@@ -65,27 +66,21 @@ class AppRepositoryImpl extends AppRepository {
     }
   }
   @override
-  Future<Either<Failure, List<ReceiptDTO>>> getReceipt() async {
+  Future<Either<Failure, PaginatedResultDTO<ReceiptDTO>>> getReceipt({required int page}) async {
     try {
-      return Right(await dataSource.getReceipt());
+      return Right(await dataSource.getReceipt(page: page));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, String>> setFish({
-    required String name,
-    required String trackingCode,
-    required String price,
+  Future<Either<Failure, ReceiptStoreDTO>> setFish({
     required String fcmToken,
     required XFile file,
   }) async {
     try {
       return Right(await dataSource.sendFish(
-        name: name,
-        trackingCode: trackingCode,
-        price: price,
         fcmToken: fcmToken,
         file: file,
       ));
