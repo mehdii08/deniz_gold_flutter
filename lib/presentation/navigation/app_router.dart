@@ -18,6 +18,8 @@ import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../pages/receipt_screen.dart';
+
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final GlobalKey<NavigatorState> homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 
@@ -58,6 +60,7 @@ final _authenticationGuardedRoutes = [
     },
     routes: [
       HomeScreen.route,
+      ReceiptScreen.route,
       TransactionsScreen.route,
       TradesScreen.route,
       ProfileScreen.route,

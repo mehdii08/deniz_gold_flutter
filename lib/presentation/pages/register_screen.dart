@@ -60,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
-      appBar: const TitleAppBar(title: Strings.registerTitle),
+      appBar:  TitleAppBar(title: Strings.registerTitle),
       backgroundColor: AppColors.background,
       body: BlocProvider<RegisterCubit>(
         create: (_) => sl(),

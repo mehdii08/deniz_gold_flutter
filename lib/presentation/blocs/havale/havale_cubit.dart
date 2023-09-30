@@ -38,6 +38,7 @@ class HavaleCubit extends Cubit<HavaleState> {
     required String value,
     required String name,
     required int? destination,
+    required int type,
   }) async {
     emit(HavaleLoading(result: state.result));
     final String fcmToken = sharedPreferences.getString(fcmTokenKey);
@@ -45,7 +46,8 @@ class HavaleCubit extends Cubit<HavaleState> {
         value: value,
         name: name,
         destination: destination,
-        fcmToken: fcmToken
+        fcmToken: fcmToken,
+      type: type
     );
     result.fold(
             (l) => emit(HavaleFailed(result: state.result,message: l.message != null ? l.message! : "")),

@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: const TitleAppBar(title: Strings.loginTitle),
+    appBar:  TitleAppBar(title: Strings.loginTitle),
     backgroundColor: AppColors.background,
     body: SafeArea(
       child: BlocProvider<LoginCubit>(

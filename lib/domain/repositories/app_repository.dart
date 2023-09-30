@@ -12,11 +12,14 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_stor_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../data/dtos/coin_trade_dto.dart';
 import '../../data/dtos/coint_trades_detail_dto.dart';
@@ -45,6 +48,13 @@ abstract class AppRepository {
     int? period,
   });
 
+  Future<Either<Failure, ReceiptStoreDTO>> setFish({
+    required String fcmToken,
+    required XFile file,
+  });
+
+  Future<Either<Failure, PaginatedResultDTO<ReceiptDTO>>> getReceipt({required int page});
+
   Future<Either<Failure, String>> resetPassword({
     required String token,
     required String mobile,
@@ -61,6 +71,7 @@ abstract class AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   });
 
@@ -102,7 +113,7 @@ abstract class AppRepository {
     required bool isRegister,
   });
 
-  Future<Either<Failure, AppConfigDTO>> getConfig();
+  Future<Either<Failure, AppConfigDTO>> getConfig({required int currentVersion});
 
   Future<Either<Failure, BalanceResponseDTO>> getBalance();
 
@@ -114,6 +125,8 @@ abstract class AppRepository {
 
   Future<Either<Failure, TransactionsResultDTO>> getTransactions(
       {int page = 1});
+  Future<Either<Failure, String>> getPdf();
+
 
   Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
         required int page,

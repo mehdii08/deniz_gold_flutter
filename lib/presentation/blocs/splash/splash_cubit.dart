@@ -1,18 +1,19 @@
 import 'dart:convert';
 
 import 'package:deniz_gold/data/dtos/app_version_dto.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:deniz_gold/domain/repositories/shared_preferences_repository.dart';
 import 'package:deniz_gold/presentation/blocs/auth/authentication_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 part 'splash_state.dart';
 
 const appConfigKey = 'app_config';
+const updateFeaturesKey = 'updateFeaturesKey';
 
 @injectable
 class SplashCubit extends Cubit<SplashState> {
@@ -38,25 +39,29 @@ class SplashCubit extends Cubit<SplashState> {
 
   getConfig() async {
     emit(const SplashLoading());
-    final result = await appRepository.getConfig();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    final updateFeaturesHaveSeen = sharedPreferences.getString(updateFeaturesKey) == "1";
+
+    int versionCode = 1;
+    try {
+      versionCode = int.parse(packageInfo.buildNumber);
+    } catch (e) {
+      debugPrint("versionCode parse exception");
+    }
+    final result = await appRepository.getConfig(currentVersion: versionCode);
     result.fold(
-          (l) => emit(SplashFailed(message: l.message != null ? l.message! : "")),
-          (r) async {
+      (l) => emit(SplashFailed(message: l.message != null ? l.message! : "")),
+      (r) async {
         sharedPreferences.setString(appConfigKey, jsonEncode(r.toJson()));
-
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-        int versionCode = 1;
-        try{
-          versionCode = int.parse(packageInfo.buildNumber);
-        }catch(e){
-          debugPrint("versionCode parse exception");
-        }
-
         if (r.appVersion.forceVersionCode > versionCode || r.appVersion.versionCode > versionCode) {
           emit(SplashUpdateNeeded(appVersion: r.appVersion, forceUpdate: r.appVersion.forceVersionCode > versionCode));
         } else {
-          emit(const SplashLoaded());
+          emit(SplashLoaded(
+            showUpdateDetails: r.appVersion.showUpdateDetails && !updateFeaturesHaveSeen,
+            description: r.appVersion.descriptionList,
+          ));
+          sharedPreferences.setString(updateFeaturesKey, "1");
         }
       },
     );

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:deniz_gold/data/dtos/app_config_dto.dart';
 import 'package:deniz_gold/data/keys.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deniz_gold/core/utils/app_notification_handler.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
@@ -42,7 +43,15 @@ class AppConfigCubit extends Cubit<AppConfigState> {
 
   getConfig() async {
     emit(AppConfigLoading(appConfig: state.appConfig));
-    final result = await appRepository.getConfig();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    int versionCode = 1;
+    try{
+      versionCode = int.parse(packageInfo.buildNumber);
+    }catch(e){
+      debugPrint("versionCode parse exception");
+    }
+    final result = await appRepository.getConfig(currentVersion:  versionCode);
     result.fold(
       (l) {
       },

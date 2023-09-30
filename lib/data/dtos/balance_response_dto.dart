@@ -12,7 +12,7 @@ class BalanceResponseDTO extends Equatable {
   });
 
   factory BalanceResponseDTO.fromJson(Map<String, dynamic> json) => BalanceResponseDTO(
-    balanceColorInfluens: json['balance_color_influens'],
+    balanceColorInfluens: json['balance_color_influens']?? true,
     rial: BalanceDTO.fromJson(json['rial']),
     gold: BalanceDTO.fromJson(json['gold']),
   );

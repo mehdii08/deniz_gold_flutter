@@ -13,16 +13,19 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../dtos/coin_trade_dto.dart';
 import '../dtos/coint_trades_detail_dto.dart';
+import '../dtos/receipt_stor_dto.dart';
 
 @LazySingleton(as: AppRepository)
 class AppRepositoryImpl extends AppRepository {
@@ -62,7 +65,29 @@ class AppRepositoryImpl extends AppRepository {
       return Left(Failure.fromException(e));
     }
   }
+  @override
+  Future<Either<Failure, PaginatedResultDTO<ReceiptDTO>>> getReceipt({required int page}) async {
+    try {
+      return Right(await dataSource.getReceipt(page: page));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
 
+  @override
+  Future<Either<Failure, ReceiptStoreDTO>> setFish({
+    required String fcmToken,
+    required XFile file,
+  }) async {
+    try {
+      return Right(await dataSource.sendFish(
+        fcmToken: fcmToken,
+        file: file,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
   @override
   Future<Either<Failure, CoinTradeDetailDTO>> getCoinTradesDetail({
     required int id,
@@ -141,6 +166,7 @@ class AppRepositoryImpl extends AppRepository {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   }) async {
     try {
@@ -148,6 +174,7 @@ class AppRepositoryImpl extends AppRepository {
         value: value,
         name: name,
         destination : destination,
+        type: type,
         fcmToken : fcmToken,
       ));
     } on Exception catch (e) {
@@ -268,9 +295,9 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, AppConfigDTO>> getConfig() async {
+  Future<Either<Failure, AppConfigDTO>> getConfig({required int currentVersion}) async {
     try {
-      return Right(await dataSource.getConfig());
+      return Right(await dataSource.getConfig(currentVersion: currentVersion));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }
@@ -321,6 +348,18 @@ class AppRepositoryImpl extends AppRepository {
       return Left(Failure.fromException(e));
     }
   }
+
+
+  @override
+  Future<Either<Failure, String>> getPdf(
+      {int page = 1}) async {
+    try {
+      return Right(await dataSource.getPdf());
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
 
   @override
   Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({

@@ -42,7 +42,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
-        appBar: const TitleAppBar(title: Strings.resetPasswordTitle,),
+        appBar:  TitleAppBar(title: Strings.resetPasswordTitle,),
         backgroundColor: AppColors.background,
         body: BlocProvider<ResetPasswordCubit>(
           create: (_) => sl(),

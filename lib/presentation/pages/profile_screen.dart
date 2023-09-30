@@ -7,6 +7,7 @@ import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/account_info_screen.dart';
 import 'package:deniz_gold/presentation/pages/havale_screen.dart';
 import 'package:deniz_gold/presentation/pages/home_screen.dart';
+import 'package:deniz_gold/presentation/pages/receipt_screen.dart';
 import 'package:deniz_gold/presentation/pages/splash_screen.dart';
 import 'package:deniz_gold/presentation/pages/trades_screen.dart';
 import 'package:deniz_gold/presentation/pages/transactions_screen.dart';
@@ -138,6 +139,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     icon: "assets/images/repeat_rotate.svg",
                                     title: Strings.transactions,
                                     onTap: () => context.pushNamed(TransactionsScreen.route.name!),
+                                  ),
+                                  const SizedBox(height: Dimens.standard16),
+                                  SettingsItem(
+                                    icon: "assets/images/check_in_board.svg",
+                                    title: Strings.receipt,
+                                    onTap: () => context.pushNamed(ReceiptScreen.route.name!),
                                   ),
                                   const SizedBox(height: Dimens.standard24),
                                   Align(

@@ -58,6 +58,18 @@ class ApiHelper {
     return await _handleErrorAndGetResponse(request);
   }
 
+  Future<Response> uploadImage( String path,FormData formData) async {
+
+    Future<Response> request()=>dio.request(path, data: formData,
+        options:Options(
+          method: Method.post.name,
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ) );
+    return await _handleErrorAndGetResponse(request);
+
+  }
+
   Future<Response> _handleErrorAndGetResponse(Request request) async {
     try {
       final result = await request();

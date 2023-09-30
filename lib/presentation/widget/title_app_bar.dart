@@ -11,27 +11,58 @@ const toolbarHeight = 74.0;
 
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool pdfIsLoading;
+  final Function()? onRequestPdf;
 
   const TitleAppBar({
     Key? key,
     required this.title,
+    this.pdfIsLoading = false,
+    this.onRequestPdf,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-    child: Container(
+  Widget build(BuildContext context) =>
+      SafeArea(
+        child: Container(
           color: AppColors.white,
           padding: const EdgeInsets.all(Dimens.standard16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SupportIcon(),
+              if (onRequestPdf!=null) ...[
+                const SizedBox(
+                  width: Dimens.standard16,
+                ),
+                if(pdfIsLoading)
+                  const CircularProgressIndicator()
+                else
+                GestureDetector(
+                  onTap: onRequestPdf,
+                    child:
+                    Container(
+                        width: Dimens.standard40,
+                        height: Dimens.standard40,
+                        padding: const EdgeInsets.all(Dimens.standard8),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                Dimens.standard100),
+                            border: Border.all(
+                                width: Dimens.standard1,
+                                color: AppColors.nature.shade100)),
+                        child: SvgPicture.asset(
+                          'assets/images/pdf.svg',
+                          fit: BoxFit.cover,
+                        )),
+                )
+              ],
               Expanded(
                   child: AppText(
-                title,
-                textStyle: AppTextStyle.subTitle3,
-                textAlign: TextAlign.right,
-              )),
+                    title,
+                    textStyle: AppTextStyle.subTitle3,
+                    textAlign: TextAlign.right,
+                  )),
               const SizedBox(width: Dimens.standard20),
               GestureDetector(
                 onTap: () => context.pop(),
@@ -44,7 +75,7 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
-  );
+      );
 
   @override
   Size get preferredSize => const Size.fromHeight(toolbarHeight);

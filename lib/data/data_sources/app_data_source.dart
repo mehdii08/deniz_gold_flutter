@@ -12,12 +12,15 @@ import 'package:deniz_gold/data/dtos/havaleh_owner_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/data/dtos/phone_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_dto.dart';
+import 'package:deniz_gold/data/dtos/receipt_stor_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_calculate_response_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_dto.dart';
 import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
 import '../dtos/coin_trade_dto.dart';
@@ -65,8 +68,17 @@ abstract class AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   });
+
+
+  Future<ReceiptStoreDTO> sendFish({
+    required String fcmToken,
+    required XFile file,
+  });
+
+  Future<PaginatedResultDTO<ReceiptDTO>> getReceipt({required int page});
 
   Future<List<CoinDTO>> getCoins();
 
@@ -104,7 +116,7 @@ abstract class AppDataSource {
     required bool isRegister,
   });
 
-  Future<AppConfigDTO> getConfig();
+  Future<AppConfigDTO> getConfig({required int currentVersion});
 
   Future<BalanceResponseDTO> getBalance();
 
@@ -115,6 +127,8 @@ abstract class AppDataSource {
   Future<HomeScreenDataDTO> getHomeData();
 
   Future<TransactionsResultDTO> getTransactions({int page = 1});
+
+  Future<String> getPdf();
 
   Future<PaginatedResultDTO<TradeDTO>> getTrades({
     required int page,
@@ -141,6 +155,36 @@ class AppDataSourceImpl extends AppDataSource {
         await _apiHelper.request('$apiPath/check-mobile-exists', method: Method.post, data: {'mobile': mobile});
     return CheckMobileExistsResponseDTO.fromJson(response.dataAsMap());
   }
+
+  @override
+  Future<PaginatedResultDTO<ReceiptDTO>> getReceipt({required int page}) async {
+    final response = await _apiHelper.request('$apiPath/panel/receipts?page=$page');
+    final items = List<ReceiptDTO>.from(response.dataAsMap()['list']['data'].map((e) => ReceiptDTO.fromJson(e)).toList());
+    return PaginatedResultDTO<ReceiptDTO>(
+      from: response.dataAsMap()['list']['from'] ?? 0,
+      to: response.dataAsMap()['list']['to'] ?? 0,
+      total: response.dataAsMap()['list']['total'] ?? 0,
+      count: response.dataAsMap()['list']['count'] ?? 0,
+      perPage: response.dataAsMap()['list']['per_page'] ?? 0,
+      currentPage: response.dataAsMap()['list']['current_page'] ?? 0,
+      lastPage: response.dataAsMap()['list']['last_page'] ?? false,
+      items: items,
+    );
+  }
+
+  @override
+  Future<ReceiptStoreDTO> sendFish({
+    required String fcmToken,
+    required XFile file,
+  }) async {
+    final response = await _apiHelper.uploadImage(
+        '$apiPath/panel/receipts/store',
+        FormData.fromMap({
+          "image": await MultipartFile.fromFile(file.path, filename: file.name),
+        }));
+    return ReceiptStoreDTO.fromJson(response.data);
+  }
+
 
   @override
   Future<String> register({
@@ -237,6 +281,7 @@ class AppDataSourceImpl extends AppDataSource {
     required String value,
     required String name,
     required int? destination,
+    required int type,
     required String fcmToken,
   }) async {
     final response = await _apiHelper.request(
@@ -245,6 +290,7 @@ class AppDataSourceImpl extends AppDataSource {
       data: {
         'value': value,
         'name': name,
+        'type': type,
         'device_type': 3,
         'fcm_token': fcmToken,
         if (destination != null) 'destination_id': destination,
@@ -339,8 +385,11 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<AppConfigDTO> getConfig() async {
-    final response = await _apiHelper.request('$apiPath/panel/get-config');
+  Future<AppConfigDTO> getConfig({required int currentVersion}) async {
+    final params = {
+      'current_version': currentVersion,
+    };
+    final response = await _apiHelper.request('$apiPath/panel/get-config',queryParameters: params);
     final result = AppConfigDTO.fromJson(response.dataAsMap());
     return result;
   }
@@ -375,6 +424,13 @@ class AppDataSourceImpl extends AppDataSource {
   Future<TransactionsResultDTO> getTransactions({int page = 1}) async {
     final response = await _apiHelper.request('$apiPath/panel/transactions?page=$page');
     return TransactionsResultDTO.fromJson(response.dataAsMap());
+  }
+
+
+  @override
+  Future<String> getPdf() async {
+    final response = await _apiHelper.request('$apiPath/panel/transactions-download');
+    return response.dataAsMap()["file_url"];
   }
 
   @override

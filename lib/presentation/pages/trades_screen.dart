@@ -34,7 +34,7 @@ class _TradesScreenState extends State<TradesScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: const TitleAppBar(title: Strings.myTrades),
+            appBar:  TitleAppBar(title: Strings.myTrades),
             body: ValueListenableBuilder<bool>(
                 valueListenable: isCoinSelectedNotifier,
                 builder: (context, isCoinSelected, _) {

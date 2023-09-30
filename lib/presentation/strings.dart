@@ -2,19 +2,35 @@ class Strings {
   static const splash = "Splash";
   static const login = "ورود";
   static const unKnownError = "خطای ناشناخته";
+  static const receipt = "ارسال فیش واریزی";
   static const havlehCreated =
       "درخواست حواله با موفقیت ثبت شد. پس از بررسی نتیجه آن به اطلاع شما خواهد رسید";
   static const codeError = "کد تایید پیامکی را درست وارد کنید";
   static const nameError = "نام را درست وارد کنید";
   static const nationalCodeError = "کد ملی را درست وارد کنید";
+  static const pictureFish = "تصویر فیش";
+  static const receiptResendly = "فیش‌های ارسالی ۳ روز اخیر";
+  static const receiptName = "فیش بنام چه کسی است؟";
+  static const priceError = "مبلغ را وارد کنید";
+  static const  remainingRialsWithColon = "مانده ریالی : ";
+  static const receiptPrice = "مبلغ واریز شده به تومان";
+  static const fileCodeError = "تصویر فیش واریزی را انتخاب کنید";
   static const passwordError = "کلمه عبور را درست وارد کنید";
   static const passwordConfirmationError = "تکرار کلمه عبور را درست وارد کنید";
   static const error = "خطا";
+  static const receiptTrackingCode = "کد پیگیری";
+  static const sendFish = "ارسال فیش واریزی";
+  static const  remainingGoldWithColon = "مانده وزنی : ";
   static const priceTotalRial2 = "مبلغ کل";
+  static const emptyList = "موردی وجود ندارد.";
+  static const confirmReceiptDiscreption = "لطفا اطلاعات مربوط به فیش را در فرم زیر وارد کنید.";
   static const priceTotalRialCoin = "مبلغ کل معامله";
   static const home = "خانه";
   static const edit = "ویرایش";
+  static const confirmReceipt = "ثبت اطلاعات فیش واریز";
   static const selectCoin = 'تعدادی از سکه انتخاب کنید';
+  static const trackingCode = "کد پیگیری";
+  static const forName = "بنام ";
   static const empty = "";
   static const transactionDetails = "جزئیات معامله";
   static const submitBuyOrder = "ثبت سفارش خرید";
@@ -75,11 +91,11 @@ class Strings {
   static const tradeDescription2 =
       "در صورت ثبت سفارش خرید یا فروش امکان لغو آن وجود ندارد";
   static const tradeDescription3 =
-      "ثبت سفارش  خرید یا فروش به منظله انجام معامله نمی باشدو پس از تایید از سمت مدیریت معامله شما ثبت و نهایی خواهد شد";
+      "ثبت سفارش  خرید یا فروش به منزله انجام معامله نمی باشدو پس از تایید از سمت مدیریت معامله شما ثبت و نهایی خواهد شد";
   static const havalehDescription =
-      "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید، حواله انجام خواهد شد.";
+      "ثبت حواله به منزله انجام آن نیست و پس از بررسی و تایید، حواله انجام خواهد شد.";
   static const havalehDescription2 =
-      "ثبت حواله به منظله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
+      "ثبت حواله به منزله انجام آن نیست و پس از بررسی و تایید, حواله انجام خواهد شد";
   static const signUp = "تایید و عضویت";
   static const dot = "•";
   static const update = "بروز رسانی";
@@ -146,6 +162,7 @@ class Strings {
   static const orderMazane = "مظنه سفارش";
   static const validatingOrder = "در حال بررسی سفارش";
   static const mazane = "مظنه";
+  static const ok = "باشه";
   static const submitOrderWarning =
       "لطفا تا تایید درخواست خرید از بستن صفحه جدا خودداری فرمایید";
   static const requestedWeight = "وزن درخواستی";
@@ -225,4 +242,7 @@ class Strings {
   static const seeAll = 'مشاهده همه';
   static const tradeIsBlocked = 'معامله غیر فعال می باشد';
   static const neww = 'جدید';
+  static String titleUpdateDetails ="تغییرات ورژن جدید";
+  static var havaleGold = "حواله طلا";
+  static var havalerial = "حواله تومانی";
 }

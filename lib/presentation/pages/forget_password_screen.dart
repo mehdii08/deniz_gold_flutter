@@ -48,7 +48,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
-        appBar: const TitleAppBar(title: Strings.forgetPasswordTitle),
+        appBar:  TitleAppBar(title: Strings.forgetPasswordTitle),
         backgroundColor: AppColors.background,
         body: BlocProvider<ForgetPasswordCubit>(
           create: (_) => sl(),

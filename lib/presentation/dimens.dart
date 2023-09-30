@@ -18,6 +18,7 @@ class Dimens {
   static const double standard6 = 6.0;
   static const double standard8 = 8.0;
   static const double standard10 = 10.0;
+  static const double standard11 = 11.0;
   static const double standard12 = 12.0;
   static const double standard14 = 14.0;
   static const double standard16 = 16.0;
@@ -45,4 +46,5 @@ class Dimens {
   static const double textFieldHeight = 36.0;
   static const int passwordLength = 6;
   static const double bottomBarHeight = 65;
+  static const double standard200 =200.0;
 }
