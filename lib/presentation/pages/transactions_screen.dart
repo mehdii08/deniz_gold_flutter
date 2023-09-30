@@ -44,9 +44,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   _onScrollControllerChanged() {
-    if (scrollController.position.maxScrollExtent -
-            scrollController.position.pixels <
-        100) {
+    if (scrollController.position.maxScrollExtent - scrollController.position.pixels < 100) {
       if (cubit.state is TransactionsLoading) {
         return;
       }
@@ -55,84 +53,78 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-        child: WillPopScope(
-          onWillPop: () async {
-            context.goNamed(HomeScreen.route.name!);
-            return false;
-          },
-          child: Scaffold(
-            backgroundColor: AppColors.background,
-            appBar: TitleAppBar(
-              title: Strings.transactions,
-              onClick: () {
-                cubit.getPdf();
+  Widget build(BuildContext context) => BlocProvider<TransactionsCubit>(
+        create: (_) => cubit,
+        child: BlocConsumer<TransactionsCubit, TransactionsState>(listener: (context, state) {
+          if (state is TransactionsFailed) {
+            showToast(title: state.message, context: context, toastType: ToastType.error);
+          }
+        }, builder: (context, state) {
+          return SafeArea(
+            child: WillPopScope(
+              onWillPop: () async {
+                context.goNamed(HomeScreen.route.name!);
+                return false;
               },
-            ),
-            body: BlocProvider<TransactionsCubit>(
-              create: (_) => cubit,
-              child: BlocConsumer<TransactionsCubit, TransactionsState>(
-                listener: (context, state) {
-                  if (state is TransactionsFailed) {
-                    showToast(
-                        title: state.message,
-                        context: context,
-                        toastType: ToastType.error);
-                  }
-                },
-                builder: (context, state) {
-                  if (state is TransactionsLoading &&
-                      state.transactions.isEmpty) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return SingleChildScrollView(
-                    controller: scrollController,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Dimens.standard2X,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: Dimens.standard2X),
-                          if (state is TransactionsLoaded &&
-                              state.transactions.isEmpty) ...[
-                            const SizedBox(height: Dimens.standard8X),
-                            const EmptyView(
-                                text: Strings.transactionsListIsEmpty),
-                          ] else ...[
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: state.transactions.length +
-                                  (state is TransactionsLoading ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == state.transactions.length) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      SizedBox(
-                                          width: Dimens.standard24,
-                                          height: Dimens.standard24,
-                                          child: CircularProgressIndicator())
-                                    ],
-                                  );
-                                }
-                                return TransactionItem(
-                                    transaction: state.transactions[index]);
-                              },
-                            )
+              child: Scaffold(
+                backgroundColor: AppColors.background,
+                appBar: TitleAppBar(
+                  title: Strings.transactions,
+                  pdfIsLoading : state is PdfLoading,
+                  onRequestPdf: () {
+                    cubit.getPdf();
+                  },
+                ),
+                body: Builder(
+                  builder: (context) {
+                    if (state is TransactionsLoading && state.transactions.isEmpty) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return SingleChildScrollView(
+                      controller: scrollController,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Dimens.standard2X,
+                        ),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: Dimens.standard2X),
+                            if (state is TransactionsLoaded && state.transactions.isEmpty) ...[
+                              const SizedBox(height: Dimens.standard8X),
+                              const EmptyView(text: Strings.transactionsListIsEmpty),
+                            ] else ...[
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: state.transactions.length + (state is TransactionsLoading ? 1 : 0),
+                                itemBuilder: (context, index) {
+                                  if (index == state.transactions.length) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        SizedBox(
+                                            width: Dimens.standard24,
+                                            height: Dimens.standard24,
+                                            child: CircularProgressIndicator())
+                                      ],
+                                    );
+                                  }
+                                  return TransactionItem(transaction: state.transactions[index]);
+                                },
+                              )
+                            ],
+                            const SizedBox(height: 130),
                           ],
-                          const SizedBox(height: 130),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       );
 }

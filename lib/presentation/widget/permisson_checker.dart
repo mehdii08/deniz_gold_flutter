@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/blocs/permission_checker/permission_checker_cubit.dart';
@@ -30,7 +32,7 @@ class _PermissionCheckerState extends State<PermissionChecker> {
 
   @override
   Widget build(BuildContext context) {
-    if(kIsWeb){
+    if(kIsWeb || Platform.isIOS){
       return widget.child;
     }
     return BlocProvider<PermissionCheckerCubit>(

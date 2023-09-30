@@ -1,5 +1,4 @@
 import 'package:deniz_gold/presentation/widget/title_app_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -94,7 +93,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: TitleAppBar(title: Strings.receipt),
+            appBar: const TitleAppBar(title: Strings.receipt),
             body: BlocProvider<ReceiptScreenCubit>(
               create: (_) => cubit,
               child: BlocConsumer<ReceiptScreenCubit, ReceiptScreenState>(
@@ -336,7 +335,7 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                               textStyle: AppTextStyle.subTitle4,
                                               color: AppColors.nature.shade900,
                                             ),
-                                            if (state.listIsLoading) ...[
+                                            if (state.listIsLoading && state.result.items.isEmpty) ...[
                                               const SizedBox(
                                                   height: Dimens.standard48),
                                               const Align(
@@ -382,7 +381,10 @@ class _ReceiptScreenScreenState extends State<ReceiptScreen> {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: const [
-                                                        CircularProgressIndicator()
+                                                        Padding(
+                                                          padding: EdgeInsets.all(Dimens.standard16),
+                                                          child: CircularProgressIndicator(),
+                                                        )
                                                       ],
                                                     );
                                                   }

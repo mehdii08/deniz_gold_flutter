@@ -20,7 +20,6 @@ import 'package:deniz_gold/data/dtos/trade_submit_response_dto.dart';
 import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
@@ -388,7 +387,7 @@ class AppDataSourceImpl extends AppDataSource {
   @override
   Future<AppConfigDTO> getConfig({required int currentVersion}) async {
     final params = {
-      'current_version': 4,
+      'current_version': currentVersion,
     };
     final response = await _apiHelper.request('$apiPath/panel/get-config',queryParameters: params);
     final result = AppConfigDTO.fromJson(response.dataAsMap());

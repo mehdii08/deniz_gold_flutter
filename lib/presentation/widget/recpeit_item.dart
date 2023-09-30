@@ -5,7 +5,7 @@ import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:show_network_image/show_network_image.dart';
+// import 'package:show_network_image/show_network_image.dart';
 
 class ReceiptItem extends StatelessWidget {
   final ReceiptDTO receiptDTO;
@@ -57,12 +57,11 @@ class ReceiptItem extends StatelessWidget {
                   height: Dimens.standard64,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(Dimens.standard8),
-                    child: ShowNetworkImage(
-                      imageSrc:
-                          receiptDTO.imageUrl,
-                      mobileBoxFit: BoxFit.fill,
-                      mobileHeight: Dimens.standard64,
-                      mobileWidth: Dimens.standard64,
+                    child: Image.network(
+                      receiptDTO.imageUrl,
+                      fit: BoxFit.cover,
+                      height: Dimens.standard64,
+                      width: Dimens.standard64,
                     ),
                   ),
                 ),
@@ -126,18 +125,7 @@ class ImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: SizedBox(
-        width: Dimens.standard200,
-        height: Dimens.standard200,
-        child:
-        ShowNetworkImage(
-          imageSrc:
-          imageUrl,
-          mobileBoxFit: BoxFit.fill,
-          mobileHeight: Dimens.standard200,
-          mobileWidth: Dimens.standard200,
-        ),
-      ),
+      child: Image.network(imageUrl),
     );
   }
 }

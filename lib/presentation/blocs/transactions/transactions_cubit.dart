@@ -35,7 +35,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
   }
 
   getPdf() async {
-    emit(TransactionsLoading(transactions: state.transactions));
+    emit(PdfLoading(transactions: state.transactions));
     final result = await appRepository.getPdf();
     result.fold(
           (l) =>
@@ -51,7 +51,7 @@ class TransactionsCubit extends Cubit<TransactionsState> {
 
   _launchURL(String urlAddress) async {
     final Uri url = Uri.parse(urlAddress);
-    if (!await launchUrl(url)) {
+    if (!await launchUrl(url,mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
   }

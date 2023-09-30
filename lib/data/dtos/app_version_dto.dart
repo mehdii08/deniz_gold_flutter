@@ -6,8 +6,8 @@ class AppVersionDTO extends Equatable {
   final String version;
   final bool forceUpdate;
   final String link;
-  final bool shooUpdateDetailes;
-  final List<String> Description;
+  final bool showUpdateDetails;
+  final List<String> descriptionList;
 
   const AppVersionDTO({
     required this.versionCode,
@@ -15,8 +15,8 @@ class AppVersionDTO extends Equatable {
     required this.version,
     required this.forceUpdate,
     required this.link,
-    required this.shooUpdateDetailes,
-    required this.Description,
+    required this.showUpdateDetails,
+    required this.descriptionList,
   });
 
   factory AppVersionDTO.fromJson(Map<String, dynamic> json) => AppVersionDTO(
@@ -25,8 +25,8 @@ class AppVersionDTO extends Equatable {
     version: (json != null && json.keys.contains("version")) ?  json['version'] : "0",
     forceUpdate: (json != null && json.keys.contains("force_update")) ? json['force_update'] : true,
     link: (json != null && json.keys.contains("version")) ? json['link'] : "https://aghighgold.ir",
-    shooUpdateDetailes: (json != null && json.keys.contains("features")) ? json['features']["show"] : false,
-    Description: (json != null && json.keys.contains("features")) ?   List<String>.from(json['features']["list"].map((e) => e))
+    showUpdateDetails: (json != null && json.keys.contains("features")) ? json['features']["show"] : false,
+    descriptionList: (json != null && json.keys.contains("features")) ?   List<String>.from(json['features']["list"].map((e) => e))
         .toList()
     : [],
   );

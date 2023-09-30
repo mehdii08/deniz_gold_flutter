@@ -11,12 +11,14 @@ const toolbarHeight = 74.0;
 
 class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  Function()? onClick;
+  final bool pdfIsLoading;
+  final Function()? onRequestPdf;
 
-  TitleAppBar({
+  const TitleAppBar({
     Key? key,
     required this.title,
-    this.onClick,
+    this.pdfIsLoading = false,
+    this.onRequestPdf,
   }) : super(key: key);
 
   @override
@@ -29,12 +31,15 @@ class TitleAppBar extends StatelessWidget implements PreferredSizeWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SupportIcon(),
-              if (onClick!=null) ...[
+              if (onRequestPdf!=null) ...[
                 const SizedBox(
                   width: Dimens.standard16,
                 ),
+                if(pdfIsLoading)
+                  const CircularProgressIndicator()
+                else
                 GestureDetector(
-                  onTap: onClick,
+                  onTap: onRequestPdf,
                     child:
                     Container(
                         width: Dimens.standard40,

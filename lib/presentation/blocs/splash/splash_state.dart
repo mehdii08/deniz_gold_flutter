@@ -25,9 +25,9 @@ class SplashAuthenticationChecked extends SplashState {
 }
 
 class SplashLoaded extends SplashState {
-  final bool showUpdateDetailes;
+  final bool showUpdateDetails;
   final List<String> description;
-  const SplashLoaded({required this.showUpdateDetailes,required this.description});
+  const SplashLoaded({required this.showUpdateDetails,required this.description});
 }
 
 class SplashUpdateNeeded extends SplashState {

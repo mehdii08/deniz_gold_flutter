@@ -40,14 +40,14 @@ class _SplashScreenState extends State<SplashScreen> {
                   !state.authenticated) {
                 context.goNamed(CheckMobileScreen.route.name!);
               } else if (state is SplashLoaded) {
-                if (state.showUpdateDetailes) {
+                if (state.showUpdateDetails) {
                   final dialog = UpdateDetailsDialog(
                     description: state.description,
                     onclick: () {
                       context.goNamed(HomeScreen.route.name!);
                     },
                   );
-                  showDialog(context: context, builder: (context) => dialog);
+                  showDialog(context: context, barrierDismissible: false, builder: (context) => dialog);
                 } else {
                   context.goNamed(HomeScreen.route.name!);
                 }

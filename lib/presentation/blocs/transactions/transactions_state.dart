@@ -20,6 +20,10 @@ class TransactionsLoading extends TransactionsState {
   const TransactionsLoading({required List<TransactionDTO> transactions}) : super(transactions: transactions);
 }
 
+class PdfLoading extends TransactionsState {
+  const PdfLoading({required List<TransactionDTO> transactions}) : super(transactions: transactions);
+}
+
 class TransactionsLoaded extends TransactionsState {
   const TransactionsLoaded({
     required List<TransactionDTO> transactions,
