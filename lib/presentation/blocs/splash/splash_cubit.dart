@@ -41,8 +41,6 @@ class SplashCubit extends Cubit<SplashState> {
     emit(const SplashLoading());
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    final updateFeaturesHaveSeen = sharedPreferences.getString(updateFeaturesKey) == "1";
-
     int versionCode = 1;
     try {
       versionCode = int.parse(packageInfo.buildNumber);
@@ -58,10 +56,9 @@ class SplashCubit extends Cubit<SplashState> {
           emit(SplashUpdateNeeded(appVersion: r.appVersion, forceUpdate: r.appVersion.forceVersionCode > versionCode));
         } else {
           emit(SplashLoaded(
-            showUpdateDetails: r.appVersion.showUpdateDetails && !updateFeaturesHaveSeen,
+            showUpdateDetails: r.appVersion.showUpdateDetails,
             description: r.appVersion.descriptionList,
           ));
-          sharedPreferences.setString(updateFeaturesKey, "1");
         }
       },
     );

@@ -9,7 +9,7 @@ class Strings {
   static const nameError = "نام را درست وارد کنید";
   static const nationalCodeError = "کد ملی را درست وارد کنید";
   static const pictureFish = "تصویر فیش";
-  static const receiptResendly = "فیش‌های ارسالی ۳ روز اخیر";
+  static const receiptResendly = "فیش‌های ارسالی اخیر";
   static const receiptName = "فیش بنام چه کسی است؟";
   static const priceError = "مبلغ را وارد کنید";
   static const  remainingRialsWithColon = "مانده ریالی : ";
@@ -23,7 +23,7 @@ class Strings {
   static const  remainingGoldWithColon = "مانده وزنی : ";
   static const priceTotalRial2 = "مبلغ کل";
   static const emptyList = "موردی وجود ندارد.";
-  static const confirmReceiptDiscreption = "لطفا اطلاعات مربوط به فیش را در فرم زیر وارد کنید.";
+  static const confirmReceiptDiscreption = "لطفا تصویر فیش واریزی را انتخاب کنید.";
   static const priceTotalRialCoin = "مبلغ کل معامله";
   static const home = "خانه";
   static const edit = "ویرایش";

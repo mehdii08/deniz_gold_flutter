@@ -42,7 +42,7 @@ class UpdateDetailsDialog extends StatelessWidget {
             .toList(),
         const SizedBox(height: Dimens.standard2X),
              AppButton(
-              text: Strings.ok,
+              text: Strings.understand,
               onPressed: onclick,
                fullWidth: false,
             ),

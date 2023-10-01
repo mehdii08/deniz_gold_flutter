@@ -19,7 +19,8 @@ class AppVersionDTO extends Equatable {
     required this.descriptionList,
   });
 
-  factory AppVersionDTO.fromJson(Map<String, dynamic> json) => AppVersionDTO(
+  factory AppVersionDTO.fromJson(Map<String, dynamic> json) {
+    return AppVersionDTO(
     versionCode: (json != null && json.keys.contains("version_code")) ?  json['version_code'] : 0,
     forceVersionCode: (json != null && json.keys.contains("force_version_code")) ?  json['force_version_code'] : 0,
     version: (json != null && json.keys.contains("version")) ?  json['version'] : "0",
@@ -30,6 +31,7 @@ class AppVersionDTO extends Equatable {
         .toList()
     : [],
   );
+  }
 
   Map<String, dynamic> toJson() => {
     'version': version,
