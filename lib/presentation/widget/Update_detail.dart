@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UpdateDetailsDialog extends StatelessWidget {
   final List<String> description;
@@ -19,6 +20,7 @@ class UpdateDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
     contentPadding: const EdgeInsets.all(Dimens.standard16),
     content: Column(
       mainAxisSize: MainAxisSize.min,
@@ -29,16 +31,7 @@ class UpdateDetailsDialog extends StatelessWidget {
         ),
         const SizedBox(height: Dimens.standard2X),
         ...description
-            .map((e) => Column(
-          children: [
-            Container(
-              width: double.maxFinite,
-              alignment: Alignment.centerRight,
-              child: AppText(e,textStyle: AppTextStyle.body4,color: AppColors.nature.shade700,),
-            ),
-            const SizedBox(height: Dimens.standard8),
-          ],
-        ))
+            .map((e) => UpdateDetailWidget(title: e))
             .toList(),
         const SizedBox(height: Dimens.standard2X),
              AppButton(
@@ -49,5 +42,27 @@ class UpdateDetailsDialog extends StatelessWidget {
         const SizedBox(height: Dimens.standard2X),
       ],
     ),
+  );
+}
+
+class UpdateDetailWidget extends StatelessWidget {
+  final String title;
+  const UpdateDetailWidget({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Expanded(child: AppText(title,textStyle: AppTextStyle.body4,color: AppColors.nature.shade700,)),
+      const SizedBox(width: Dimens.standard8),
+      Padding(
+        padding: const EdgeInsets.only(top: Dimens.standard4),
+        child: SvgPicture.asset('assets/images/checkmark_circle.svg'),
+      )
+    ],
   );
 }
