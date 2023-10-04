@@ -25,7 +25,7 @@ extension NumberFormat on String? {
       final decimalPart = this!.substring(this!.indexOf("."), this!.length);
       return "$integerPart$decimalPart";
     }
-    return formatter.format(int.parse(this!));
+    return formatter.format(double.parse(this!));
   }
 
   String clearCommas() => this != null ? this!.replaceAll(',', '') : "";

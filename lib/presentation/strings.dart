@@ -109,7 +109,7 @@ class Strings {
   static const pleaseChooseSellType = "لطفا نوع فروش خود را انتخاب کنید";
   static const pleaseChooseBuyType = "لطفا نوع خرید خود را انتخاب کنید";
   static const phoneNumber = "شماره موبایل";
-  static const storeGoldenHavale = "ثبت حواله طلا";
+  static const storeGoldenHavale = "ثبت حواله";
   static const lastStoredHavaleh = "حواله های ثبت شده اخیر";
   static const password = "رمز عبور";
   static const enterPassword = "رمز عبور را وارد کنید";
@@ -244,5 +244,5 @@ class Strings {
   static const neww = 'جدید';
   static String titleUpdateDetails ="تغییرات ورژن جدید";
   static var havaleGold = "حواله طلا";
-  static var havalerial = "حواله تومانی";
+  static var havaleRial = "حواله ریالی";
 }

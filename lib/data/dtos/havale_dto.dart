@@ -22,7 +22,8 @@ class HavaleDTO extends Equatable {
     required this.time,
   });
 
-  factory HavaleDTO.fromJson(Map<String, dynamic> json) => HavaleDTO(
+  factory HavaleDTO.fromJson(Map<String, dynamic> json) {
+    return HavaleDTO(
     id: json['id'] ?? 0,
         title: json['title'],
         name: json['name'],
@@ -32,6 +33,7 @@ class HavaleDTO extends Equatable {
         date: json['date'],
         time: json['time'],
       );
+  }
 
   @override
   List<Object?> get props => [id, title, name, status, destination, statusText, date, time];

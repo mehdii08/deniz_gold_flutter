@@ -78,7 +78,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
           },
           child: Scaffold(
             backgroundColor: AppColors.background,
-            appBar: TitleAppBar(title: Strings.storeGoldenHavale),
+            appBar: const TitleAppBar(title: Strings.storeGoldenHavale),
             body: UserStatusChecker(
               updateUser: true,
               child: BlocProvider<HavaleCubit>(
@@ -114,15 +114,15 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                     builder: (context, isGold, _) => Column(
                                           children: [
                                             SelectLeftOrRight(
-                                              isLeftSelected: isGold,
-                                              leftTitle:  Strings.havaleGold ,
-                                              rightTitle:Strings.havalerial,
-                                              onLeftPressed: () {
+                                              isLeftSelected: !isGold,
+                                              leftTitle:Strings.havaleRial,
+                                              rightTitle:Strings.havaleGold,
+                                              onRightPressed: () {
                                                 isGoldNotifier.value = true;
                                                 valueController.text = "0";
                                                 canSubmitNotifier.value = false;
                                               },
-                                              onRightPressed: () {
+                                              onLeftPressed: () {
                                                 isGoldNotifier.value = false;
                                                 valueController.text = "0";
                                                 canSubmitNotifier.value = false;
@@ -136,9 +136,16 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                               keyboardType: const TextInputType
                                                       .numberWithOptions(
                                                   decimal: true),
-                                              onChange: (value) =>
-                                                  checkSubmitAvailableity(),
-                                              prefixIcon: GestureDetector(
+                                              onChange: (value){
+                                                value = value.clearCommas().numberFormat();
+                                                value = !isGold ? value.replacePersianNumbers().removeDecimals().clearCommas().numberFormat() : value.replacePersianNumbers().removeExtraDecimals().clearCommas().numberFormat();
+                                                valueController.value = TextEditingValue(
+                                                  text: value,
+                                                  selection: TextSelection.collapsed(offset: value.length),
+                                                );
+                                                checkSubmitAvailableity();
+                                              },
+                                              prefixIcon: isGold ? GestureDetector(
                                                 onTap: () {
                                                   valueController
                                                       .increaseValue();
@@ -149,8 +156,8 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                                   height: Dimens.standard6,
                                                   fit: BoxFit.fitHeight,
                                                 ),
-                                              ),
-                                              suffixIcon: GestureDetector(
+                                              ) : const SizedBox(),
+                                              suffixIcon: isGold ? GestureDetector(
                                                 onTap: () {
                                                   valueController
                                                       .decreaseValue();
@@ -161,7 +168,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                                   height: Dimens.standard6,
                                                   fit: BoxFit.fitHeight,
                                                 ),
-                                              ),
+                                              ) :  const SizedBox(),
                                             )
                                           ],
                                         )),
@@ -247,7 +254,7 @@ class _HavaleScreenState extends State<HavaleScreen> {
                                             context
                                                 .read<HavaleCubit>()
                                                 .storeHavale(
-                                                    value: valueController.text,
+                                                    value: valueController.text.clearCommas(),
                                                     name: nameController.text,
                                                     type: isGoldNotifier.value?1:2,
                                                     destination:
