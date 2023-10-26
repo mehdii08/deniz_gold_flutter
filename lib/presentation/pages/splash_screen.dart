@@ -28,10 +28,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final cubit = sl<SplashCubit>()..checkAuthentication();
+
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: BlocProvider<SplashCubit>(
-          create: (_) => sl<SplashCubit>()..checkAuthentication(),
+        body: BlocProvider<SplashCubit>.value(
+          value: cubit,
           child: BlocConsumer<SplashCubit, SplashState>(
             listener: (context, state) {
               if (state is SplashAuthenticationChecked && state.authenticated) {

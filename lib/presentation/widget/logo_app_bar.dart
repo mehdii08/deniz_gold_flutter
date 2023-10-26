@@ -23,16 +23,17 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AppConfigCubit, AppConfigState>(
-        builder: (context, state) => Container(
+        builder: (context, state) {
+          return Container(
           width: double.infinity,
           color: backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16, vertical: Dimens.standard6),
           child: Stack(
             children: [
-              Align(
+              const Align(
                 alignment: Alignment.center,
                 child: Row(
-                  children: const [
+                  children: [
                     SupportIcon(),
                     Spacer(),
                     PersianDateWidget(),
@@ -44,7 +45,7 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
                     alignment: Alignment.center,
                     child: state.appConfig != null
                         ? Image.network(
-                            state.appConfig!.logo,
+                            "https://golddeniz.ir/uploads/logo/inactive-202306071686161200logo.png",
                             width: Dimens.standard80,
                             height: Dimens.standard53,
                             errorBuilder: (context, _, __) => AppText(
@@ -55,7 +56,8 @@ class LogoAppBar extends StatelessWidget implements PreferredSizeWidget {
                         : const SizedBox()),
             ],
           ),
-        ),
+        );
+        },
       );
 
   @override

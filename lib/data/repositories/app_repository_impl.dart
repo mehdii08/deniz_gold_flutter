@@ -295,9 +295,9 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, AppConfigDTO>> getConfig({required int currentVersion}) async {
+  Future<Either<Failure, AppConfigDTO>> getConfig({required int currentVersion, bool appVersionFeaturesIsShow = false}) async {
     try {
-      return Right(await dataSource.getConfig(currentVersion: currentVersion));
+      return Right(await dataSource.getConfig(currentVersion: currentVersion, appVersionFeaturesIsShow: appVersionFeaturesIsShow));
     } on Exception catch (e) {
       return Left(Failure.fromException(e));
     }

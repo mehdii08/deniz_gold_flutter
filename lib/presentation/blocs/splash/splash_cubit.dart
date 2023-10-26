@@ -47,7 +47,7 @@ class SplashCubit extends Cubit<SplashState> {
     } catch (e) {
       debugPrint("versionCode parse exception");
     }
-    final result = await appRepository.getConfig(currentVersion: versionCode);
+    final result = await appRepository.getConfig(currentVersion: versionCode, appVersionFeaturesIsShow: true);
     result.fold(
       (l) => emit(SplashFailed(message: l.message != null ? l.message! : "")),
       (r) async {
