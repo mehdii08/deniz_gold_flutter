@@ -1,10 +1,12 @@
 import 'package:deniz_gold/core/theme/app_colors.dart';
+import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/presentation/blocs/check_mobile/check_mobile_cubit.dart';
 import 'package:deniz_gold/presentation/dimens.dart';
 import 'package:deniz_gold/presentation/pages/login_screen.dart';
 import 'package:deniz_gold/presentation/pages/verify_mobile_screen.dart';
 import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_logo.dart';
+import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/get_mobile_widget.dart';
 import 'package:deniz_gold/presentation/widget/support_icon.dart';
 import 'package:deniz_gold/presentation/widget/toast.dart';
@@ -77,6 +79,7 @@ class _CheckMobileScreenState extends State<CheckMobileScreen> {
                             top: Radius.circular(Dimens.standard16)),
                       ),
                       child: GetMobileWidget(
+                        showRules: true,
                         controller: controller,
                         isLoading: state is CheckMobileLoading,
                         title: Strings.loginRegister,
@@ -85,7 +88,7 @@ class _CheckMobileScreenState extends State<CheckMobileScreen> {
                             .checkMobileExists(mobile),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

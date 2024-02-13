@@ -8,12 +8,14 @@ import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:deniz_gold/presentation/widget/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class GetMobileWidget extends StatefulWidget {
   final String title;
   final bool isLoading;
   final Function(String) onPressed;
   final TextEditingController controller;
+  final bool showRules;
 
   const GetMobileWidget({
     Key? key,
@@ -21,6 +23,7 @@ class GetMobileWidget extends StatefulWidget {
     required this.title,
     required this.onPressed,
     this.isLoading = false,
+    this.showRules = false,
   }) : super(key: key);
 
   @override
@@ -67,7 +70,33 @@ class _GetMobileWidgetState extends State<GetMobileWidget> {
                       : null,
                   text: Strings.confirm,
                   isLoading: widget.isLoading,
-                ))
+                )),
+
+        const SizedBox(height: Dimens.standard32),
+        GestureDetector(
+          onTap: () async {
+            await launchUrlString('https://golddeniz.ir/privacy',
+            mode: LaunchMode.externalApplication);
+          },
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'ورود شما به معنای پذیرش',
+                  style: AppTextStyle.body4,
+                ),
+                TextSpan(
+                    text: ' قوانین ',
+                    style: AppTextStyle.body3.copyWith(color: AppColors.blue),
+                ),
+                TextSpan(
+                  text: 'آبشده فروشی دنیز است',
+                  style: AppTextStyle.body4,
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
