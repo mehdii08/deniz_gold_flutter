@@ -7,6 +7,11 @@ enum BuyAndSellType {
   final int value;
 
   static BuyAndSellType fromCode(int code) => code == 0 ? BuyAndSellType.sell : BuyAndSellType.buy;
+
+  String get title => this == sell ? 'فروش' : 'خرید';
+
+  bool get isSell => this == sell;
+
 }
 
 enum CoinAndGoldType {

@@ -10,10 +10,6 @@ class AppConfigDTO extends Equatable {
   final List<PhoneDTO>? phones;
   final String aboutText;
   final String address;
-  final String botStatus;
-  final String coinStatus;
-  final String buyPrice;
-  final String sellPrice;
   final AppVersionDTO appVersion;
 
   const AppConfigDTO({
@@ -23,10 +19,6 @@ class AppConfigDTO extends Equatable {
     required this.phones,
     required this.aboutText,
     required this.address,
-    required this.botStatus,
-    required this.coinStatus,
-    required this.buyPrice,
-    required this.sellPrice,
     required this.appVersion,
   });
 
@@ -46,10 +38,6 @@ class AppConfigDTO extends Equatable {
         phones: phones,
         aboutText: json['about_text'] ?? "",
         address: json['address'] ?? '',
-        botStatus: json['bot_status'],
-        coinStatus: json['coin_status'] != null ? json['coin_status'] : '0',
-        buyPrice: json['buy_price'],
-        sellPrice: json['sell_price'],
         appVersion: AppVersionDTO.fromJson(
           json['app_version'],
         ));
@@ -62,10 +50,6 @@ class AppConfigDTO extends Equatable {
         'phones': phones != null ? phones!.map((e) => e.toJson()).toList() : [],
         'about_text': aboutText,
         'address': address,
-        'bot_status': botStatus,
-        'coin_status': coinStatus,
-        'buy_price': buyPrice,
-        'sell_price': sellPrice,
         'app_version': appVersion.toJson(),
       };
 
@@ -77,10 +61,6 @@ class AppConfigDTO extends Equatable {
         phones,
         aboutText,
         address,
-        botStatus,
-        coinStatus,
-        buyPrice,
-        sellPrice,
         appVersion
       ];
 
@@ -98,10 +78,6 @@ class AppConfigDTO extends Equatable {
         phones: phones,
         aboutText: aboutText,
         address: address,
-        botStatus: newBotStatus ?? botStatus,
-        coinStatus: newCoinStatus ?? coinStatus,
-        buyPrice: buyPrice,
-        sellPrice: sellPrice,
         appVersion: appVersion,
       );
 }

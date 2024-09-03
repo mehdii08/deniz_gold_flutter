@@ -17,6 +17,7 @@ import 'package:deniz_gold/presentation/widget/edit_name_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/edit_password_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/support_content.dart';
 import 'package:deniz_gold/presentation/widget/trade_answer_waiting_dialog.dart';
+import 'package:deniz_gold/presentation/widget/trade_bottom_sheet.dart';
 import 'package:deniz_gold/presentation/widget/trade_calculate_data_bottom_sheet_content.dart';
 import 'package:deniz_gold/presentation/widget/trade_wnswee_dialog.dart';
 import 'package:deniz_gold/service_locator.dart';
@@ -24,6 +25,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/theme/app_colors.dart';
+import '../../data/dtos/trade_info_dto.dart';
+import '../blocs/home/home_screen_cubit.dart';
 import 'coint_detail_content.dart';
 
 showSupportBottomSheet({required BuildContext context}) {
@@ -36,6 +40,37 @@ showSupportBottomSheet({required BuildContext context}) {
     builder: (context) => const BottomSheetHeader(
       title: Strings.callToSupport,
       child: SupportSheetContent(),
+    ),
+  );
+}
+
+showTradeBottomSheet({
+  required BuildContext context,
+  required TradeInfoDTO tradeInfo,
+  required BuyAndSellType buyAndSellType,
+  required HomeScreenCubit homeCubit,
+}) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: AppColors.white,
+    // enableDrag: true,
+    useRootNavigator: true,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.vertical(top: Radius.circular(Dimens.standard16))),
+    builder: (context) => BottomSheetHeader(
+      title: '${buyAndSellType.title} ${tradeInfo.title}',
+      onBackTapped: () {
+        Navigator.of(context).pop();
+      },
+      child: BlocProvider<HomeScreenCubit>.value(
+        value: homeCubit,
+        child: TradeBottomSheet(
+          tradeInfo: tradeInfo,
+          buyAndSellType: buyAndSellType,
+        ),
+      ),
     ),
   );
 }
@@ -256,9 +291,9 @@ showTradeAnswerWaitingDialog({
         isSell: isSell,
         tradeCubit: tradeCubit,
         onResultReached: (trade) {
-          context.pop();
+          // context.pop();
           showTradeAnswerDialog(
-            context: context,
+            context: builderContext,
             buyAndSellType: trade.buyAndSellType,
             coinAndGoldType: trade.coinAndGoldType,
             status: trade.status.toString(),
@@ -308,17 +343,17 @@ showCoinTradeAnswerWaitingDialog({
       return CoinTradeAnswerWaitingDialog(
         data: data,
         onResultReached: (trade) {
-          context.pop();
-          showTradeAnswerDialog(
-            context: context,
-            buyAndSellType: trade.buyAndSellType,
-            coinAndGoldType: trade.coinAndGoldType,
-            status: trade.status.toString(),
-            totalPrice: trade.totalPrice.toString(),
-            mazaneh: trade.mazaneh.toString(),
-            weight: trade.weight,
-            coins: trade.coins,
-          );
+          // context.pop();
+          // showTradeAnswerDialog(
+          //   context: context,
+          //   buyAndSellType: trade.buyAndSellType,
+          //   coinAndGoldType: trade.coinAndGoldType,
+          //   status: trade.status.toString(),
+          //   totalPrice: trade.totalPrice.toString(),
+          //   mazaneh: trade.mazaneh.toString(),
+          //   weight: trade.weight,
+          //   coins: trade.coins,
+          // );
         },
       );
     },

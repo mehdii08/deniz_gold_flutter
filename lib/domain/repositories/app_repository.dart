@@ -82,9 +82,16 @@ abstract class AppRepository {
   });
 
   Future<Either<Failure, TradeSubmitResponseDTO>> submitTrade({
+    required int tradeId,
     required BuyAndSellType tradeType,
-    required CalculateType calculateType,
-    required String value,
+    required String weight,
+    required String fcmToken,
+  });
+
+  Future<Either<Failure, TradeSubmitResponseDTO>> submitCoinTrade({
+    required int coinId,
+    required BuyAndSellType tradeType,
+    required int count,
     required String fcmToken,
   });
 

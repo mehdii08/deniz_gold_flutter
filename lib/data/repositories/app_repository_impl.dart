@@ -236,16 +236,35 @@ class AppRepositoryImpl extends AppRepository {
 
   @override
   Future<Either<Failure, TradeSubmitResponseDTO>> submitTrade({
+    required int tradeId,
     required BuyAndSellType tradeType,
-    required CalculateType calculateType,
-    required String value,
+    required String weight,
     required String fcmToken,
   }) async {
     try {
       return Right(await dataSource.submitTrade(
+        tradeId: tradeId,
         tradeType: tradeType,
-        calculateType: calculateType,
-        value: value,
+        weight: weight,
+        fcmToken: fcmToken,
+      ));
+    } on Exception catch (e) {
+      return Left(Failure.fromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, TradeSubmitResponseDTO>> submitCoinTrade({
+    required int coinId,
+    required BuyAndSellType tradeType,
+    required int count,
+    required String fcmToken,
+  }) async {
+    try {
+      return Right(await dataSource.submitCoinTrade(
+        coinId: coinId,
+        tradeType: tradeType,
+        count: count,
         fcmToken: fcmToken,
       ));
     } on Exception catch (e) {

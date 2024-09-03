@@ -22,8 +22,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../data/dtos/trade_info_dto.dart';
+import '../../data/enums.dart';
+import '../widget/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   static final route = GoRoute(
@@ -92,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 updateUser: true,
                 child: Scaffold(
                   appBar: const LogoAppBar(),
-                  backgroundColor: AppColors.background,
+                  backgroundColor: AppColors.white,
                   body: BlocProvider<HomeScreenCubit>.value(
                     value: homeScreenCubit,
                     child: BlocConsumer<HomeScreenCubit, HomeScreenState>(listener: (context, state) {
@@ -104,229 +107,154 @@ class _HomeScreenState extends State<HomeScreen> {
                         final data = state.data;
                         return Column(
                           children: [
-                            if (state.data.message != null && state.data.message?.isNotEmpty == true)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: Dimens.standard16, horizontal: Dimens.standard16),
-                                decoration: BoxDecoration(
-                                  color: AppColors.nature.shade50,
-                                ),
-                                child: Row(
+                            const TopRadius(),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Column(
                                   children: [
-                                    Expanded(
-                                      child: AppText(
-                                        state.data.message ?? '',
-                                        textStyle: AppTextStyle.body5,
-                                        color: AppColors.nature.shade700,
+                                    const SizedBox(height: 12),
+                                    if (state.data.message != null && state.data.message?.isNotEmpty == true)
+                                      Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: Dimens.standard12, horizontal: Dimens.standard12),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xffD4E4FA),
+                                          borderRadius: BorderRadius.circular(8)
+                                        ),
+                                        child: AppText(
+                                          state.data.message ?? '',
+                                          textStyle: AppTextStyle.body5,
+                                          color: AppColors.nature.shade700,
+                                        ),
+                                      ),
+                                    Container(
+                                      color: AppColors.white,
+                                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                                      child: Column(
+                                        children: [
+                                          const UserAccountingChecker(
+                                            updateUser: true,
+                                            placeHolder: SizedBox(),
+                                            child: DualBalanceWidget(),
+                                          ),
+                                          const SizedBox(height: Dimens.standard4),
+                                          if(state.data.trades.isNotEmpty)
+                                            HomeTradesWidget(
+                                              trades: state.data.trades,
+                                              onTradeTap: (tradeInfo, buyAndSellType) {
+                                                showTradeBottomSheet(
+                                                    context: context,
+                                                    tradeInfo: tradeInfo,
+                                                    buyAndSellType: buyAndSellType,
+                                                    homeCubit: homeScreenCubit
+                                                );
+                                              },
+                                            ),
+                                          if(state.data.coins.isNotEmpty)
+                                            ...[
+                                              const SizedBox(height: 8),
+                                              HomeTradesWidget(
+                                                trades: state.data.coins,
+                                                onTradeTap: (tradeInfo, buyAndSellType) {
+                                                  showTradeBottomSheet(
+                                                      context: context,
+                                                      tradeInfo: tradeInfo,
+                                                      buyAndSellType: buyAndSellType,
+                                                      homeCubit: homeScreenCubit
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          const SizedBox(height: Dimens.standard16),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(width: Dimens.standard8),
-                                    SvgPicture.asset(
-                                      'assets/images/info_fill.svg',
-                                      fit: BoxFit.none,
-                                    ),
+                                    Divider(height: Dimens.standard1, color: AppColors.nature.shade50),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(Dimens.standard16),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: [
+                                          // AppText(
+                                          //   Strings.tradeCondition,
+                                          //   textStyle: AppTextStyle.subTitle3,
+                                          // ),
+                                          // const SizedBox(height: Dimens.standard8),
+                                          // KeyValueWidget(
+                                          //   title: Strings.goldOns,
+                                          //   value: "${data.goldOns.price} ${data.goldOns.unit}",
+                                          // ),
+                                          // const SizedBox(height: Dimens.standard8),
+                                          // KeyValueWidget(
+                                          //   title: Strings.goldGheramPrice,
+                                          //   value:
+                                          //       "${data.goldGheram.price.toString().numberFormat()} ${data.goldGheram.unit}",
+                                          // ),
+                                          // const SizedBox(height: Dimens.standard8),
+                                          // KeyValueWidget(
+                                          //   title: Strings.worldGoldPrice,
+                                          //   value:
+                                          //       "${data.goldWorld.price.toString().numberFormat()} ${data.goldWorld.unit}",
+                                          // ),
+                                          // const SizedBox(height: Dimens.standard8),
+                                          // KeyValueWidget(
+                                          //   title: Strings.weekMaxPrice,
+                                          //   value:
+                                          //       "${data.todayHighPrice.price.toString().numberFormat()} ${data.todayHighPrice.unit}",
+                                          // ),
+                                          // const SizedBox(height: Dimens.standard8),
+                                          // KeyValueWidget(
+                                          //   title: Strings.weekMinPrice,
+                                          //   value:
+                                          //       "${data.todayLowPrice.price.toString().numberFormat()} ${data.todayLowPrice.unit}",
+                                          // ),
+                                          AppText(
+                                            Strings.priceChangesTitle,
+                                            textStyle: AppTextStyle.subTitle3,
+                                          ),
+                                          const SizedBox(height: Dimens.standard12),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: AppText(
+                                                  Strings.buyPrice,
+                                                  textAlign: TextAlign.end,
+                                                  textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: AppText(
+                                                  Strings.sellPrice,
+                                                  textAlign: TextAlign.center,
+                                                  textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: AppText(
+                                                  Strings.time,
+                                                  textAlign: TextAlign.start,
+                                                  textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: Dimens.standard8),
+                                          Divider(color: AppColors.nature.shade50),
+                                          const SizedBox(height: Dimens.standard14),
+                                          if (data.priceHistories != null) PricesList(prices: data.priceHistories!)
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                            Container(
-                              color: AppColors.white,
-                              padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
-                              child: Column(
-                                children: [
-                                  const UserAccountingChecker(
-                                    updateUser: true,
-                                    placeHolder: SizedBox(),
-                                    child: DualBalanceWidget(),
-                                  ),
-                                  const SizedBox(height: Dimens.standard4),
-                                  UserStatusChecker(
-                                    checkTrade: true,
-                                    placeHolder: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: Dimens.standard64),
-                                        child: AppText(Strings.tradeIsBlocked, textStyle: AppTextStyle.subTitle3),
-                                      ),
-                                    ),
-                                    child: BuyAndSellPrices(
-                                      buyPrice: data.buyPrice,
-                                      sellPrice: data.sellPrice,
-                                    ),
-                                  ),
-                                  const SizedBox(height: Dimens.standard16),
-                                  if (state.data.coin != null)
-                                    UserStatusChecker(
-                                      checkCoinTrade: true,
-                                      placeHolder: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(top: Dimens.standard30),
-                                          child: AppText(Strings.tradeIsBlocked, textStyle: AppTextStyle.subTitle3),
-                                        ),
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () => context.goNamed(CoinShopScreen.route.name ?? ''),
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(vertical: Dimens.standard24),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(Dimens.standard12),
-                                                color: AppColors.background,
-                                                border: Border.all(
-                                                  width: 2,
-                                                  color: AppColors.nature.shade100,
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                        'assets/images/arrow_left.svg',
-                                                        width: Dimens.standard20,
-                                                        fit: BoxFit.fitWidth,
-                                                      ),
-                                                      const SizedBox(
-                                                        width: Dimens.standard8,
-                                                      ),
-                                                      AppText(
-                                                        Strings.seeAll,
-                                                        textStyle: AppTextStyle.body5,
-                                                        color: AppColors.nature.shade700,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Image.asset(
-                                                    'assets/images/coin.png',
-                                                    width: Dimens.standard48,
-                                                    fit: BoxFit.fitWidth,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                                    children: [
-                                                      AppText(
-                                                        '${state.data.coin?.name ?? ''} (${state.data.coin?.unit ?? ''})',
-                                                        textStyle: AppTextStyle.body5,
-                                                        color: AppColors.nature.shade700,
-                                                      ),
-                                                      AppText(
-                                                        state.data.coin?.price.numberFormat() ?? '0',
-                                                        textStyle: AppTextStyle.subTitle3,
-                                                        color: AppColors.nature.shade900,
-                                                        textDirection: TextDirection.ltr,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            if (state.data.coin?.isNew == true)
-                                              Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: Dimens.standard10),
-                                                decoration: BoxDecoration(
-                                                    color: AppColors.yellow,
-                                                    borderRadius: const BorderRadius.only(
-                                                        topLeft: Radius.circular(Dimens.standard12),
-                                                        bottomRight: Radius.circular(Dimens.standard12))),
-                                                child: AppText(
-                                                  Strings.neww,
-                                                  textStyle: AppTextStyle.body6,
-                                                ),
-                                              )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  const SizedBox(height: Dimens.standard16),
-                                ],
-                              ),
                             ),
-                            Divider(height: Dimens.standard1, color: AppColors.nature.shade50),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.all(Dimens.standard16),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      AppText(
-                                        Strings.tradeCondition,
-                                        textStyle: AppTextStyle.subTitle3,
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      KeyValueWidget(
-                                        title: Strings.goldOns,
-                                        value: "${data.goldOns.price} ${data.goldOns.unit}",
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      KeyValueWidget(
-                                        title: Strings.goldGheramPrice,
-                                        value:
-                                            "${data.goldGheram.price.toString().numberFormat()} ${data.goldGheram.unit}",
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      KeyValueWidget(
-                                        title: Strings.worldGoldPrice,
-                                        value:
-                                            "${data.goldWorld.price.toString().numberFormat()} ${data.goldWorld.unit}",
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      KeyValueWidget(
-                                        title: Strings.weekMaxPrice,
-                                        value:
-                                            "${data.todayHighPrice.price.toString().numberFormat()} ${data.todayHighPrice.unit}",
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      KeyValueWidget(
-                                        title: Strings.weekMinPrice,
-                                        value:
-                                            "${data.todayLowPrice.price.toString().numberFormat()} ${data.todayLowPrice.unit}",
-                                      ),
-                                      const SizedBox(height: Dimens.standard20),
-                                      AppText(
-                                        Strings.priceChangesTitle,
-                                        textStyle: AppTextStyle.subTitle3,
-                                      ),
-                                      const SizedBox(height: Dimens.standard12),
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: AppText(
-                                              Strings.buyPrice,
-                                              textAlign: TextAlign.end,
-                                              textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: AppText(
-                                              Strings.sellPrice,
-                                              textAlign: TextAlign.center,
-                                              textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: AppText(
-                                              Strings.time,
-                                              textAlign: TextAlign.start,
-                                              textStyle: AppTextStyle.body5.copyWith(color: AppColors.nature.shade600),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: Dimens.standard8),
-                                      Divider(color: AppColors.nature.shade50),
-                                      const SizedBox(height: Dimens.standard14),
-                                      if (data.priceHistories != null) PricesList(prices: data.priceHistories!)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
                           ],
                         );
                       }
@@ -366,3 +294,175 @@ class KeyValueWidget extends StatelessWidget {
         ],
       );
 }
+
+class HomeTradesWidget extends StatelessWidget {
+  final List<TradeInfoDTO> trades;
+  final Function(TradeInfoDTO, BuyAndSellType) onTradeTap;
+
+  const HomeTradesWidget({
+    super.key,
+    required this.trades,
+    required this.onTradeTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      color: const Color(0xffE5E5E5),
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 4),
+        child: Row(children: [
+          Expanded(
+              child: Center(
+                child: AppText(
+                  'فروش',
+                  textStyle: AppTextStyle.subTitle5,
+                  color: AppColors.nature.shade900,
+                ),
+              )),
+          Expanded(
+              child: Center(
+                child: AppText(
+                  'خرید',
+                  textStyle: AppTextStyle.subTitle5,
+                  color: AppColors.nature.shade900,
+                ),
+              )),
+          Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: AppText(
+                  trades.isNotEmpty ? (trades.first.isGold ? 'آبشده' : 'سکه') : '',
+                  textStyle: AppTextStyle.subTitle5,
+                  color: AppColors.nature.shade900,
+                ),
+              )),
+        ]),
+      ),
+      const SizedBox(height: 8),
+      Container(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+            children: trades
+                .map((e) => TradeShortcutWidget(
+              tradeInfo: e,
+              onTradeTap: onTradeTap,
+            ))
+                .toList()),
+      ),
+    ]),
+  );
+}
+
+class TradeShortcutWidget extends StatelessWidget {
+  final TradeInfoDTO tradeInfo;
+  final Function(TradeInfoDTO, BuyAndSellType) onTradeTap;
+
+  const TradeShortcutWidget({
+    super.key,
+    required this.tradeInfo,
+    required this.onTradeTap,
+  });
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Row(children: [
+      Expanded(
+        child: tradeInfo.sellStatus
+            ? GestureDetector(
+          onTap: () => onTradeTap.call(tradeInfo, BuyAndSellType.sell),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.red.shade600,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: AppText(
+                tradeInfo.sellPrice.numberFormat(),
+                textStyle: AppTextStyle.subTitle5,
+                color: AppColors.nature.shade50,
+              ),
+            ),
+          ),
+        )
+            : const SizedBox(),
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: tradeInfo.buyStatus
+            ? GestureDetector(
+          onTap: () => onTradeTap.call(tradeInfo, BuyAndSellType.buy),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppColors.green.shade600,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: AppText(
+                tradeInfo.buyPrice.numberFormat(),
+                textStyle: AppTextStyle.subTitle5,
+                color: AppColors.nature.shade50,
+              ),
+            ),
+          ),
+        )
+            : const SizedBox(),
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: AppText(
+          tradeInfo.title,
+          textStyle: AppTextStyle.subTitle5,
+          color: AppColors.nature.shade900,
+        ),
+      ),
+    ]),
+  );
+}
+
+
+class TopRadius extends StatelessWidget {
+  final Color? backgroundColor;
+
+  const TopRadius({
+    super.key,
+    this.backgroundColor,
+  });
+
+  @override
+  Widget build(BuildContext context) => Stack(
+    children: [
+      Container(
+        width: double.maxFinite,
+        height: 16,
+        decoration: const BoxDecoration(
+            color: AppColors.blue,
+            borderRadius:
+            BorderRadius.vertical(top: Radius.circular(16))),
+      ),
+      Container(
+        width: double.maxFinite,
+        margin: const EdgeInsets.only(top: 2),
+        height: 16,
+        decoration: BoxDecoration(
+            color: backgroundColor ?? AppColors.white,
+            borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(16))),
+      ),
+    ],
+  );
+}
+

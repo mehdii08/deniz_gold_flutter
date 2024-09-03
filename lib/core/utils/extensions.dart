@@ -64,6 +64,24 @@ extension StringExtension on String{
     return temp;
   }
 
+  int toInt(){
+    try{
+      return int.parse(clearCommas());
+    }catch(e){
+      return 0;
+    }
+
+  }
+
+  double toDouble(){
+    try{
+      return double.parse(this);
+    }catch(e){
+      return 0;
+    }
+
+  }
+
 }
 
 extension ValueController on TextEditingController{

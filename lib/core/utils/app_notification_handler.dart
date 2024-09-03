@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import 'package:deniz_gold/data/dtos/coin_dto.dart';
 import 'package:deniz_gold/data/dtos/coin_trades_dto.dart';
 import 'package:deniz_gold/data/dtos/havale_dto.dart';
 import 'package:deniz_gold/data/dtos/home_screen_data_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
+
+import '../../data/dtos/trade_info_dto.dart';
 
 class AppNotificationEvent {
   final String type;
@@ -61,7 +62,7 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
 }
 
 class CoinsPriceNotificationEvent extends AppNotificationEvent {
-  final List<CoinDTO> coins;
+  final List<CoinTradeInfoDTO> coins;
 
   CoinsPriceNotificationEvent({
     required String type,
@@ -72,7 +73,7 @@ class CoinsPriceNotificationEvent extends AppNotificationEvent {
     final data = jsonDecode(json['data']);
     return CoinsPriceNotificationEvent(
       type: json['type'],
-      coins: List<CoinDTO>.from(data.map((e) => CoinDTO.fromJson(e)).toList()),
+      coins: List<CoinTradeInfoDTO>.from(data.map((e) => CoinTradeInfoDTO.fromJson(e)).toList()),
     );
   }
 }

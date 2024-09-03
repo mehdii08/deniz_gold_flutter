@@ -56,18 +56,19 @@ class _UserStatusCheckerState extends State<UserStatusChecker> {
           );
         } else if (state.appConfig?.user.statusCode != 1) {
           return widget.placeHolder ?? const DeActiveUserScreen();
-        } else if ((widget.checkTrade && state.appConfig?.botStatus == "0") ||
-            (widget.checkCoinTrade && state.appConfig?.coinStatus == "0")) {
-          return IgnorePointer(
-            ignoring: true,
-            child: Stack(
-              children: [
-                Blur(blur: 4, child: widget.child),
-                widget.placeHolder ?? const SizedBox(),
-              ],
-            ),
-          );
         }
+        // else if ((widget.checkTrade && state.appConfig?.botStatus == "0") ||
+        //     (widget.checkCoinTrade && state.appConfig?.coinStatus == "0")) {
+        //   return IgnorePointer(
+        //     ignoring: true,
+        //     child: Stack(
+        //       children: [
+        //         Blur(blur: 4, child: widget.child),
+        //         widget.placeHolder ?? const SizedBox(),
+        //       ],
+        //     ),
+        //   );
+        // }
         return widget.child;
       },
     );

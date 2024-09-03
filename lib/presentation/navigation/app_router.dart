@@ -65,9 +65,9 @@ final _authenticationGuardedRoutes = [
       TradesScreen.route,
       ProfileScreen.route,
       AccountInfoScreen.route,
-      CoinShopScreen.route,
+      // CoinShopScreen.route,
       HavaleScreen.route,
-      TradeScreen.route,
+      // TradeScreen.route,
     ],
   )
 ];

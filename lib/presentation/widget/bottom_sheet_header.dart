@@ -9,11 +9,13 @@ import 'package:go_router/go_router.dart';
 class BottomSheetHeader extends StatelessWidget {
   final String title;
   final Widget child;
+  final VoidCallback? onBackTapped;
 
   const BottomSheetHeader({
     Key? key,
     required this.title,
     required this.child,
+    this.onBackTapped,
   }) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class BottomSheetHeader extends StatelessWidget {
             children: [
               const SizedBox(width: Dimens.standard16),
               GestureDetector(
-                onTap: () => context.pop(),
+                onTap: onBackTapped ?? () => context.pop(),
                 child: SvgPicture.asset(
                   'assets/images/close.svg',
                   width: Dimens.standard32,

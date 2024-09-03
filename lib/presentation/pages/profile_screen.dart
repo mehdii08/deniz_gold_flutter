@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
             child: Scaffold(
               backgroundColor: AppColors.white,
-              appBar: const LogoAppBar(),
+              appBar: const LogoAppBar(showMenu: false,),
               body: BlocProvider<ProfileCubit>(
                 create: (_) => sl<ProfileCubit>()..updateData(),
                 child: BlocListener<AppConfigCubit, AppConfigState>(

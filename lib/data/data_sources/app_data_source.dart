@@ -97,9 +97,16 @@ abstract class AppDataSource {
   });
 
   Future<TradeSubmitResponseDTO> submitTrade({
+    required int tradeId,
     required BuyAndSellType tradeType,
-    required CalculateType calculateType,
-    required String value,
+    required String weight,
+    required String fcmToken,
+  });
+
+  Future<TradeSubmitResponseDTO> submitCoinTrade({
+    required int coinId,
+    required BuyAndSellType tradeType,
+    required int count,
     required String fcmToken,
   });
 
@@ -319,18 +326,42 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<TradeSubmitResponseDTO> submitTrade({
+    required int tradeId,
     required BuyAndSellType tradeType,
-    required CalculateType calculateType,
-    required String value,
+    required String weight,
     required String fcmToken,
   }) async {
     final response = await _apiHelper.request(
-      '$apiPath/panel/trade/submit',
+      '$apiPathV2/panel/trade/molten',
       method: Method.post,
       data: {
+        'trade_id': tradeId,
         'trade_type': tradeType.value,
-        'calculate_type': calculateType.value,
-        'value': value,
+        'weight': weight,
+        'device_type': 3,
+        'fcm_token': fcmToken,
+      },
+    );
+    return TradeSubmitResponseDTO(
+        message: response.data['message'],
+        requestId: response.dataAsMap()['request_id'],
+        timeForCancel: response.dataAsMap()['time_for_cancel']);
+  }
+
+  @override
+  Future<TradeSubmitResponseDTO> submitCoinTrade({
+    required int coinId,
+    required BuyAndSellType tradeType,
+    required int count,
+    required String fcmToken,
+  }) async {
+    final response = await _apiHelper.request(
+      '$apiPathV2/panel/trade/coin',
+      method: Method.post,
+      data: {
+        'coin_id': coinId,
+        'trade_type': tradeType.value,
+        'count': count,
         'device_type': 3,
         'fcm_token': fcmToken,
       },
@@ -390,7 +421,7 @@ class AppDataSourceImpl extends AppDataSource {
       'current_version': currentVersion,
       'app_version_features_is_show': appVersionFeaturesIsShow,
     };
-    final response = await _apiHelper.request('$apiPath/panel/get-config',queryParameters: params);
+    final response = await _apiHelper.request('$apiPathV2/panel/get-config',queryParameters: params);
     final result = AppConfigDTO.fromJson(response.dataAsMap());
     return result;
   }
@@ -417,7 +448,7 @@ class AppDataSourceImpl extends AppDataSource {
 
   @override
   Future<HomeScreenDataDTO> getHomeData() async {
-    final response = await _apiHelper.request('$apiPath/panel/homepage');
+    final response = await _apiHelper.request('$apiPathV2/panel/homepage');
     return HomeScreenDataDTO.fromJson(response.dataAsMap());
   }
 

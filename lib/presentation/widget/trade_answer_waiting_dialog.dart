@@ -15,6 +15,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 
 class TradeAnswerWaitingDialog extends StatefulWidget {
@@ -84,6 +85,7 @@ class _TradeAnswerWaitingDialogState extends State<TradeAnswerWaitingDialog> wit
         listener: (context, state) {
           if (state is CheckTradeStatusLoaded) {
             _timer?.cancel();
+            context.pop();
             widget.onResultReached(state.trade);
           }
         },

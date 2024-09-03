@@ -31,10 +31,10 @@ class _HomeScaffoldState extends State<HomeScaffold> {
           body: Stack(
             children: [
               widget.child,
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: AppBottomBar(),
-              )
+              // const Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: AppBottomBar(),
+              // )
             ],
           ),
         ),

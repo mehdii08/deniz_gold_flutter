@@ -35,11 +35,11 @@ class CoinTabCubit extends Cubit<CoinTabState> {
     required this.appNotificationEvents,
   }) : super(const CoinTabState()) {
     tradeWaitingDialogIsOnTop = true;
-    appNotificationEvents.listen((event) {
-      if (event is CoinsPriceNotificationEvent) {
-        emit(state.copyWith(coins: event.coins));
-      }
-    });
+    // appNotificationEvents.listen((event) {
+    //   if (event is CoinsPriceNotificationEvent) {
+    //     emit(state.copyWith(coins: event.coins));
+    //   }
+    // });
   }
 
   getData() async {

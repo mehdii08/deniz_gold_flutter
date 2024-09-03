@@ -74,16 +74,16 @@ class TradeCubit extends Cubit<TradeState> {
   }
 
   submitTrade({
+    required int tradeId,
     required BuyAndSellType tradeType,
-    required CalculateType calculateType,
-    required String value,
+    required String weight,
   }) async {
     emit(const TradeLoading(calculateLoading: false, submitLoading: true));
     final String fcmToken = sharedPreferences.getString(fcmTokenKey);
     final result = await appRepository.submitTrade(
+      tradeId: tradeId,
       tradeType: tradeType,
-      calculateType: calculateType,
-      value: value,
+      weight: weight,
       fcmToken: fcmToken,
     );
     result.fold(
@@ -91,4 +91,24 @@ class TradeCubit extends Cubit<TradeState> {
       (r) => emit(TradeSubmited(message: r.message, data : r)),
     );
   }
+
+  submitCoinTrade({
+    required int coinId,
+    required BuyAndSellType tradeType,
+    required int count,
+  }) async {
+    emit(const TradeLoading(calculateLoading: false, submitLoading: true));
+    final String fcmToken = sharedPreferences.getString(fcmTokenKey);
+    final result = await appRepository.submitCoinTrade(
+      coinId: coinId,
+      tradeType: tradeType,
+      count: count,
+      fcmToken: fcmToken,
+    );
+    result.fold(
+          (l) => emit(TradeFailed(message: l.message != null ? l.message! : "")),
+          (r) => emit(TradeSubmited(message: r.message, data: r)),
+    );
+  }
+
 }
