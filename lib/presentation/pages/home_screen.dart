@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const SizedBox(height: 12),
                                     if (state.data.message != null && state.data.message?.isNotEmpty == true)
                                       Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: Dimens.standard12, horizontal: Dimens.standard12),
                                         decoration: BoxDecoration(
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     Container(
                                       color: AppColors.white,
-                                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard16),
+                                      padding: const EdgeInsets.symmetric(horizontal: Dimens.standard8),
                                       child: Column(
                                         children: [
                                           const UserAccountingChecker(
@@ -345,7 +345,7 @@ class HomeTradesWidget extends StatelessWidget {
       ),
       const SizedBox(height: 8),
       Container(
-        padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+        padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(16),
@@ -390,7 +390,7 @@ class TradeShortcutWidget extends StatelessWidget {
             child: Center(
               child: AppText(
                 tradeInfo.sellPrice.numberFormat(),
-                textStyle: AppTextStyle.subTitle5,
+                textStyle: AppTextStyle.subTitle4,
                 color: AppColors.nature.shade50,
               ),
             ),
@@ -398,7 +398,7 @@ class TradeShortcutWidget extends StatelessWidget {
         )
             : const SizedBox(),
       ),
-      const SizedBox(width: 8),
+      const SizedBox(width: 4),
       Expanded(
         child: tradeInfo.buyStatus
             ? GestureDetector(
@@ -413,7 +413,7 @@ class TradeShortcutWidget extends StatelessWidget {
             child: Center(
               child: AppText(
                 tradeInfo.buyPrice.numberFormat(),
-                textStyle: AppTextStyle.subTitle5,
+                textStyle: AppTextStyle.subTitle4,
                 color: AppColors.nature.shade50,
               ),
             ),
@@ -421,7 +421,7 @@ class TradeShortcutWidget extends StatelessWidget {
         )
             : const SizedBox(),
       ),
-      const SizedBox(width: 8),
+      const SizedBox(width: 4),
       Expanded(
         child: AppText(
           tradeInfo.title,
