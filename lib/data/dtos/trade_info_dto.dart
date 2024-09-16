@@ -21,6 +21,20 @@ abstract class TradeInfoDTO extends Equatable {
 
   bool get isCoin => this is CoinTradeInfoDTO;
 
+  String getBuyPrice({required bool isVIP}){
+    if(this is GoldTradeInfoDTO && isVIP){
+      return (this as GoldTradeInfoDTO).vipBuyPrice;
+    }
+    return buyPrice;
+  }
+
+  String getSellPrice({required bool isVIP}){
+    if(this is GoldTradeInfoDTO && isVIP){
+      return (this as GoldTradeInfoDTO).vipSellPrice;
+    }
+    return sellPrice;
+  }
+
   @override
   List<Object?> get props => [
         id,
@@ -35,6 +49,14 @@ abstract class TradeInfoDTO extends Equatable {
 class GoldTradeInfoDTO extends TradeInfoDTO {
   final String buyPriceGheram;
   final String sellPriceGheram;
+  final String vipBuyPrice;
+  final String vipSellPrice;
+  final String vipBuyPriceGheram;
+  final String vipSellPriceGheram;
+
+  String getBuyPriceGheram({required bool isVIP}) => isVIP ? vipBuyPriceGheram : buyPriceGheram;
+
+  String getSellPriceGheram({required bool isVIP}) => isVIP ? vipSellPriceGheram : sellPriceGheram;
 
   const GoldTradeInfoDTO({
     required super.id,
@@ -45,6 +67,10 @@ class GoldTradeInfoDTO extends TradeInfoDTO {
     required super.sellPrice,
     required this.buyPriceGheram,
     required this.sellPriceGheram,
+    required this.vipBuyPrice,
+    required this.vipSellPrice,
+    required this.vipBuyPriceGheram,
+    required this.vipSellPriceGheram,
   });
 
   factory GoldTradeInfoDTO.fromJson(Map<String, dynamic> json) {
@@ -57,6 +83,10 @@ class GoldTradeInfoDTO extends TradeInfoDTO {
       sellPrice: json['sell_price'],
       buyPriceGheram: json['buy_price_gheram'] ?? '',
       sellPriceGheram: json['sell_price_gheram'] ?? '',
+      vipBuyPrice: json['vip_buy_price'],
+      vipSellPrice: json['vip_sell_price'],
+      vipBuyPriceGheram: json['vip_buy_price_gheram'],
+      vipSellPriceGheram: json['vip_sell_price_gheram'],
     );
   }
 
@@ -70,6 +100,10 @@ class GoldTradeInfoDTO extends TradeInfoDTO {
     sellPrice,
     buyPriceGheram,
     sellPriceGheram,
+    vipBuyPrice,
+    vipSellPrice,
+    vipBuyPriceGheram,
+    vipSellPriceGheram,
   ];
 }
 

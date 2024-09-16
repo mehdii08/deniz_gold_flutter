@@ -26,6 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/app_notification_handler.dart';
 import '../../data/dtos/trade_info_dto.dart';
 import '../blocs/home/home_screen_cubit.dart';
 import 'coint_detail_content.dart';
@@ -291,16 +292,17 @@ showTradeAnswerWaitingDialog({
         isSell: isSell,
         tradeCubit: tradeCubit,
         onResultReached: (trade) {
-          // context.pop();
-          showTradeAnswerDialog(
-            context: builderContext,
-            buyAndSellType: trade.buyAndSellType,
-            coinAndGoldType: trade.coinAndGoldType,
-            status: trade.status.toString(),
-            totalPrice: trade.totalPrice.toString(),
-            mazaneh: trade.mazaneh.toString(),
-            weight: trade.weight,
-            coins: trade.coins,
+          return TradeAnswerWaitingDialog(
+            data: data,
+            isSell: isSell,
+            tradeCubit: tradeCubit,
+            onResultReached: (data) {
+              builderContext.pop();
+              showTradeAnswerDialog(
+                context: builderContext,
+                data: data,
+              );
+            },
           );
         },
       );
@@ -310,55 +312,43 @@ showTradeAnswerWaitingDialog({
 
 showTradeAnswerDialog({
   required BuildContext context,
-  required BuyAndSellType buyAndSellType,
-  required CoinAndGoldType coinAndGoldType,
-  required String status,
-  required String? totalPrice,
-  required String? mazaneh,
-  required String? weight,
-  required List<CoinTradesDTO>? coins,
+  required TradeResultNotificationEvent data,
 }){
   showDialog(
     context: context,
     builder: (_) => TradeAnswerDialog(
-      buyAndSellType: buyAndSellType,
-      coinAndGoldType: coinAndGoldType,
-      status: status.toString(),
-      totalPrice: totalPrice.toString(),
-      mazaneh: mazaneh,
-      weight: weight,
-      coins: coins,
+      data: data,
     ),
   );
 }
 
-showCoinTradeAnswerWaitingDialog({
-  required BuildContext context,
-  required CoinTradeSubmitResponseDTO data,
-}) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (builderContext) {
-      return CoinTradeAnswerWaitingDialog(
-        data: data,
-        onResultReached: (trade) {
-          // context.pop();
-          // showTradeAnswerDialog(
-          //   context: context,
-          //   buyAndSellType: trade.buyAndSellType,
-          //   coinAndGoldType: trade.coinAndGoldType,
-          //   status: trade.status.toString(),
-          //   totalPrice: trade.totalPrice.toString(),
-          //   mazaneh: trade.mazaneh.toString(),
-          //   weight: trade.weight,
-          //   coins: trade.coins,
-          // );
-        },
-      );
-    },
-  );
-}
+// showCoinTradeAnswerWaitingDialog({
+//   required BuildContext context,
+//   required CoinTradeSubmitResponseDTO data,
+// }) {
+//   showDialog(
+//     context: context,
+//     barrierDismissible: false,
+//     builder: (builderContext) {
+//       return CoinTradeAnswerWaitingDialog(
+//         data: data,
+//         onResultReached: (trade) {
+//           // context.pop();
+//           // showTradeAnswerDialog(
+//           //   context: context,
+//           //   buyAndSellType: trade.buyAndSellType,
+//           //   coinAndGoldType: trade.coinAndGoldType,
+//           //   status: trade.status.toString(),
+//           //   totalPrice: trade.totalPrice.toString(),
+//           //   mazaneh: trade.mazaneh.toString(),
+//           //   weight: trade.weight,
+//           //   coins: trade.coins,
+//           // );
+//         },
+//       );
+//     },
+//   );
+// }
 
 showCoinDetailBottomSheet({required BuildContext context, required int id}) {
   showModalBottomSheet(

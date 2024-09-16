@@ -13,29 +13,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/utils/app_notification_handler.dart';
+
 class TradeAnswerDialog extends StatelessWidget {
-  final BuyAndSellType buyAndSellType;
-  final CoinAndGoldType coinAndGoldType;
-  final String status;
-  final String? totalPrice;
-  final String? mazaneh;
-  final String? weight;
-  final List<CoinTradesDTO>? coins;
+  final TradeResultNotificationEvent data;
 
   const TradeAnswerDialog({
     Key? key,
-    required this.buyAndSellType,
-    required this.coinAndGoldType,
-    required this.status,
-    this.totalPrice,
-    this.mazaneh,
-    this.weight,
-    this.coins,
+    required this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isSuccessful = status == "1";
+    final isSuccessful = data.status == 1;
     if (!isSuccessful) {
       return AlertDialog(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
@@ -86,15 +76,15 @@ class TradeAnswerDialog extends StatelessWidget {
       );
     }
     return AlertDialog(
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(Dimens.standard16))),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
           Container(
             width: Dimens.standard53,
             height: Dimens.standard53,
             padding: const EdgeInsets.all(Dimens.standard16),
-            decoration: BoxDecoration(color: AppColors.yellow, shape: BoxShape.circle),
+            decoration:
+            BoxDecoration(color: AppColors.yellow, shape: BoxShape.circle),
             child: SvgPicture.asset(
               'assets/images/done_check.svg',
               width: Dimens.standard20,
@@ -105,79 +95,66 @@ class TradeAnswerDialog extends StatelessWidget {
           const SizedBox(height: Dimens.standard16),
           AppText(
             Strings.orderConfirmed,
-            textStyle: AppTextStyle.subTitle3,
+            textStyle: AppTextStyle.title3,
           ),
           const SizedBox(height: Dimens.standard24),
           Row(
             children: [
               AppText(
-                getTypeString(),
+                '${data.buyAndSellType == BuyAndSellType.buy ? 'خرید':'فروش'} ${data.trade_name}',
                 textStyle: AppTextStyle.body4,
               ),
               const Spacer(),
               AppText(
                 Strings.tradeType_,
                 textStyle: AppTextStyle.body4,
-                color: AppColors.nature.shade700,
+                color: AppColors.nature.shade900,
               ),
             ],
           ),
           const SizedBox(height: Dimens.standard8),
-          if (coins != null)
-            ...?coins
-                ?.map((e) => Padding(
-                      padding: const EdgeInsets.only(bottom: Dimens.standard8),
-                      child: KeyValue(title: e.title, value: '${e.count} عدد'),
-                    ))
-                .toList(),
-          if (mazaneh != null && mazaneh?.isNotEmpty == true && mazaneh != 'null') ...[
-            const SizedBox(height: Dimens.standard8),
-            Row(
-              children: [
-                if (mazaneh != null && mazaneh?.isNotEmpty == true && mazaneh != 'null')
-                  AppText(
-                    "${mazaneh.clearCommas().numberFormat()} ${Strings.toman}",
-                    textStyle: AppTextStyle.body4,
-                  ),
-                const Spacer(),
-                AppText(
-                  Strings.mazane,
-                  textStyle: AppTextStyle.body4,
-                  color: AppColors.nature.shade700,
-                ),
-              ],
-            ),
-          ],
-          if (weight != null && weight?.isNotEmpty == true && weight != 'null') ...[
-            const SizedBox(height: Dimens.standard8),
-            Row(
-              children: [
-                AppText(
-                  "$weight ${Strings.geram}",
-                  textStyle: AppTextStyle.body4,
-                ),
-                const Spacer(),
-                AppText(
-                  Strings.requestedWeight,
-                  textStyle: AppTextStyle.body4,
-                  color: AppColors.nature.shade700,
-                ),
-              ],
-            ),
-          ],
+          Row(
+            children: [
+              AppText(
+                "${data.mazaneh.clearCommas().numberFormat()} ${Strings.toman}",
+                textStyle: AppTextStyle.body5,
+              ),
+              const Spacer(),
+              AppText(
+                Strings.mazane,
+                textStyle: AppTextStyle.body4,
+                color: AppColors.nature.shade900,
+              ),
+            ],
+          ),
+          const SizedBox(height: Dimens.standard8),
+          Row(
+            children: [
+              AppText(
+                "${data.value} ${data.coinAndGoldType == CoinAndGoldType.gold ? Strings.geram : 'عدد'}",
+                textStyle: AppTextStyle.body4,
+              ),
+              const Spacer(),
+              AppText(
+                data.coinAndGoldType == CoinAndGoldType.gold ? Strings.requestedWeight : 'تعداد',
+                textStyle: AppTextStyle.body4,
+                color: AppColors.nature.shade900,
+              ),
+            ],
+          ),
           const Divider(),
           const SizedBox(height: Dimens.standard12),
           Row(
             children: [
               AppText(
-                "${totalPrice.clearCommas().numberFormat()} ${Strings.toman}",
+                "${data.totalPrice.clearCommas().numberFormat()} ${Strings.toman}",
                 textStyle: AppTextStyle.body4,
               ),
               const Spacer(),
               AppText(
                 Strings.tradeTotalPrice,
                 textStyle: AppTextStyle.body4,
-                color: AppColors.nature.shade700,
+                color: AppColors.nature.shade900,
               ),
             ],
           ),
@@ -185,19 +162,9 @@ class TradeAnswerDialog extends StatelessWidget {
           AppButton(
             text: Strings.understand,
             onPressed: () => context.pop(),
-            color: AppColors.nature.shade50,
+            color: AppColors.green,
           ),
-          const SizedBox(height: Dimens.standard24),
-        ],
-      ),
-    );
-  }
-
-  String getTypeString() {
-    if (buyAndSellType == BuyAndSellType.buy) {
-      return coinAndGoldType == CoinAndGoldType.gold ? Strings.buyGold : Strings.buyCoin;
-    } else {
-      return coinAndGoldType == CoinAndGoldType.gold ? Strings.sellGold : Strings.sellCoin;
-    }
+          const SizedBox(height: Dimens.standard12),
+        ]));
   }
 }

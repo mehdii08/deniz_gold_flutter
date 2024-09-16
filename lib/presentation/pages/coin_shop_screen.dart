@@ -54,7 +54,7 @@ class _CoinShopScreenState extends State<CoinShopScreen> {
         );
       } else if (event == CoinTabEvent.showWaitingDialog) {
         context.pop();
-        showCoinTradeAnswerWaitingDialog(context: context, data: cubit.state.coinTradeSubmitResponseDTO!);
+        // showCoinTradeAnswerWaitingDialog(context: context, data: cubit.state.coinTradeSubmitResponseDTO!);
       }
     });
 

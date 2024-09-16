@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../core/utils/app_notification_handler.dart';
+
 part 'check_trade_status_state.dart';
 
 @injectable
@@ -25,7 +27,7 @@ class CheckTradeStatusCubit extends Cubit<CheckTradeStatusState> {
       },
       (r) => {
         if(r.status != 0 || !silent){
-          emit(CheckTradeStatusLoaded(trade: r))
+          emit(CheckTradeStatusLoaded(data: r))
         }
       },
     );

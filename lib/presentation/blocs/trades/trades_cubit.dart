@@ -5,6 +5,8 @@ import 'package:deniz_gold/data/dtos/paginated_result_dto.dart';
 import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../data/dtos/trade_history_dto.dart';
+
 part 'trades_state.dart';
 
 const perPage = 15;

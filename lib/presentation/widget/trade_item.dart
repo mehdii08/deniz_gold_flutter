@@ -8,8 +8,10 @@ import 'package:deniz_gold/presentation/strings.dart';
 import 'package:deniz_gold/presentation/widget/app_text.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/dtos/trade_history_dto.dart';
+
 class TradeItem extends StatelessWidget {
-  final TradeDTO trade;
+  final TradeHistoryDTO trade;
 
   const TradeItem({
     Key? key,
@@ -33,9 +35,9 @@ class TradeItem extends StatelessWidget {
                     ),
                     const Spacer(),
                     AppText(
-                      trade.buyAndSellTypeString,
+                      '${trade.type == BuyAndSellType.buy ? 'خرید' : 'فروش'} ${trade.typeString}',
                       textStyle: AppTextStyle.subTitle4,
-                      color: trade.buyAndSellType == BuyAndSellType.sell ? AppColors.red : AppColors.green,
+                      color: trade.type == BuyAndSellType.sell ? AppColors.red : AppColors.green,
                     ),
                   ],
                 ),
@@ -61,7 +63,7 @@ class TradeItem extends StatelessWidget {
           Container(
             width: Dimens.standard4,
             height: Dimens.standard56,
-            color: trade.buyAndSellType == BuyAndSellType.sell ? AppColors.red : AppColors.green,
+            color: trade.type == BuyAndSellType.sell ? AppColors.red : AppColors.green,
           )
         ],
       ),
@@ -69,17 +71,17 @@ class TradeItem extends StatelessWidget {
       Row(
         children: [
           AppText(
-            Strings.eachGeramPrice,
+            'قیمت هر ${trade.valueUnit}',
             textStyle: AppTextStyle.body6,
             color: AppColors.nature.shade600,
           ),
           const Spacer(),
-          AppText(
-            Strings.weight,
-            textStyle: AppTextStyle.body6,
-            color: AppColors.nature.shade600,
-          ),
-          const SizedBox(width: Dimens.standard20),
+          // AppText(
+          //   Strings.weight,
+          //   textStyle: AppTextStyle.body6,
+          //   color: AppColors.nature.shade600,
+          // ),
+          // const SizedBox(width: Dimens.standard20),
         ],
       ),
       Row(
@@ -91,7 +93,7 @@ class TradeItem extends StatelessWidget {
           ),
           const Spacer(),
           AppText(
-            trade.weight ?? '',
+            '${trade.value} ${trade.valueUnit}',
             textStyle: AppTextStyle.body4,
             color: AppColors.nature.shade700,
           ),

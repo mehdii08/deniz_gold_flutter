@@ -38,19 +38,20 @@ class _TradesScreenState extends State<TradesScreen> {
             body: ValueListenableBuilder<bool>(
                 valueListenable: isCoinSelectedNotifier,
                 builder: (context, isCoinSelected, _) {
-                  return Column(
-                    children: [
-                      SelectLeftOrRight(
-                        backgroundColor: AppColors.white,
-                        isLeftSelected: isCoinSelected,
-                        leftTitle: Strings.coinTrade,
-                        rightTitle: Strings.goldTrade,
-                        onLeftPressed: () => isCoinSelectedNotifier.value = true,
-                        onRightPressed: () => isCoinSelectedNotifier.value = false,
-                      ),
-                      if (isCoinSelected) const CoinTradesTab() else const GoldTradesTab(),
-                    ],
-                  );
+                  return const GoldTradesTab();
+                  // return Column(
+                  //   children: [
+                      // SelectLeftOrRight(
+                      //   backgroundColor: AppColors.white,
+                      //   isLeftSelected: isCoinSelected,
+                      //   leftTitle: Strings.coinTrade,
+                      //   rightTitle: Strings.goldTrade,
+                      //   onLeftPressed: () => isCoinSelectedNotifier.value = true,
+                      //   onRightPressed: () => isCoinSelectedNotifier.value = false,
+                      // ),
+                      // if (isCoinSelected) const CoinTradesTab() else const GoldTradesTab(),
+                    // ],
+                  // );
                 }),
           ),
         ),

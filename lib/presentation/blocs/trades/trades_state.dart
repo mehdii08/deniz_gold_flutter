@@ -1,7 +1,7 @@
 part of 'trades_cubit.dart';
 
 abstract class TradesState extends Equatable {
-  final PaginatedResultDTO<TradeDTO> result;
+  final PaginatedResultDTO<TradeHistoryDTO> result;
   const TradesState({required this.result});
 
   @override
@@ -9,22 +9,22 @@ abstract class TradesState extends Equatable {
 }
 
 class TradesInitial extends TradesState {
-  const TradesInitial({required PaginatedResultDTO<TradeDTO> result}) : super(result: result);
+  const TradesInitial({required PaginatedResultDTO<TradeHistoryDTO> result}) : super(result: result);
 }
 
 class TradesLoading extends TradesState {
-  const TradesLoading({required PaginatedResultDTO<TradeDTO> result}) : super(result: result);
+  const TradesLoading({required PaginatedResultDTO<TradeHistoryDTO> result}) : super(result: result);
 }
 
 class TradesLoaded extends TradesState {
-  const TradesLoaded({required PaginatedResultDTO<TradeDTO> result}) : super(result: result);
+  const TradesLoaded({required PaginatedResultDTO<TradeHistoryDTO> result}) : super(result: result);
 }
 
 class TradesFailed extends TradesState {
   final String message;
 
   const TradesFailed({
-  required PaginatedResultDTO<TradeDTO> result,
+  required PaginatedResultDTO<TradeHistoryDTO> result,
     required this.message,
   }) : super(result: result);
 

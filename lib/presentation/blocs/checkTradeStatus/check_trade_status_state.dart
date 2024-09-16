@@ -20,11 +20,11 @@ class CheckTradeStatusLoading extends CheckTradeStatusState {
 }
 
 class CheckTradeStatusLoaded extends CheckTradeStatusState {
-  final TradeDTO trade;
-  const CheckTradeStatusLoaded({required this.trade});
+  final TradeResultNotificationEvent data;
+  const CheckTradeStatusLoaded({required this.data});
 
   @override
-  List<Object?> get props => [trade];
+  List<Object?> get props => [data];
 }
 
 class CheckTradeStatusFailed extends CheckTradeStatusState {

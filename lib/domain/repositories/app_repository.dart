@@ -21,8 +21,10 @@ import 'package:deniz_gold/data/dtos/transactions_result_dto.dart';
 import 'package:deniz_gold/data/enums.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../core/utils/app_notification_handler.dart';
 import '../../data/dtos/coin_trade_dto.dart';
 import '../../data/dtos/coint_trades_detail_dto.dart';
+import '../../data/dtos/trade_history_dto.dart';
 
 abstract class AppRepository {
   Future<Either<Failure, CheckMobileExistsResponseDTO>> checkMobileExists({
@@ -95,7 +97,7 @@ abstract class AppRepository {
     required String fcmToken,
   });
 
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel});
+  Future<Either<Failure, TradeResultNotificationEvent>> checkTradeStatus({required int tradeId, required int needCancel});
 
   Future<Either<Failure, List<CoinDTO>>> getCoins();
 
@@ -135,7 +137,7 @@ abstract class AppRepository {
   Future<Either<Failure, String>> getPdf();
 
 
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+  Future<Either<Failure, PaginatedResultDTO<TradeHistoryDTO>>> getTrades({
         required int page,
         int? tradeType,
         int? period,

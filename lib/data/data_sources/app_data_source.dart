@@ -23,8 +23,10 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../core/utils/app_notification_handler.dart';
 import '../dtos/coin_trade_dto.dart';
 import '../dtos/coint_trades_detail_dto.dart';
+import '../dtos/trade_history_dto.dart';
 
 abstract class AppDataSource {
   Future<CheckMobileExistsResponseDTO> checkMobileExists({
@@ -57,7 +59,7 @@ abstract class AppDataSource {
     int? period,
   });
 
-  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel});
+  Future<TradeResultNotificationEvent> checkTradeStatus({required int tradeId, required int needCancel});
 
   Future<String> changePassword({
     required String currentPassword,
@@ -137,7 +139,7 @@ abstract class AppDataSource {
 
   Future<String> getPdf();
 
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+  Future<PaginatedResultDTO<TradeHistoryDTO>> getTrades({
     required int page,
     int? tradeType,
     int? period,
@@ -473,15 +475,15 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<PaginatedResultDTO<TradeDTO>> getTrades({
+  Future<PaginatedResultDTO<TradeHistoryDTO>> getTrades({
     required int page,
     int? tradeType,
     int? period,
   }) async {
     final response = await _apiHelper.request(
-        '$apiPath/panel/trades?page=$page${tradeType != null ? '&trade_type=$tradeType' : ''}${period != null ? '&period=$period' : ''}');
-    final items = List<TradeDTO>.from(response.dataAsMap()['list']['data'].map((e) => TradeDTO.fromJson(e)).toList());
-    return PaginatedResultDTO<TradeDTO>(
+        '$apiPathV2/panel/trade/list?page=$page${tradeType != null ? '&trade_type=$tradeType' : ''}${period != null ? '&period=$period' : ''}');
+    final items = List<TradeHistoryDTO>.from(response.dataAsMap()['list']['data'].map((e) => TradeHistoryDTO.fromJson(e)).toList());
+    return PaginatedResultDTO<TradeHistoryDTO>(
       from: response.dataAsMap()['list']['from'] ?? 0,
       to: response.dataAsMap()['list']['to'] ?? 0,
       total: response.dataAsMap()['list']['total'],
@@ -551,7 +553,7 @@ class AppDataSourceImpl extends AppDataSource {
   }
 
   @override
-  Future<TradeDTO> checkTradeStatus({required int tradeId, required int needCancel}) async {
+  Future<TradeResultNotificationEvent> checkTradeStatus({required int tradeId, required int needCancel}) async {
     final response = await _apiHelper.request(
       method: Method.post,
       '$apiPath/panel/trade/cancel-request',
@@ -560,7 +562,7 @@ class AppDataSourceImpl extends AppDataSource {
         'need_cancel': needCancel,
       },
     );
-    return TradeDTO.fromJson(response.dataAsMap());
+    return TradeResultNotificationEvent.fromJson(response.dataAsMap());
   }
 }
 

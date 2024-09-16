@@ -24,12 +24,12 @@ const String havalehStatusNotificationType = "havaleh_result";
 class TradeResultNotificationEvent extends AppNotificationEvent {
   final int requestId;
   final int status;
-  final int? totalPrice;
-  final int? mazaneh;
-  final String? weight;
+  final String? totalPrice;
+  final String? mazaneh;
+  final String? value;
   final BuyAndSellType buyAndSellType;
   final CoinAndGoldType coinAndGoldType;
-  final List<CoinTradesDTO>? coins;
+  final String? trade_name;
 
   TradeResultNotificationEvent({
     required String type,
@@ -39,24 +39,22 @@ class TradeResultNotificationEvent extends AppNotificationEvent {
     required this.coinAndGoldType,
     this.totalPrice,
     this.mazaneh,
-    this.weight,
-    this.coins,
+    this.value,
+    this.trade_name,
   }) : super(type: type);
 
   factory TradeResultNotificationEvent.fromJson(Map<String, dynamic> json) {
-    final data = jsonDecode(json['data']);
+    final data = json['data'] != null ? jsonDecode(json['data']) : json;
     return TradeResultNotificationEvent(
-      type: json['type'],
+      type: tradeResultNotificationType,
       requestId: data['request_id'],
       status: data['status'],
       buyAndSellType: BuyAndSellType.fromCode(data['type']),
       coinAndGoldType: CoinAndGoldType.fromCode(data['trade_type']),
-      totalPrice: data['total_price'],
-      mazaneh: data['mazaneh'],
-      weight: data['weight'].toString(),
-      coins: data['coins'] == null
-          ? null
-          : List<CoinTradesDTO>.from(data['coins'].map((e) => CoinTradesDTO.fromJson(e)).toList()),
+      totalPrice: data['total_price'].toString(),
+      mazaneh: data['mazaneh'].toString(),
+      value: data['value'].toString(),
+      trade_name: data['trade_name'],
     );
   }
 }

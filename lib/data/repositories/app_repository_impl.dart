@@ -23,9 +23,11 @@ import 'package:deniz_gold/domain/repositories/app_repository.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../core/utils/app_notification_handler.dart';
 import '../dtos/coin_trade_dto.dart';
 import '../dtos/coint_trades_detail_dto.dart';
 import '../dtos/receipt_stor_dto.dart';
+import '../dtos/trade_history_dto.dart';
 
 @LazySingleton(as: AppRepository)
 class AppRepositoryImpl extends AppRepository {
@@ -119,7 +121,7 @@ class AppRepositoryImpl extends AppRepository {
   }
 
   @override
-  Future<Either<Failure, TradeDTO>> checkTradeStatus({required int tradeId, required int needCancel}) async {
+  Future<Either<Failure, TradeResultNotificationEvent>> checkTradeStatus({required int tradeId, required int needCancel}) async {
     try {
       return Right(await dataSource.checkTradeStatus(tradeId: tradeId, needCancel: needCancel));
     } on Exception catch (e) {
@@ -381,7 +383,7 @@ class AppRepositoryImpl extends AppRepository {
 
 
   @override
-  Future<Either<Failure, PaginatedResultDTO<TradeDTO>>> getTrades({
+  Future<Either<Failure, PaginatedResultDTO<TradeHistoryDTO>>> getTrades({
     required int page,
     int? tradeType,
     int? period,

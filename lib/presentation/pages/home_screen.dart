@@ -26,6 +26,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../data/dtos/trade_info_dto.dart';
 import '../../data/enums.dart';
+import '../blocs/app_config/app_config_cubit.dart';
 import '../widget/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -295,7 +296,7 @@ class KeyValueWidget extends StatelessWidget {
       );
 }
 
-class HomeTradesWidget extends StatelessWidget {
+class HomeTradesWidget extends StatefulWidget {
   final List<TradeInfoDTO> trades;
   final Function(TradeInfoDTO, BuyAndSellType) onTradeTap;
 
@@ -304,6 +305,22 @@ class HomeTradesWidget extends StatelessWidget {
     required this.trades,
     required this.onTradeTap,
   });
+
+  @override
+  State<HomeTradesWidget> createState() => _HomeTradesWidgetState();
+}
+
+class _HomeTradesWidgetState extends State<HomeTradesWidget> {
+  bool _isVIP = false;
+
+  @override
+  void initState() {
+
+    _isVIP = context.read<AppConfigCubit>().state.appConfig?.user.isVIP ?? false;
+
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) => Container(
@@ -336,7 +353,7 @@ class HomeTradesWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 12),
                 child: AppText(
-                  trades.isNotEmpty ? (trades.first.isGold ? 'آبشده' : 'سکه') : '',
+                  widget.trades.isNotEmpty ? (widget.trades.first.isGold ? 'آبشده' : 'سکه') : '',
                   textStyle: AppTextStyle.subTitle5,
                   color: AppColors.nature.shade900,
                 ),
@@ -351,10 +368,11 @@ class HomeTradesWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
-            children: trades
+            children: widget.trades
                 .map((e) => TradeShortcutWidget(
               tradeInfo: e,
-              onTradeTap: onTradeTap,
+              isVIP: _isVIP,
+              onTradeTap: widget.onTradeTap,
             ))
                 .toList()),
       ),
@@ -364,11 +382,13 @@ class HomeTradesWidget extends StatelessWidget {
 
 class TradeShortcutWidget extends StatelessWidget {
   final TradeInfoDTO tradeInfo;
+  final bool isVIP;
   final Function(TradeInfoDTO, BuyAndSellType) onTradeTap;
 
   const TradeShortcutWidget({
     super.key,
     required this.tradeInfo,
+    required this.isVIP,
     required this.onTradeTap,
   });
 
@@ -389,7 +409,7 @@ class TradeShortcutWidget extends StatelessWidget {
             ),
             child: Center(
               child: AppText(
-                tradeInfo.sellPrice.numberFormat(),
+                tradeInfo.getSellPrice(isVIP: isVIP).numberFormat(),
                 textStyle: AppTextStyle.subTitle4,
                 color: AppColors.nature.shade50,
               ),
@@ -412,7 +432,7 @@ class TradeShortcutWidget extends StatelessWidget {
             ),
             child: Center(
               child: AppText(
-                tradeInfo.buyPrice.numberFormat(),
+                tradeInfo.getBuyPrice(isVIP: isVIP).numberFormat(),
                 textStyle: AppTextStyle.subTitle4,
                 color: AppColors.nature.shade50,
               ),

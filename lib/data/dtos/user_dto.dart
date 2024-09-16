@@ -7,6 +7,7 @@ class UserDTO extends Equatable {
   final String nationalCode;
   final String mobile;
   final bool accountingStatus;
+  final bool isVIP;
 
   const UserDTO({
     required this.name,
@@ -15,6 +16,7 @@ class UserDTO extends Equatable {
     required this.nationalCode,
     required this.mobile,
     required this.accountingStatus,
+    required this.isVIP,
   });
 
   factory UserDTO.fromJson(Map<String, dynamic> json) => UserDTO(
@@ -24,6 +26,7 @@ class UserDTO extends Equatable {
         nationalCode: json['national_code'],
         mobile: json['mobile'],
         accountingStatus: json['accounting_status'],
+        isVIP: json['is_vip'] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -33,6 +36,7 @@ class UserDTO extends Equatable {
         'national_code': nationalCode,
         'mobile': mobile,
         'accounting_status': accountingStatus,
+        'is_vip': isVIP,
       };
 
   UserDTO update({String? newName, String? newNationalCode}) => UserDTO(
@@ -42,8 +46,9 @@ class UserDTO extends Equatable {
         statusText: statusText,
         mobile: mobile,
         accountingStatus: accountingStatus,
+        isVIP: isVIP,
       );
 
   @override
-  List<Object?> get props => [name, statusCode, statusText, mobile, nationalCode, accountingStatus];
+  List<Object?> get props => [name, statusCode, statusText, mobile, nationalCode, accountingStatus, isVIP,];
 }

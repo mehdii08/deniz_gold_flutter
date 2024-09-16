@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 
+import '../blocs/app_config/app_config_cubit.dart';
+
 class TradeBottomSheet extends StatefulWidget {
   final TradeInfoDTO tradeInfo;
   final BuyAndSellType buyAndSellType;
@@ -37,11 +39,14 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
 
   late TradeInfoDTO tradeInfo;
 
+  late bool _isVIPUser;
+
   bool _weightChangedLastTime = true;
 
   @override
   void initState() {
     tradeInfo = widget.tradeInfo;
+    _isVIPUser = context.read<AppConfigCubit>().state.appConfig?.user.isVIP ?? false;
     super.initState();
   }
 
@@ -114,8 +119,8 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                         const SizedBox(width: 8),
                         AppText(
                           widget.buyAndSellType.isSell
-                              ? tradeInfo.sellPrice.numberFormat()
-                              : tradeInfo.buyPrice.numberFormat(),
+                              ? tradeInfo.getSellPrice(isVIP: _isVIPUser).numberFormat()
+                              : tradeInfo.getBuyPrice(isVIP: _isVIPUser).numberFormat(),
                           textStyle: AppTextStyle.subTitle3,
                           color: AppColors.nature.shade900,
                         ),
@@ -169,8 +174,8 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                         const SizedBox(width: 8),
                         AppText(
                           widget.buyAndSellType.isSell
-                              ? tradeInfo.sellPrice.numberFormat()
-                              : tradeInfo.buyPrice.numberFormat(),
+                              ? tradeInfo.getSellPrice(isVIP: _isVIPUser).numberFormat()
+                              : tradeInfo.getBuyPrice(isVIP: _isVIPUser).numberFormat(),
                           textStyle: AppTextStyle.subTitle3,
                           color: AppColors.nature.shade900,
                         ),
@@ -271,7 +276,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
         weight.replacePersianNumbers().removeExtraDecimals().clearCommas();
 
     final unitPrice =
-        widget.buyAndSellType.isSell ? (tradeInfo as GoldTradeInfoDTO).sellPriceGheram : (tradeInfo as GoldTradeInfoDTO).buyPriceGheram;
+    widget.buyAndSellType.isSell ? (tradeInfo as GoldTradeInfoDTO).getSellPriceGheram(isVIP: _isVIPUser) : (tradeInfo as GoldTradeInfoDTO).getBuyPriceGheram(isVIP: _isVIPUser);
     final priceNewValue = newWeight.toDouble() * unitPrice.toDouble();
     goldPriceController.text =
         priceNewValue.toString().removeDecimals().numberFormat();
@@ -289,7 +294,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
         price.replacePersianNumbers().removeDecimals().clearCommas();
 
     final unitPrice =
-        widget.buyAndSellType.isSell ? (tradeInfo as GoldTradeInfoDTO).sellPriceGheram : (tradeInfo as GoldTradeInfoDTO).buyPriceGheram;
+    widget.buyAndSellType.isSell ? (tradeInfo as GoldTradeInfoDTO).getSellPriceGheram(isVIP: _isVIPUser) : (tradeInfo as GoldTradeInfoDTO).getBuyPriceGheram(isVIP: _isVIPUser);
 
     double weightNewValue = newPrice.toDouble() / unitPrice.toDouble();
     if (weightNewValue < 0.001) weightNewValue = 0;
@@ -308,7 +313,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
         count.replacePersianNumbers().removeDecimals().clearCommas();
 
     final unitPrice =
-        widget.buyAndSellType.isSell ? tradeInfo.sellPrice : tradeInfo.buyPrice;
+    widget.buyAndSellType.isSell ? tradeInfo.getSellPrice(isVIP: _isVIPUser) : tradeInfo.getBuyPrice(isVIP: _isVIPUser);
     final priceNewValue = newCount.toDouble() * unitPrice.toDouble();
     coinPriceController.text =
         priceNewValue.toString().removeDecimals().numberFormat();

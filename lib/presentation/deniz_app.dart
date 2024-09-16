@@ -62,13 +62,7 @@ class DenizApp extends StatelessWidget {
                   }
                   showTradeAnswerDialog(
                     context: context.read<GoRouter>().routerDelegate.navigatorKey.currentState!.context,
-                    buyAndSellType: state.tradeResult.buyAndSellType,
-                    coinAndGoldType: state.tradeResult.coinAndGoldType,
-                    status: state.tradeResult.status.toString(),
-                    totalPrice: state.tradeResult.totalPrice.toString(),
-                    mazaneh: state.tradeResult.mazaneh.toString(),
-                    weight: state.tradeResult.weight ?? '',
-                    coins: state.tradeResult.coins,
+                    data: state.tradeResult,
                   );
                 }
               },
