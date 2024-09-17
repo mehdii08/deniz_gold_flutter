@@ -292,18 +292,7 @@ showTradeAnswerWaitingDialog({
         isSell: isSell,
         tradeCubit: tradeCubit,
         onResultReached: (trade) {
-          return TradeAnswerWaitingDialog(
-            data: data,
-            isSell: isSell,
-            tradeCubit: tradeCubit,
-            onResultReached: (data) {
-              builderContext.pop();
-              showTradeAnswerDialog(
-                context: builderContext,
-                data: data,
-              );
-            },
-          );
+          showTradeAnswerDialog(context: builderContext, data: trade);
         },
       );
     },

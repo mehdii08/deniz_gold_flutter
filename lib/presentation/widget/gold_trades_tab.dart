@@ -68,73 +68,71 @@ class _GoldTradesTabState extends State<GoldTradesTab> {
         }
       },
       builder: (context, state) {
-        return Expanded(
-          child: SingleChildScrollView(
-            controller: scrollController,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: Dimens.standard2X,
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: Dimens.standard2X),
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      FilterItem(
-                        title: Strings.selectDate,
-                        svgIcon: 'assets/images/calendar.svg',
-                        selectableItems: dateFilterItems,
-                        onChange: (selectedKey) {
-                          selectedPeriod = tradeTypeFilterItems[selectedKey];
-                          context
-                              .read<TradesCubit>()
-                              .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
-                        },
-                      ),
-                      const SizedBox(width: Dimens.standard8),
-                      FilterItem(
-                        title: Strings.tradeType,
-                        selectableItems: tradeTypeFilterItems,
-                        onChange: (selectedKey) {
-                          selectedTradeType = tradeTypeFilterItems[selectedKey];
-                          context
-                              .read<TradesCubit>()
-                              .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: Dimens.standard2X),
-                  if (state is TradesLoading && state.result.items.isEmpty) ...[
-                    const SizedBox(height: Dimens.standard48),
-                    const CircularProgressIndicator()
-                  ] else if (state is TradesLoaded && state.result.items.isEmpty) ...[
-                    const SizedBox(height: Dimens.standard8X),
-                    EmptyView(
-                      text: Strings.tradesListIsEmpty,
-                      buttonText: Strings.tradeGold,
-                      onTap: () => context.goNamed(TradeScreen.route.name!),
-                    ),
-                  ] else ...[
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == state.result.items.length) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [CircularProgressIndicator()],
-                          );
-                        }
-                        return TradeItem(trade: state.result.items[index]);
+        return SingleChildScrollView(
+          controller: scrollController,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Dimens.standard2X,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: Dimens.standard2X),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    FilterItem(
+                      title: Strings.selectDate,
+                      svgIcon: 'assets/images/calendar.svg',
+                      selectableItems: dateFilterItems,
+                      onChange: (selectedKey) {
+                        selectedPeriod = tradeTypeFilterItems[selectedKey];
+                        context
+                            .read<TradesCubit>()
+                            .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
                       },
-                    )
+                    ),
+                    const SizedBox(width: Dimens.standard8),
+                    FilterItem(
+                      title: Strings.tradeType,
+                      selectableItems: tradeTypeFilterItems,
+                      onChange: (selectedKey) {
+                        selectedTradeType = tradeTypeFilterItems[selectedKey];
+                        context
+                            .read<TradesCubit>()
+                            .getData(tradeType: selectedTradeType, period: selectedPeriod, reset: true);
+                      },
+                    ),
                   ],
-                  const SizedBox(height: 130),
+                ),
+                const SizedBox(height: Dimens.standard2X),
+                if (state is TradesLoading && state.result.items.isEmpty) ...[
+                  const SizedBox(height: Dimens.standard48),
+                  const CircularProgressIndicator()
+                ] else if (state is TradesLoaded && state.result.items.isEmpty) ...[
+                  const SizedBox(height: Dimens.standard8X),
+                  EmptyView(
+                    text: Strings.tradesListIsEmpty,
+                    buttonText: Strings.tradeGold,
+                    onTap: () => context.goNamed(TradeScreen.route.name!),
+                  ),
+                ] else ...[
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: state.result.items.length + (state is TradesLoading ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == state.result.items.length) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [CircularProgressIndicator()],
+                        );
+                      }
+                      return TradeItem(trade: state.result.items[index]);
+                    },
+                  )
                 ],
-              ),
+                const SizedBox(height: 130),
+              ],
             ),
           ),
         );
