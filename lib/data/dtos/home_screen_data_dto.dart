@@ -14,6 +14,8 @@ class HomeScreenDataDTO extends Equatable {
   // final HomePriceDTO todayLowPrice;
   final List<PriceDTO>? priceHistories;
   final bool accountingStatus;
+  final bool moltenTradeStatus;
+  final bool coinTradeStatus;
   final String? message;
 
   const HomeScreenDataDTO({
@@ -26,6 +28,8 @@ class HomeScreenDataDTO extends Equatable {
     // required this.todayLowPrice,
     required this.priceHistories,
     required this.accountingStatus,
+    required this.moltenTradeStatus,
+    required this.coinTradeStatus,
     required this.message,
   });
 
@@ -43,6 +47,8 @@ class HomeScreenDataDTO extends Equatable {
                 ? []
                 : List<PriceDTO>.from(json['price_histories'].map((e) => PriceDTO.fromJson(e)).toList()),
         accountingStatus: json['accounting_status'] ?? false,
+        moltenTradeStatus: json['molten_trade_status']  == '1',
+        coinTradeStatus: json['coin_trade_status']  == '1',
         message: json['message'],
       );
 
@@ -58,6 +64,8 @@ class HomeScreenDataDTO extends Equatable {
         priceHistories,
         accountingStatus,
         message,
+    moltenTradeStatus,
+    coinTradeStatus,
       ];
 
   HomeScreenDataDTO update(HomeScreenDataDTO newData) {
@@ -77,6 +85,8 @@ class HomeScreenDataDTO extends Equatable {
       priceHistories: newData.priceHistories,
       accountingStatus: newData.accountingStatus,
       message: message,
+      moltenTradeStatus: newData.moltenTradeStatus,
+      coinTradeStatus: newData.coinTradeStatus,
     );
   }
 
@@ -92,6 +102,8 @@ class HomeScreenDataDTO extends Equatable {
       priceHistories: priceHistories,
       accountingStatus: accountingStatus,
       message: message,
+      moltenTradeStatus: moltenTradeStatus,
+      coinTradeStatus: coinTradeStatus,
     );
   }
 }

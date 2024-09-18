@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:blur/blur.dart';
 import 'package:deniz_gold/core/theme/app_colors.dart';
 import 'package:deniz_gold/core/theme/app_text_style.dart';
 import 'package:deniz_gold/core/utils/extensions.dart';
@@ -143,6 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           if(state.data.trades.isNotEmpty)
                                             HomeTradesWidget(
                                               trades: state.data.trades,
+                                              disableText: 'معاملات آبشده غیرفعال می باشد',
+                                              isDisable: !state.data.moltenTradeStatus,
                                               onTradeTap: (tradeInfo, buyAndSellType) {
                                                 showTradeBottomSheet(
                                                     context: context,
@@ -157,6 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const SizedBox(height: 8),
                                               HomeTradesWidget(
                                                 trades: state.data.coins,
+                                                isDisable: !state.data.coinTradeStatus,
+                                                disableText: 'معاملات سکه غیرفعال می باشد',
                                                 onTradeTap: (tradeInfo, buyAndSellType) {
                                                   showTradeBottomSheet(
                                                       context: context,
@@ -298,11 +303,15 @@ class KeyValueWidget extends StatelessWidget {
 
 class HomeTradesWidget extends StatefulWidget {
   final List<TradeInfoDTO> trades;
+  final String disableText;
+  final bool isDisable;
   final Function(TradeInfoDTO, BuyAndSellType) onTradeTap;
 
   const HomeTradesWidget({
     super.key,
     required this.trades,
+    required this.disableText,
+    required this.isDisable,
     required this.onTradeTap,
   });
 
@@ -323,61 +332,80 @@ class _HomeTradesWidgetState extends State<HomeTradesWidget> {
 
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(4),
-    decoration: BoxDecoration(
-      color: const Color(0xffE5E5E5),
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Column(children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 4),
-        child: Row(children: [
-          Expanded(
-              child: Center(
-                child: AppText(
-                  'فروش',
-                  textStyle: AppTextStyle.subTitle5,
-                  color: AppColors.nature.shade900,
-                ),
-              )),
-          Expanded(
-              child: Center(
-                child: AppText(
-                  'خرید',
-                  textStyle: AppTextStyle.subTitle5,
-                  color: AppColors.nature.shade900,
-                ),
-              )),
-          Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: AppText(
-                  widget.trades.isNotEmpty ? (widget.trades.first.isGold ? 'آبشده' : 'سکه') : '',
-                  textStyle: AppTextStyle.subTitle5,
-                  color: AppColors.nature.shade900,
-                ),
-              )),
-        ]),
+  Widget build(BuildContext context) {
+    final body = Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xffE5E5E5),
+        borderRadius: BorderRadius.circular(20),
       ),
-      const SizedBox(height: 8),
-      Container(
-        padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(16),
+      child: Column(children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Row(children: [
+            Expanded(
+                child: Center(
+                  child: AppText(
+                    'فروش',
+                    textStyle: AppTextStyle.subTitle5,
+                    color: AppColors.nature.shade900,
+                  ),
+                )),
+            Expanded(
+                child: Center(
+                  child: AppText(
+                    'خرید',
+                    textStyle: AppTextStyle.subTitle5,
+                    color: AppColors.nature.shade900,
+                  ),
+                )),
+            Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: AppText(
+                    widget.trades.isNotEmpty ? (widget.trades.first.isGold ? 'آبشده' : 'سکه') : '',
+                    textStyle: AppTextStyle.subTitle5,
+                    color: AppColors.nature.shade900,
+                  ),
+                )),
+          ]),
         ),
-        child: Column(
-            children: widget.trades
-                .map((e) => TradeShortcutWidget(
-              tradeInfo: e,
-              isVIP: _isVIP,
-              onTradeTap: widget.onTradeTap,
-            ))
-                .toList()),
-      ),
-    ]),
-  );
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.fromLTRB(4, 12, 4, 4),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+              children: widget.trades
+                  .map((e) => TradeShortcutWidget(
+                tradeInfo: e,
+                isVIP: _isVIP,
+                onTradeTap: widget.onTradeTap,
+              ))
+                  .toList()),
+        ),
+      ]),
+    );
+    if(widget.isDisable){
+      return Stack(
+        children: [
+          Blur(child: body),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: AppText(
+                widget.disableText,
+                textStyle: AppTextStyle.body4,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return body;
+  }
 }
 
 class TradeShortcutWidget extends StatelessWidget {
