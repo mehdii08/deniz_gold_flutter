@@ -112,7 +112,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                       Row(children: [
                         const Spacer(),
                         AppText(
-                          'ریال',
+                          'تومان',
                           textStyle: AppTextStyle.body4,
                           color: AppColors.nature.shade500,
                         ),
@@ -151,7 +151,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
                         child: AppText(
-                          'مبلغ کل (ریال)',
+                          'مبلغ کل (تومان)',
                           textStyle: AppTextStyle.subTitle4,
                           color: AppColors.nature.shade400,
                         ),
@@ -167,7 +167,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                       Row(children: [
                         const Spacer(),
                         AppText(
-                          'ریال',
+                          'تومان',
                           textStyle: AppTextStyle.body4,
                           color: AppColors.nature.shade500,
                         ),
@@ -206,7 +206,7 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                       Padding(
                         padding: const EdgeInsets.only(right: 4),
                         child: AppText(
-                          'مبلغ کل (ریال)',
+                          'مبلغ کل (تومان)',
                           textStyle: AppTextStyle.subTitle4,
                           color: AppColors.nature.shade400,
                         ),
@@ -223,13 +223,13 @@ class _TradeBottomSheetState extends State<TradeBottomSheet> {
                     const SizedBox(height: 8),
                     if(goldPriceController.text.toInt() > 99 && goldPriceController.text.toInt() < 999999999999 )
                     AppText(
-                      '${numberToWords(goldPriceController.text.toInt() ~/ 10)} تومان ',
+                      '${numberToWords(goldPriceController.text.toInt())} تومان ',
                       textStyle: AppTextStyle.body5,
                       color: AppColors.nature.shade300,
                     ),
                     if(coinPriceController.text.toInt() > 99 && coinPriceController.text.toInt() < 999999999999 )
                       AppText(
-                        '${numberToWords(coinPriceController.text.toInt() ~/ 10)} تومان ',
+                        '${numberToWords(coinPriceController.text.toInt())} تومان ',
                         textStyle: AppTextStyle.body5,
                         color: AppColors.nature.shade300,
                       ),
